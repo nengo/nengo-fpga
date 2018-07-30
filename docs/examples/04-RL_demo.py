@@ -136,10 +136,14 @@ seed = int(time.time())
 print("USING SEED: {0}".format(seed))
 
 # ----------- MODEL PROPER ----------------------------------------------------
-print("Press 'q' to enable permanent exploration.")
-print("Press 'e' to turn off exploration and reset body position.")
-print("Press 'w' to reset body position.")
-print("Press 1-{0} to change maps.".format(len(world_cfg.world_maps)))
+if '__page__' in locals():
+    # Additional options for keyboard-state branch of nengo_gui
+    # Allows the user to control the status of the learning, and to change the
+    # map being used by the agent.
+    print("Press 'q' to enable permanent exploration.")
+    print("Press 'e' to turn off exploration and reset body position.")
+    print("Press 'w' to reset body position.")
+    print("Press 1-{0} to change maps.".format(len(world_cfg.world_maps)))
 
 model = nengo.Network(seed=seed)
 with model:
@@ -218,48 +222,51 @@ with model:
     nengo.Connection(errors, adapt_ens.error)
     nengo.Connection(adapt_ens.output, bg.input)
 
-    # Node to control and display current learning status
-    def learn_activate_func(t, world_cfg=world_cfg, _is_learning=[1]):
-        # _is_learning values:
-        # < 0: no learning
-        # 1: learning, will stop at learn_timeout
-        # 2: continuoues learning
+    if '__page__' in locals():
+        # Additional options for keyboard-state branch of nengo_gui
 
-        init_body_pos = False
-        if 'q' in __page__.keys_pressed:
-            _is_learning[0] = 2
-            init_body_pos = True
-        elif 'e' in __page__.keys_pressed:
-            _is_learning[0] = -1
-            init_body_pos = True
-        elif 'w' in __page__.keys_pressed:
-            init_body_pos = True
-        if len(__page__.keys_pressed) > 0:
-            for k in __page__.keys_pressed:
-                if k.isdigit():
-                    new_map_ind = int(k) - 1
-                    if new_map_ind != world_cfg.curr_ind:
-                        world_cfg.set_ind(new_map_ind)
-                        init_body_pos = True
+        # Node to control and display current learning status
+        def learn_activate_func(t, world_cfg=world_cfg, _is_learning=[1]):
+            # _is_learning values:
+            # < 0: no learning
+            # 1: learning, will stop at learn_timeout
+            # 2: continuoues learning
 
-        learn_on = (((t <= learn_timeout) or (_is_learning[0] == 2)) and
-                    _is_learning[0] > 0)
-        learn_activate_func._nengo_html_ = '''
-        <svg width="100%" height="100%" viewbox="0 0 200 50">
-            <text x="50%" y="50%" fill="{0}" text-anchor="middle"
-             alignment-baseline="middle" font-size="50">{1}</text>
-        </svg>
-        '''.format("red" if learn_on else "grey",
-                   "Explore: ON" if learn_on else "Explore: Off")
+            init_body_pos = False
+            if 'q' in __page__.keys_pressed:
+                _is_learning[0] = 2
+                init_body_pos = True
+            elif 'e' in __page__.keys_pressed:
+                _is_learning[0] = -1
+                init_body_pos = True
+            elif 'w' in __page__.keys_pressed:
+                init_body_pos = True
+            if len(__page__.keys_pressed) > 0:
+                for k in __page__.keys_pressed:
+                    if k.isdigit():
+                        new_map_ind = int(k) - 1
+                        if new_map_ind != world_cfg.curr_ind:
+                            world_cfg.set_ind(new_map_ind)
+                            init_body_pos = True
 
-        if not learn_on and _is_learning[0] == 1:
-            init_body_pos = True
-            _is_learning[0] = -1
+            learn_on = (((t <= learn_timeout) or (_is_learning[0] == 2)) and
+                        _is_learning[0] > 0)
+            learn_activate_func._nengo_html_ = '''
+            <svg width="100%" height="100%" viewbox="0 0 200 50">
+                <text x="50%" y="50%" fill="{0}" text-anchor="middle"
+                 alignment-baseline="middle" font-size="50">{1}</text>
+            </svg>
+            '''.format("red" if learn_on else "grey",
+                       "Explore: ON" if learn_on else "Explore: Off")
 
-        if init_body_pos:
-            world_cfg.reset_pos()
+            if not learn_on and _is_learning[0] == 1:
+                init_body_pos = True
+                _is_learning[0] = -1
 
-        return int(learn_on)
+            if init_body_pos:
+                world_cfg.reset_pos()
 
-    learn_on = nengo.Node(learn_activate_func)
-    nengo.Connection(learn_on, errors[7])
+            return int(learn_on)
+
+        learn_on = nengo.Node(learn_activate_func)
+        nengo.Connection(learn_on, errors[7])
