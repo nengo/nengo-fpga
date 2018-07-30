@@ -117,8 +117,8 @@ with nengo.Network(seed=3) as model:
     ens.ensemble.encoders = encoders
 
     # Set custom connection parameters for the FPGA Ensemble Network
-    ens.learn_conn.synapse = conn_synapse
-    ens.learn_conn.solver = conn_solver
+    ens.connection.synapse = conn_synapse
+    ens.connection.solver = conn_solver
 
     # Output display node
     output_node = nengo.Node(size_in=n_out, label='output class')
