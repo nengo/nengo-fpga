@@ -48,7 +48,7 @@ class Simulator(nengo.simulator.Simulator):
 
         # Register OS signal handler to handle ctrl+C or any abnormal
         # termination
-        atexit.register(self.close)
+        atexit.register(self.terminate)
 
         # Call nengo.Simulator super constructor
         super(Simulator, self).__init__(network, **kwargs)
@@ -64,3 +64,11 @@ class Simulator(nengo.simulator.Simulator):
         for net in self.fpga_networks_list:
             net.reset()
         super(Simulator, self).reset(seed)
+
+    def terminate(self):
+        # Terminate the simulation.
+        # - Close all open UDP / SSH connections
+        # - Cleanup any existing temporary files
+        self.close()
+        for net in self.fpga_networks_list:
+            net.cleanup()
