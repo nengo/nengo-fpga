@@ -1,5 +1,6 @@
-import nengo
+import atexit
 
+import nengo
 from .networks import FpgaPesEnsembleNetwork
 
 
@@ -44,6 +45,10 @@ class Simulator(nengo.simulator.Simulator):
         #       all necessary SSH connections to the FPGA networks. However,
         #       a connect function is not called because the reset function
         #       should be called before the simulation is run.
+
+        # Register OS signal handler to handle ctrl+C or any abnormal
+        # termination
+        atexit.register(self.close)
 
         # Call nengo.Simulator super constructor
         super(Simulator, self).__init__(network, **kwargs)
