@@ -8,6 +8,10 @@ from .fpga_config import fpga_config
 # probably have to modify nengo
 import nengo
 
+from .version import version as __version__
+__copyright__ = "2013-2017, Applied Brain Research"
+__license__ = "Free for non-commercial use; see LICENSE.rst"
+
 # Only patch if we haven't patched already
 if nengo.Network.add.__module__ == "nengo.network":
     net_add = nengo.Network.add
