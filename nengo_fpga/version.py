@@ -6,7 +6,7 @@ and conform to PEP440 (see https://www.python.org/dev/peps/pep-0440/).
 a release version. Release versions are git tagged with the version.
 """
 
-name = "nengo"
+name = "nengo-fpga"
 version_info = (0, 1, 0)  # (major, minor, patch)
 dev = 0
 

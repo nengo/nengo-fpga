@@ -14,4 +14,7 @@ Currently Nengo FPGA supports the Xilinx PYNQ board from Digilent  and the Intel
     :maxdepth: 2
 
     getting_started
+    supported_hw
     api
+
+.. todolist::
