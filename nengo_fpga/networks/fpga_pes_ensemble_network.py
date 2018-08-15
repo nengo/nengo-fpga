@@ -21,6 +21,52 @@ logger = logging.getLogger(__name__)
 
 
 class FpgaPesEnsembleNetwork(nengo.Network):
+    """ An ensemble to be run on the FPGA
+
+    Parameters
+    ----------
+    fpga_name : str
+        The name of the fpga defined in the config file.
+    n_neurons : int
+        The number of neurons.
+    dimensions : int
+        The number of representational dimensions.
+    learning_rate : float
+        A scalar indicating the rate at which weights will be adjusted.
+    function : callable or (n_eval_points, size_mid) array_like, \
+               optional (Default: None)
+        Function to compute across the connection. Note that ``pre`` must be
+        an ensemble to apply a function across the connection.
+        If an array is passed, the function is implicitly defined by the
+        points in the array and the provided ``eval_points``, which have a
+        one-to-one correspondence.
+    transform : (size_out, size_mid) array_like, optional \
+                (Default: ``np.array(1.0)``)
+        Linear transform mapping the pre output to the post input.
+        This transform is in terms of the sliced size; if either pre
+        or post is a slice, the transform must be shaped according to
+        the sliced dimensionality. Additionally, the function is applied
+        before the transform, so if a function is computed across the
+        connection, the transform must be of shape ``(size_out, size_mid)``.
+    eval_points : (n_eval_points, size_in) array_like or int, optional \
+                  (Default: None)
+        Points at which to evaluate ``function`` when computing decoders,
+        spanning the interval (-pre.radius, pre.radius) in each dimension.
+        If None, will use the eval_points associated with ``pre``.
+    socket_args : TODO
+        TODO
+    label : str, optional (Default: None)
+        A descriptive label for the connection.
+    seed : int, optional (Default: None)
+        The seed used for random number generation.
+    add_to_container : TODO
+        TODO
+
+    Attributes
+    ----------
+    Just point to nengo? or list everything here?
+
+    """
     def __init__(self, fpga_name, n_neurons, dimensions, learning_rate,
                  function=nengo.Default, transform=nengo.Default,
                  eval_points=nengo.Default, socket_args={},
@@ -311,6 +357,10 @@ class FpgaPesEnsembleNetwork(nengo.Network):
 
 @nengo.builder.Builder.register(FpgaPesEnsembleNetwork)
 def build_FpgaPesEnsembleNetwork(model, network):
+    """ Add build steps like nengo?
+    """
+
+
     # Check if nengo_fpga.Simulator is being used to build this network
     if not network.using_fpga_sim:
         warn_str = 'FpgaPesEnsembleNetwork not being built with nengo_fpga' + \
