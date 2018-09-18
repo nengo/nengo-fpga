@@ -2,9 +2,8 @@
 API
 ***
 
-Autodocs all day
-
-how do we want to structure this?
+.. todo::
+   Add something about changing neuron type, etc post instantiation somewhere
 
 
 .. autoclass:: nengo_fpga.networks.FpgaPesEnsembleNetwork
