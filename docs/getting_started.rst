@@ -5,13 +5,17 @@ Getting Started
 Installation
 ============
 
-Maybe package for pip
+NengoFPGA can be easily installed with pip:
+
+.. code-block:: bash
+
+  pip install nengo-fpga
 
 Requirements
 ------------
 
 - Nengo
-- supported board
+- A :doc:`supported FPGA board <supported_hw>`
    - or you can use a dummy interface (is this working?)
 
 Developer Install
@@ -28,13 +32,12 @@ you will need to perform a developer installation:
 Configuration
 =============
 
-nengo-fpga is the frontend that connects to one of many backend FPGA devices.
-You will need to have a supported board with access to ABR designs.
-Each FPGA board will have it's own setup and configuration procedure and then we will tie that to the configuration of the ``nengo-fpga`` frontend.
+NengoFPGA is the frontend that connects to one of many backend FPGA devices.
+You will need to have a :doc:`supported FPGA board <supported_hw>` with access to ABR designs. Each FPGA board will have it's own setup and configuration procedure outlined in it's own documentation, however, this NengoFPGA frontend has its own configuration file as well.
 
 
-FPGA Board
-----------
+FPGA Board Setup
+----------------
 
 Follow docs for your particular FPGA device. Point to repos? not sure the plan here
 
@@ -42,57 +45,103 @@ Follow docs for your particular FPGA device. Point to repos? not sure the plan h
    Pointing to hardware: How are we granting access to the hardware backend repos?
 
 
-fpga_config
------------
+NengoFPGA Frontend Config
+-------------------------
 
-- square brackets are settings/section names
-- explain some stuff a bit here
-- maybe put some stuff in an 'advanced' section?
+The ``fpga_config`` file contains example settings for your host machine as well as the FPGA board you are using. Anything in square brackets (eg. ``[host]``) is defining a new entry name and everything below that name up until the blank line defines parameters of that entry.
 
+Host
+^^^^
+.. todo::
+   Host side config: May be different depending on if we are using a network or directly connected to the board? or wireless/wired?
+
+First we will look at the host configuration; this is information about your computer and must be called ``[host]``:
+
+.. code-block:: none
+
+   [host]
+   ip = 192.168.1.100
+
+Make sure these lines are uncommented (remove the leading # **and** space so it appears as above). This is just an example value for ``ip``, you will need to replace this with your computer's actual IP address, see :ref:`ip-addr` for instructions on finding your IP address.
+
+FPGA Board
+^^^^^^^^^^
 
 .. todo::
-   Host side config: May be different depending on if we are using a network or directly connected to the board?
+   Maybe put this section on the board specific repo?
+   Also, do we care about plaintext password??
 
-- Get ``[host]`` ip with ``ifconfig``/``ipconfig`` (all platforms)
-- update ip address
-- uncomment (remove hash **and** space) for lns 4,5
-- get IP from device either DE1 or PYNQ from board setup (external docs)
-- update ip, change ports if required
-- uncomment (remove hash **and** space) device settings
+The entries that define the FPGA board parameters have more values than the host entry, however the name (eg. ``[pynq]``) can be anything, though we recommend using a descriptive name such as ``[pynq]`` or ``[de1]``.
 
+.. code-block:: none
+
+   [pynq]
+   ip = 10.162.177.99
+   port = 22
+   user = xilinx
+   pwd = xilinx
+   script = /opt/nengo-pynq/nengo_pynq/single_pes_net.py
+   use_sudo = True
+   tmp = /opt/nengo-pynq/params
+   udp_port = 0
+
+Make sure these lines are uncommented (remove the leading # **and** space so it appears as above).  Most of these default values should be correct unless you've modified the settings or installation of your FPGA board. These parameters are described here but modifications of these values will be described in the board-specific documentation.
+
+- **ip**: IP address of the FPGA board.
+- **port**: The port used to open ``ssh`` communications between the host and FPGA board.
+- **user**: User name to login to the board.
+- **pwd**: Password for **user**.
+- **script**: The location of the communication script on the FPGA board.
+- **use_sudo**: Whether or not to run commands with sudo when executing on the FPGA board.
+- **tmp**: Temporary location used to store data as it is transferred between the host and FPGA board.
+- **udp_port**: The port used for UDP communications between the host and FPGA board.
 
 
 Usage
 =====
 
-- import nengo_fpga
-- make an ensemble
+This is an extension of :ref: `Nengo core <nengo>`, Networks and models are described using traditional Nengo workflow and a single ensemble will be replaced with an FPGA ensemble using the ``FpgaPesEnsembleNetwork``:
 
 .. code-block:: python
 
-   fpga_ens = FpgaPesEnsembleNetwork(
-        'de1', n_neurons=50, dimensions=2, learning_rate=0, label='ensemble')
+   import nengo
+   from nengo_fpga.networks import FpgaPesEnsembleNetwork
 
-Check out examples
+   with nengo.Network() as model:
+
+      ...
+
+      fpga_ens = FpgaPesEnsembleNetwork('de1', n_neurons=50,
+                                        dimensions=2,
+                                        learning_rate=0,
+                                        label='ensemble')
+
+      ...
+
+
+And to view and run your networks, simply pass ``nengo_fpga`` as the backend to Nengo GUI:
+
+.. code-block:: bash
+
+   nengo <my_file.py> -b nengo_fpga
+
+Take a look at the examples that ship with the NengoFPGA package. For any questions visit the `Nengo Forum <https://forum.nengo.ai>`_.
 
 
 Scripting
 ---------
 
-Use the ``nengo_fpga`` simulator
+If you are not using Nengo GUI you can use the ``nengo_fpga`` simulator in the scripting environment as well:
 
 .. code-block:: python
 
-   ...
+   import nengo
+   import nengo_fpga
 
-   with nengo_fpga.simulator(model)
+   with nengo.Network() as model:
 
+      ...
 
-GUI
----
+   with nengo_fpga.simulator(model) as sim:
+      sim.run(1)
 
-Simply tell the GUI to use the ``nengo_fpga`` backend simulator:
-
-.. code-block:: bash
-
-   nengo <my_file.py> -b nengo_fpga
