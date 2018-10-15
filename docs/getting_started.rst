@@ -5,29 +5,39 @@ Getting Started
 Installation
 ============
 
-NengoFPGA can be easily installed with pip:
+Download the NengoFPGA source code from github using git::
 
-.. code-block:: bash
+    git clone https://github.com/nengo/nengo-fpga.git
 
-  pip install nengo-fpga
+or navigate to the `repository <https://github.com/nengo/nengo-fpga>`_ and download the files manually. Once downloaded, navigate to the ``nengo-fpga`` folder in a terminal window and install with::
+
+    python setup.py install
+
+.. NengoFPGA can be easily installed with pip:
+
+.. .. code-block:: bash
+
+..   pip install nengo-fpga
 
 Requirements
 ------------
 
 - Nengo
 - A :doc:`supported FPGA board <supported_hw>`
-   - or you can use a dummy interface (is this working?)
+- (optional) `Nengo GUI <https://github.com/nengo/nengo-gui>`_
 
 Developer Install
 -----------------
 
 If you want to modify NengoFPGA, or get the very latest updates,
-you will need to perform a developer installation:
+you will need to perform a developer installation, simply replace ``install`` with ``develop`` when running setup::
 
-.. code-block:: bash
+    python setup.py develop
 
-  git clone https://github.com/nengo/nengo-fpga.git
-  pip install -e ./nengo-fpga
+.. .. code-block:: bash
+
+..   git clone https://github.com/nengo/nengo-fpga.git
+..   pip install -e ./nengo-fpga
 
 Configuration
 =============
@@ -39,10 +49,10 @@ You will need to have a :doc:`supported FPGA board <supported_hw>` with access t
 FPGA Board Setup
 ----------------
 
-Follow docs for your particular FPGA device. Point to repos? not sure the plan here
+Follow docs for your particular FPGA device:
 
-.. todo::
-   Pointing to hardware: How are we granting access to the hardware backend repos?
+- `Terasic DE1-SoC <https://www.nengo.ai/nengo-de1>`_ (Intel Cyclone V)
+- `Digilent PYNQ <https://www.nengo.ai/nengo-pynq>`_ (Xilinx Zynq)
 
 
 NengoFPGA Frontend Config
@@ -52,24 +62,23 @@ The ``fpga_config`` file contains example settings for your host machine as well
 
 Host
 ^^^^
-.. todo::
-   Host side config: May be different depending on if we are using a network or directly connected to the board? or wireless/wired?
 
 First we will look at the host configuration; this is information about your computer and must be called ``[host]``:
 
 .. code-block:: none
 
    [host]
-   ip = 192.168.1.100
+   ip = 10.162.177.10
 
 Make sure these lines are uncommented (remove the leading # **and** space so it appears as above). This is just an example value for ``ip``, you will need to replace this with your computer's actual IP address, see :ref:`ip-addr` for instructions on finding your IP address.
+
+.. note::
+  Your computer IP address will need to be in the same range as the board IP address, follow your board specific instructions to get the board IP and setup your computer IP before proceeding.
 
 FPGA Board
 ^^^^^^^^^^
 
-.. todo::
-   Maybe put this section on the board specific repo?
-   Also, do we care about plaintext password??
+.. do we want any of this in the board-specific repos?
 
 The entries that define the FPGA board parameters have more values than the host entry, however the name (eg. ``[pynq]``) can be anything, though we recommend using a descriptive name such as ``[pynq]`` or ``[de1]``.
 
@@ -100,7 +109,7 @@ Make sure these lines are uncommented (remove the leading # **and** space so it 
 Usage
 =====
 
-This is an extension of :ref: `Nengo core <nengo>`, Networks and models are described using traditional Nengo workflow and a single ensemble will be replaced with an FPGA ensemble using the ``FpgaPesEnsembleNetwork``:
+This is an extension of `Nengo core <https://github.com/nengo/nengo>`_, Networks and models are described using traditional Nengo workflow and a single ensemble will be replaced with an FPGA ensemble using the ``FpgaPesEnsembleNetwork``:
 
 .. code-block:: python
 
@@ -119,7 +128,7 @@ This is an extension of :ref: `Nengo core <nengo>`, Networks and models are desc
       ...
 
 
-And to view and run your networks, simply pass ``nengo_fpga`` as the backend to Nengo GUI:
+You can easily ``pip install nengo-gui``, or you can see `Scripting`_ below if you prefer not to use the GUI. To view and run your networks, simply pass ``nengo_fpga`` as the backend to Nengo GUI.
 
 .. code-block:: bash
 
