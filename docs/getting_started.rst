@@ -16,7 +16,6 @@ Requirements
 
 - Nengo
 - A :doc:`supported FPGA board <supported_hw>`
-   - or you can use a dummy interface (is this working?)
 
 Developer Install
 -----------------
@@ -39,10 +38,10 @@ You will need to have a :doc:`supported FPGA board <supported_hw>` with access t
 FPGA Board Setup
 ----------------
 
-Follow docs for your particular FPGA device. Point to repos? not sure the plan here
+Follow docs for your particular FPGA device:
 
-.. todo::
-   Pointing to hardware: How are we granting access to the hardware backend repos?
+- `Terasic DE1-SoC <https://www.nengo.ai/nengo-de1>`_ (Intel Cyclone V)
+- `Digilent PYNQ <https://www.nengo.ai/nengo-pynq>`_ (Xilinx Zynq)
 
 
 NengoFPGA Frontend Config
@@ -52,8 +51,6 @@ The ``fpga_config`` file contains example settings for your host machine as well
 
 Host
 ^^^^
-.. todo::
-   Host side config: May be different depending on if we are using a network or directly connected to the board? or wireless/wired?
 
 First we will look at the host configuration; this is information about your computer and must be called ``[host]``:
 
@@ -67,9 +64,7 @@ Make sure these lines are uncommented (remove the leading # **and** space so it 
 FPGA Board
 ^^^^^^^^^^
 
-.. todo::
-   Maybe put this section on the board specific repo?
-   Also, do we care about plaintext password??
+.. do we want any of this in the board-specific repos?
 
 The entries that define the FPGA board parameters have more values than the host entry, however the name (eg. ``[pynq]``) can be anything, though we recommend using a descriptive name such as ``[pynq]`` or ``[de1]``.
 
