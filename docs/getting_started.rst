@@ -5,11 +5,19 @@ Getting Started
 Installation
 ============
 
-NengoFPGA can be easily installed with pip:
+Download the NengoFPGA source code from github using git::
 
-.. code-block:: bash
+    git clone https://github.com/nengo/nengo-fpga.git
 
-  pip install nengo-fpga
+or navigate to the `repository <https://github.com/nengo/nengo-fpga>`_ and download the files manually. Once downloaded, navigate to the ``nengo-fpga`` folder in a terminal window and install with::
+
+    python setup.py install
+
+.. NengoFPGA can be easily installed with pip:
+
+.. .. code-block:: bash
+
+..   pip install nengo-fpga
 
 Requirements
 ------------
@@ -21,12 +29,14 @@ Developer Install
 -----------------
 
 If you want to modify NengoFPGA, or get the very latest updates,
-you will need to perform a developer installation:
+you will need to perform a developer installation, simply replace ``install`` with ``develop`` when running setup::
 
-.. code-block:: bash
+    python setup.py develop
 
-  git clone https://github.com/nengo/nengo-fpga.git
-  pip install -e ./nengo-fpga
+.. .. code-block:: bash
+
+..   git clone https://github.com/nengo/nengo-fpga.git
+..   pip install -e ./nengo-fpga
 
 Configuration
 =============
@@ -57,9 +67,12 @@ First we will look at the host configuration; this is information about your com
 .. code-block:: none
 
    [host]
-   ip = 192.168.1.100
+   ip = 10.162.177.10
 
 Make sure these lines are uncommented (remove the leading # **and** space so it appears as above). This is just an example value for ``ip``, you will need to replace this with your computer's actual IP address, see :ref:`ip-addr` for instructions on finding your IP address.
+
+.. note::
+  Your computer IP address will need to be in the same range as the board IP address, follow your board specific instructions to get the board IP and setup your computer IP before proceeding.
 
 FPGA Board
 ^^^^^^^^^^
