@@ -28,7 +28,7 @@ elif [[ "$COMMAND" == "upload" ]]; then
     git config --global user.name "TravisCI"
     git add --all
     git commit -m "Last update at $(date '+%Y-%m-%d %T')"
-    git push -fq "https://$GH_TOKEN@github.com/nengo/nengo-loihi.git" gh-pages
+    git push -fq "https://$GH_TOKEN@github.com/nengo/nengo-fpga.git" gh-pages
 else
     if [[ -z "$COMMAND" ]]; then
         echo "Command required"
