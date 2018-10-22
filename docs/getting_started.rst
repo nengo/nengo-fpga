@@ -24,6 +24,7 @@ Requirements
 
 - Nengo
 - A :doc:`supported FPGA board <supported_hw>`
+- (optional) `Nengo GUI <https://github.com/nengo/nengo-gui>`_
 
 Developer Install
 -----------------
@@ -108,7 +109,7 @@ Make sure these lines are uncommented (remove the leading # **and** space so it 
 Usage
 =====
 
-This is an extension of :ref: `Nengo core <nengo>`, Networks and models are described using traditional Nengo workflow and a single ensemble will be replaced with an FPGA ensemble using the ``FpgaPesEnsembleNetwork``:
+This is an extension of `Nengo core <https://github.com/nengo/nengo>`_, Networks and models are described using traditional Nengo workflow and a single ensemble will be replaced with an FPGA ensemble using the ``FpgaPesEnsembleNetwork``:
 
 .. code-block:: python
 
@@ -127,7 +128,7 @@ This is an extension of :ref: `Nengo core <nengo>`, Networks and models are desc
       ...
 
 
-And to view and run your networks, simply pass ``nengo_fpga`` as the backend to Nengo GUI:
+You can easily ``pip install nengo-gui``, or you can see `Scripting`_ below if you prefer not to use the GUI. To view and run your networks, simply pass ``nengo_fpga`` as the backend to Nengo GUI.
 
 .. code-block:: bash
 
