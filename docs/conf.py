@@ -41,7 +41,7 @@ intersphinx_mapping = {
 }
 
 # -- sphinx.ext.todo
-todo_include_todos = True
+todo_include_todos = False
 
 # -- nbsphinx
 nbsphinx_allow_errors = False
