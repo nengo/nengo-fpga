@@ -64,7 +64,8 @@ class FpgaPesEnsembleNetwork(nengo.Network):
 
     Attributes
     ----------
-    Just point to nengo? or list everything here?
+    attributes : TODO
+        TODO (nengo ens and conn)
 
     """
     def __init__(self, fpga_name, n_neurons, dimensions, learning_rate,

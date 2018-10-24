@@ -1,5 +1,5 @@
 **********
-NengoFPGA
+Nengo FPGA
 **********
 
 Nengo FPGA is an extension of `Nengo <https://github.com/nengo/nengo>`_

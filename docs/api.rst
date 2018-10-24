@@ -2,8 +2,8 @@
 API
 ***
 
-Tips
-====
+Setting Parameters
+==================
 
 Many of the Nengo ensemble parameters are ommitted from the ``FpgaPesEnsembleNetwork`` constructor, but all of these ensemble parameters can easily be changed once an ensemble is created:
 
@@ -14,7 +14,7 @@ Many of the Nengo ensemble parameters are ommitted from the ``FpgaPesEnsembleNet
             'de1', n_neurons=100, dimensions=2, learning_rate=1e-3)
 
    # Modify ensemble parameters
-   ens.ensemble.neuron_type = nengo.neurons.RectifiedLinear
+   ens.ensemble.neuron_type = nengo.neurons.RectifiedLinear()
    ens.ensemble.intercepts = nengo.dists.Choice([-0.5])
    ens.ensemble.max_rates = nengo.dists.Choice([100])
 
@@ -28,9 +28,18 @@ Since our ``FpgaPesEnsembleNetwork`` class also encompasses the connection to th
 
 The ``02-mnist_vision_network`` example demonstrates this capability.
 
+.. seealso::
+   Check out the Nengo docs for a full list of `ensemble parameters <https://www.nengo.ai/nengo/frontend_api.html#nengo.Ensemble>`_ and `connection parameter <https://www.nengo.ai/nengo/frontend_api.html#nengo.Connection>`_.
 
-.. todo::
-   Maybe point to nengo docs for parameter options, also list supported neurons somewhere.
+
+Supported Neuron Types
+======================
+
+Currently NengoFPGA supports the following neuron types:
+
+   - `nengo.RecitifiedLinear <https://www.nengo.ai/nengo/frontend_api.html#nengo.RectifiedLinear>`_
+   - `nengo.SpikingRectifiedLinear <https://www.nengo.ai/nengo/frontend_api.html#nengo.SpikingRectifiedLinear>`_
+
 
 Objects and Functions
 =====================
