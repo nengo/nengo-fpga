@@ -28,7 +28,7 @@ Since our ``FpgaPesEnsembleNetwork`` class also encompasses the connection to th
 
 The ``02-mnist_vision_network`` example demonstrates this capability.
 
-.. note::
+.. seealso::
    Check out the Nengo docs for a full list of `ensemble parameters <https://www.nengo.ai/nengo/frontend_api.html#nengo.Ensemble>`_ and `connection parameter <https://www.nengo.ai/nengo/frontend_api.html#nengo.Connection>`_.
 
 
