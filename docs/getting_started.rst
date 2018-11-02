@@ -58,7 +58,7 @@ Follow docs for your particular FPGA device:
 NengoFPGA Frontend Config
 -------------------------
 
-The ``fpga_config`` file contains example settings for your host machine as well as the FPGA board you are using. Anything in square brackets (eg. ``[host]``) is defining a new entry name and everything below that name up until the blank line defines parameters of that entry.
+The NengoFPGA config file, ``fpga_config``, is located in the root directory of ``nengo-fpga`` and contains example settings for your host machine as well as the FPGA board you are using. Anything in square brackets (eg. ``[host]``) is defining a new entry name and everything below that name up until the blank line defines parameters of that entry.
 
 Host
 ^^^^
@@ -84,17 +84,29 @@ The entries that define the FPGA board parameters have more values than the host
 
 .. code-block:: none
 
-   [pynq]
-   ip = 10.162.177.99
-   port = 22
-   user = xilinx
-   pwd = xilinx
-   script = /opt/nengo-pynq/nengo_pynq/single_pes_net.py
-   use_sudo = True
-   tmp = /opt/nengo-pynq/params
-   udp_port = 0
+    # Example DE1 FPGA board configuration
+    [de1]
+    ip = 10.162.177.236
+    port = 22
+    user = root
+    pwd =
+    script = /opt/nengo-de1/nengo_de1/single_pes_net.py
+    use_sudo = False
+    tmp = /opt/nengo-de1/params
+    udp_port = 0
 
-Make sure these lines are uncommented (remove the leading # **and** space so it appears as above).  Most of these default values should be correct unless you've modified the settings or installation of your FPGA board. These parameters are described here but modifications of these values will be described in the board-specific documentation.
+    # Example PYNQ FPGA board configuration
+    [pynq]
+    ip = 10.162.177.99
+    port = 22
+    user = xilinx
+    pwd = xilinx
+    script = /opt/nengo-pynq/nengo_pynq/single_pes_net.py
+    use_sudo = True
+    tmp = /opt/nengo-pynq/params
+    udp_port = 0
+
+For whichever board you are using, make sure the lines in the appropriate sections are uncommented (remove the leading # **and** space so it appears as above). These default values should be correct unless you've modified the settings or installation of your FPGA board. These parameters are described here but modifications of these values will be described in the board-specific documentation.
 
 - **ip**: IP address of the FPGA board.
 - **port**: The port used to open ``ssh`` communications between the host and FPGA board.
@@ -105,11 +117,37 @@ Make sure these lines are uncommented (remove the leading # **and** space so it 
 - **tmp**: Temporary location used to store data as it is transferred between the host and FPGA board.
 - **udp_port**: The port used for UDP communications between the host and FPGA board.
 
+.. tip::
+  If any, the most likely change would be to the IP address.
+
 
 Usage
 =====
 
-This is an extension of `Nengo core <https://github.com/nengo/nengo>`_, Networks and models are described using traditional Nengo workflow and a single ensemble will be replaced with an FPGA ensemble using the ``FpgaPesEnsembleNetwork``:
+.. note::
+  Ensure you've configured your board **and** NengoFPGA as outlined in `Configuration`_ above.
+
+
+For any questions visit the `Nengo Forum <https://forum.nengo.ai>`_.
+
+Examples
+--------
+
+NengoFPGA ships with a few example implementations in the ``nengo-fpga/docs/examples`` folder. These examples are designed to be used with Nengo GUI, so first we will install that.
+
+1. Install the GUI with ``pip install nengo-gui``.
+#. In a terminal window, navigate to the ``nengo-fpga/docs/examples`` directory.
+#. Try running an example with ``nengo <file name> -b nengo_fpga``. This should open the Nengo GUI interface in a browser and display the code on the right and a graphical representation on the left.
+#. Near the top of the file you should see `` --- BOARD SELECT --- ``, select th appropriate board here. (In fact, the ``de1`` and ``pynq`` correspond to the headers in the ``fpga_config`` file).
+#. Click the play button in the bottom right to start the simulation. It may take several seconds to build the model and begin running.
+
+Basic Use
+---------
+
+.. todo::
+  Explain this better, maybe show two ensembles and a learning connection being replaced with an FPGA ens?
+
+This is an extension of `Nengo core <https://github.com/nengo/nengo>`_, networks and models are described using traditional Nengo workflow and a single ensemble will be replaced with an FPGA ensemble using the ``FpgaPesEnsembleNetwork``:
 
 .. code-block:: python
 
@@ -128,13 +166,11 @@ This is an extension of `Nengo core <https://github.com/nengo/nengo>`_, Networks
       ...
 
 
-You can easily ``pip install nengo-gui``, or you can see `Scripting`_ below if you prefer not to use the GUI. To view and run your networks, simply pass ``nengo_fpga`` as the backend to Nengo GUI.
+This is designed to work with Nengo GUI, however you can see `Scripting`_ below if you prefer not to use the GUI. To view and run your networks, simply pass ``nengo_fpga`` as the backend to Nengo GUI.
 
 .. code-block:: bash
 
    nengo <my_file.py> -b nengo_fpga
-
-Take a look at the examples that ship with the NengoFPGA package. For any questions visit the `Nengo Forum <https://forum.nengo.ai>`_.
 
 
 Scripting

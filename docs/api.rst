@@ -14,7 +14,7 @@ Many of the Nengo ensemble parameters are ommitted from the ``FpgaPesEnsembleNet
             'de1', n_neurons=100, dimensions=2, learning_rate=1e-3)
 
    # Modify ensemble parameters
-   ens.ensemble.neuron_type = nengo.neurons.RectifiedLinear
+   ens.ensemble.neuron_type = nengo.neurons.RectifiedLinear()
    ens.ensemble.intercepts = nengo.dists.Choice([-0.5])
    ens.ensemble.max_rates = nengo.dists.Choice([100])
 
