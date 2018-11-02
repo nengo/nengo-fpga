@@ -8,6 +8,12 @@ from nengo_fpga.networks import FpgaPesEnsembleNetwork
 # coming back over the ssh connection.
 nengo.utils.logging.log('info')
 
+# ---------------- BOARD SELECT ----------------------- #
+# Uncomment whichever board you are using
+board = 'de1'
+# board = 'pynq'
+# ---------------- BOARD SELECT ----------------------- #
+
 
 # Pendulum object. Handles the logic and simulation of the pendulum.
 class Pendulum(object):
@@ -129,7 +135,7 @@ with nengo.Network(seed=3) as model:
     # PES Ensemble to compute the adaptive control signal to compensate for
     # unknown variables introduced into the environment.
     adapt_ens = FpgaPesEnsembleNetwork(
-        'de1', n_neurons=1000, dimensions=1, learning_rate=1e-5,
+        board, n_neurons=1000, dimensions=1, learning_rate=1e-5,
         function=lambda x: [0], label='pes ensemble')
 
     # Compute the adaptive control signal. The adaptive control signal is
