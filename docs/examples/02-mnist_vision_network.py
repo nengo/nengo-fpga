@@ -32,6 +32,12 @@ def one_hot(labels, c=None):
     return y
 
 
+# ---------------- BOARD SELECT ----------------------- #
+# Uncomment whichever board you are using
+board = 'de1'
+# board = 'pynq'
+# ---------------- BOARD SELECT ----------------------- #
+
 # Set the nengo logging level to 'info' to display all of the information
 # coming back over the ssh connection.
 nengo.utils.logging.log('info')
@@ -106,7 +112,7 @@ with nengo.Network(seed=3) as model:
     # Ensemble to run on the FPGA. This ensemble is non-adaptive and just
     # uses the encoders and decoders to perform the image classification
     ens = FpgaPesEnsembleNetwork(
-        'de1', n_neurons=n_hid, dimensions=n_vis, learning_rate=0,
+        board, n_neurons=n_hid, dimensions=n_vis, learning_rate=0,
         function=conn_function, eval_points=conn_eval_points,
         label='output class')
 

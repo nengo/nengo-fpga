@@ -23,11 +23,18 @@ nengo.utils.logging.log('info')
 def input_func(t):
     return [np.sin(t * 10), np.cos(t * 10)]
 
+# ---------------- BOARD SELECT ----------------------- #
+# Uncomment whichever board you are using
+board = 'de1'
+# board = 'pynq'
+# ---------------- BOARD SELECT ----------------------- #
+
 with nengo.Network() as model:
     # Reference signal
     input_node = nengo.Node(input_func, label='input signal')
 
     # FPGA neural ensemble
     pes_ens = FpgaPesEnsembleNetwork(
-        'de1', n_neurons=50, dimensions=2, learning_rate=0, label='ensemble')
+        board, n_neurons=50, dimensions=2, learning_rate=0, label='ensemble')
+
     nengo.Connection(input_node, pes_ens.input)

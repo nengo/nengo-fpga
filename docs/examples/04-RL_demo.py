@@ -39,6 +39,13 @@ from nengo_fpga.networks import FpgaPesEnsembleNetwork
 nengo.utils.logging.log('info')
 
 
+# ---------------- BOARD SELECT ----------------------- #
+# Uncomment whichever board you are using
+board = 'de1'
+# board = 'pynq'
+# ---------------- BOARD SELECT ----------------------- #
+
+
 # ----------- WORLD CONFIGURATION ---------------------------------------------
 class Cell(ccm.lib.grid.Cell):
     def color(self):
@@ -213,7 +220,7 @@ with model:
 
     # the learning is done on the board
     adapt_ens = FpgaPesEnsembleNetwork(
-        'de1', n_neurons=100 * radar_dim, dimensions=radar_dim,
+        board, n_neurons=100 * radar_dim, dimensions=radar_dim,
         learning_rate=learn_rate, function=lambda x: init_transform,
         seed=1524081122, label='pes ensemble')
     adapt_ens.ensemble.radius = 4

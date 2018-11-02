@@ -23,6 +23,12 @@ nengo.utils.logging.log('info')
 def input_func(t):
     return np.sin(t * 10)
 
+# ---------------- BOARD SELECT ----------------------- #
+# Uncomment whichever board you are using
+board = 'de1'
+# board = 'pynq'
+# ---------------- BOARD SELECT ----------------------- #
+
 with nengo.Network() as model:
     # Reference signal
     input_node = nengo.Node(input_func, label='input signal')
@@ -30,7 +36,7 @@ with nengo.Network() as model:
     # Adaptive neural ensemble (run on the FPGA) -- contains the pre and post
     # ensembles.
     pes_ens = FpgaPesEnsembleNetwork(
-        'de1', n_neurons=100, dimensions=1, learning_rate=5e-5,
+        board, n_neurons=100, dimensions=1, learning_rate=5e-5,
         function=lambda x: [0], label='pes ensemble')
     nengo.Connection(input_node, pes_ens.input)
 
@@ -38,7 +44,8 @@ with nengo.Network() as model:
     error = nengo.Ensemble(50, 1)
 
     # Compute the error (error = actual - target = post - pre)
-    nengo.Connection(pes_ens.input, error, transform=-1)
+    # In this case we are learning the square of the input
+    nengo.Connection(input_node, error, function=lambda x: x**2, transform=-1)
     nengo.Connection(pes_ens.output, error)
 
     # Project the error to the adaptive neural ensemble
