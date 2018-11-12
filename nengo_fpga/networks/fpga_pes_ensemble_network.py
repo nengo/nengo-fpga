@@ -1,6 +1,4 @@
 import os
-import re
-import time
 import logging
 import threading
 import numpy as np
@@ -8,7 +6,7 @@ import paramiko
 
 import nengo
 from nengo.builder.signal import Signal
-from nengo.builder.operator import Reset, Copy, SimPyFunc
+from nengo.builder.operator import Reset, Copy
 # Temporarily import from local sockets module
 # TODO: Remove when sockets merged into nengo_extras
 try:
@@ -143,18 +141,43 @@ class FpgaPesEnsembleNetwork(nengo.Network):
             os.remove(self.local_data_filepath)
 
     def connect_thread_func(self):
+        # Get the IP of the remote device from the fpga_config file
         remote_ip = fpga_config.get(self.fpga_name, 'ip')
 
+        # Get the SSH options from the fpga_config file
+        ssh_port = fpga_config.get(self.fpga_name, 'ssh_port')
+        ssh_user = fpga_config.get(self.fpga_name, 'ssh_user')
+
+        if fpga_config.has_option(self.fpga_name, 'ssh_pwd'):
+            ssh_pwd = fpga_config.get(self.fpga_name, 'ssh_pwd')
+        else:
+            ssh_pwd = None
+
+        if fpga_config.has_option(self.fpga_name, 'ssh_key'):
+            ssh_key = os.path.expanduser(fpga_config.get(self.fpga_name,
+                                                         'ssh_key'))
+        else:
+            ssh_key = None
+
         # Connect to remote location over ssh
-        self.ssh_client.connect(
-            fpga_config.get(self.fpga_name, 'ip'),
-            port=fpga_config.get(self.fpga_name, 'port'),
-            username=fpga_config.get(self.fpga_name, 'user'),
-            password=fpga_config.get(self.fpga_name, 'pwd'))
+        if ssh_key is not None:
+            # If an ssh key is provided, just use it
+            self.ssh_client.connect(remote_ip, port=ssh_port,
+                                    username=ssh_user, key_filename=ssh_key)
+        elif ssh_pwd is not None:
+            # If an ssh password is provided, just use it
+            self.ssh_client.connect(remote_ip, port=ssh_port,
+                                    username=ssh_user, password=ssh_pwd)
+        else:
+            # If no password or key is specified, just use the default connect
+            # (paramiko will then try to connect using the id_rsa file in the
+            #  ~/.ssh/ folder)
+            self.ssh_client.connect(remote_ip, port=ssh_port,
+                                    username=ssh_user)
 
         # Send argument file over
         remote_data_filepath = \
-            '%s/%s' % (fpga_config.get(self.fpga_name, 'tmp'),
+            '%s/%s' % (fpga_config.get(self.fpga_name, 'remote_tmp'),
                        self.arg_data_file)
 
         if os.path.exists(self.local_data_filepath):
@@ -177,24 +200,14 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         ssh_channel = self.ssh_client.invoke_shell()
 
         # If board configuration specifies using sudo to run scripts
-        if fpga_config.getboolean(self.fpga_name, 'use_sudo') and \
-           fpga_config.get(self.fpga_name, 'user') != 'root':
+        # - Assume all non-root users will require sudo to run the scripts
+        # - Note: Also assumes that the fpga has been configured to allow
+        #         the ssh user to run sudo commands WITHOUT needing a password
+        #         (see specific fpga hardware docs for details)
+        if ssh_user != 'root':
             logger.info('<%s> Script to be run with sudo. Sudoing.' %
                         remote_ip)
             ssh_channel.send('sudo su\n')
-
-            # Wait for '[sudo]' prompt for password
-            data = ssh_channel.recv(256)
-            self.process_ssh_output(data)
-            while not re.search(".*\[sudo\].*", self.ssh_info_str):
-                time.sleep(1)
-                data = ssh_channel.recv(256)
-                self.process_ssh_output(data)
-
-            # Prompt received. Provide password
-            logger.info('<%s> Password requested for sudo. Sending password.' %
-                        remote_ip)
-            ssh_channel.send('%s\n' % fpga_config.get(self.fpga_name, 'pwd'))
 
         # Send required ssh string
         logger.info("<%s> Sending cmd to fpga board: \n%s" %
@@ -282,12 +295,12 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         # remote side ssh script (with appropriate arguments)
         if self.config_found:
             ssh_str = \
-                ('python ' + fpga_config.get(self.fpga_name, 'script') +
+                ('python ' + fpga_config.get(self.fpga_name, 'remote_script') +
                  ' --host_ip="%s"' % fpga_config.get('host', 'ip') +
                  ' --remote_ip="%s"' % fpga_config.get(self.fpga_name, 'ip') +
                  ' --udp_port=%i' % self.udp_port +
                  ' --arg_data_file="%s/%s"' %
-                 (fpga_config.get(self.fpga_name, 'tmp'),
+                 (fpga_config.get(self.fpga_name, 'remote_tmp'),
                   self.arg_data_file) +
                  ' --seed=%s' % str(self.seed) +
                  '\n')
