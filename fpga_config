@@ -1,5 +1,7 @@
 # Example board_config file. Uncomment the following entries (remove #)
 # to use.
+# More information on the different configuration options can be found at:
+# https://www.nengo.ai/nengo-fpga/getting_started.html#fpga-board
 
 # # Example host (PC) configuration
 # [host]
@@ -11,7 +13,7 @@
 # ssh_port = 22
 # ssh_user = root
 # ssh_pwd =
-# ssh_key = ~/.ssh/id_rsa
+# # Refer to the online documentation for SSH key configuration options
 # remote_script = /opt/nengo-de1/nengo_de1/single_pes_net.py
 # remote_tmp = /opt/nengo-de1/params
 # udp_port = 0
@@ -22,7 +24,7 @@
 # ssh_port = 22
 # ssh_user = xilinx
 # ssh_pwd = xilinx
-# ssh_key = ~/.ssh/id_rsa
+# # Refer to the online documentation for SSH key configuration options
 # remote_script = /opt/nengo-pynq/nengo_pynq/single_pes_net.py
 # remote_tmp = /opt/nengo-pynq/params
 # udp_port = 0
