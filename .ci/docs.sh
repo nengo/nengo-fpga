@@ -15,7 +15,7 @@ function usage {
 
 if [[ "$COMMAND" == "install" ]]; then
     conda install --quiet jupyter matplotlib numpy pillow
-    pip install "sphinx<1.7" nbsphinx numpydoc nengo_sphinx_theme
+    pip install sphinx nbsphinx numpydoc nengo_sphinx_theme
     pip install -e .
 elif [[ "$COMMAND" == "check" ]]; then
     sphinx-build -b linkcheck -v -D nbsphinx_execute=never docs docs/_build
