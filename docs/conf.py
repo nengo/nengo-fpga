@@ -76,7 +76,10 @@ html_use_smartypants = True
 htmlhelp_basename = 'Nengodoc'
 html_last_updated_fmt = ''  # Suppress 'Last updated on:' timestamp
 html_show_sphinx = False
-html_sidebars = {"**": ["sidebar.html"]}
+html_theme_options = {
+    "sidebar_toc_depth": 4,
+    "sidebar_logo_width": 200,
+}
 
 # -- Options for LaTeX output -------------------------------------------------
 
