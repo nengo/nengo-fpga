@@ -2,7 +2,7 @@
 Nengo FPGA
 **********
 
-Nengo FPGA is an extension of `Nengo <https://github.com/nengo/nengo>`_
+Nengo FPGA is an extension of `Nengo <https://www.nengo.ai/nengo/>`_
 that allows portions of a network to be run on an FPGA to improve performance
 and efficiency.
 
