@@ -45,7 +45,7 @@ Configuration
 =============
 
 NengoFPGA is the frontend that connects to one of many backend FPGA devices.
-You will need to have a :doc:`supported FPGA board <supported_hw>` with access to ABR designs. Each FPGA board will have it's own setup and configuration procedure outlined in it's own documentation, however, this NengoFPGA frontend has its own configuration file as well.
+You will need to have a :doc:`supported FPGA board <supported_hw>` with access to ABR designs. Each FPGA board will have it's own setup and configuration procedure outlined in it's own documentation, however, the NengoFPGA frontend has its own configuration as outlined below.
 
 
 FPGA Board Setup
@@ -60,7 +60,7 @@ Follow docs for your particular FPGA device:
 NengoFPGA Frontend Config
 -------------------------
 
-The NengoFPGA config file, ``fpga_config``, is located in the root directory of ``nengo-fpga``, or the directory in which your project files are located, and contains example settings for your host machine as well as the FPGA board you are using. Anything in square brackets (eg. ``[host]``) is defining a new entry name and everything below that name up until the blank line defines parameters of that entry.
+The NengoFPGA default config file, ``fpga_config``, is located in the root directory of ``nengo-fpga`` and contains example settings for your host machine as well as the FPGA board you are using. You can also create a copy in the directory in which your project files are located. Anything in square brackets (eg. ``[host]``) is defining a new entry name and everything below that name up until the blank line defines parameters of that entry.
 
 Host
 ^^^^
@@ -82,7 +82,7 @@ FPGA Board
 
 .. do we want any of this in the board-specific repos?
 
-The entries that define the FPGA board parameters have more values than the host entry, however the name (eg. ``[pynq]``) can be anything, though we recommend using a descriptive name such as ``[pynq]`` or ``[de1]``.
+The entries that define the FPGA board parameters have more values than the host entry, the name (eg. ``[pynq]``) can be anything, though we recommend using a descriptive name such as ``[pynq]`` or ``[de1]``.
 
 .. code-block:: none
 
@@ -116,9 +116,6 @@ For whichever board you are using, make sure the lines in the appropriate sectio
 - **remote_tmp**: Temporary location used to store data as it is transferred between the host and FPGA board.
 - **udp_port**: The port used for UDP communications between the host and FPGA board.
 
-.. tip::
-   If any, the most likely change would be to the IP address.
-
 
 .. note::
    It should be noted that the FPGA board should be configured such that non-root users do not require a password to perform ``sudo`` commands. Refer to the respective FGPA board documentation for instructions on how to do this.
@@ -149,7 +146,7 @@ Basic Use
 .. todo::
    Explain this better, maybe show two ensembles and a learning connection being replaced with an FPGA ens?
 
-This is an extension of `Nengo core <https://github.com/nengo/nengo>`_, networks and models are described using traditional Nengo workflow and a single ensemble will be replaced with an FPGA ensemble using the ``FpgaPesEnsembleNetwork``:
+This is an extension of `Nengo core <https://www.nengo.ai/nengo/>`_, networks and models are described using traditional Nengo workflow and a single ensemble will be replaced with an FPGA ensemble using the ``FpgaPesEnsembleNetwork``:
 
 .. code-block:: python
 

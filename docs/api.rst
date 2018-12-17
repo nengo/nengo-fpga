@@ -44,4 +44,9 @@ Currently NengoFPGA supports the following neuron types:
 Objects and Functions
 =====================
 
+.. todo::
+   - Finish docstring for FpgaPesEnsembleNetwork
+   - Do we want to add anything else here for autodocs?
+
+
 .. autoclass:: nengo_fpga.networks.FpgaPesEnsembleNetwork
