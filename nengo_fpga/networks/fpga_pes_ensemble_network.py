@@ -53,19 +53,37 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         Points at which to evaluate ``function`` when computing decoders,
         spanning the interval (-pre.radius, pre.radius) in each dimension.
         If None, will use the eval_points associated with ``pre``.
-    socket_args : TODO
-        TODO
+    socket_args : dictionary, optional (Default: Empty dictionary)
+        Parameters to pass on to the ``sockets.UDPSendReceiveSocket`` object
+        that is used to handle UDP communication between the host PC and the
+        FPGA board. The full list of parameters can be found here:
+        https://github.com/nengo/nengo-fpga/blob/master/nengo_fpga/sockets.py#L425
     label : str, optional (Default: None)
         A descriptive label for the connection.
     seed : int, optional (Default: None)
         The seed used for random number generation.
-    add_to_container : TODO
-        TODO
+    add_to_container : bool, optional (Default: None)
+        Determines if this network will be added to the current container. If
+        ``None``, this network will be added to the network at the top of the
+        ``Network.context`` stack unless the stack is empty.
 
     Attributes
     ----------
-    attributes : TODO
-        TODO (nengo ens and conn)
+    input : nengo.Node
+        A node that serves as the input interface between external Nengo
+        objects and the FPGA board.
+    output : nengo.Node
+        A node that serves as the output interface between the FPGA board and
+        external Nengo objects.
+    error : nengo.Node
+        A node that provides the error signal to be used by the learning rule
+        on the FPGA board.
+    ensemble : nengo.Ensemble
+        An ensemble object whose parameters are used to configure the
+        ensemble implementation on the FPGA board.
+    connection : nengo.Connection
+        The connection object used to configure the learning connection
+        implementation on the FPGA board.
 
     """
     def __init__(self, fpga_name, n_neurons, dimensions, learning_rate,
