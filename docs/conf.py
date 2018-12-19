@@ -21,9 +21,9 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.githubpages',
     'sphinx.ext.mathjax',
-    'sphinx.ext.napoleon',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
+    'numpydoc',
 ]
 
 default_role = 'py:obj'
@@ -43,6 +43,9 @@ intersphinx_mapping = {
 # -- sphinx.ext.todo
 todo_include_todos = False
 
+# -- numpydoc config
+numpydoc_show_class_members = False
+
 # -- nbsphinx
 nbsphinx_allow_errors = False
 nbsphinx_timeout = 300
@@ -61,7 +64,7 @@ mathjax_path = ("https://cdn.mathjax.org/mathjax/latest/MathJax.js"
 project = u'Nengo FPGA'
 authors = u'Applied Brain Research'
 copyright = nengo_fpga.__copyright__
-version = '.'.join(nengo_fpga.__version__.split('.')[:2])  # Short X.Y version
+# version = '.'.join(nengo_fpga.__version__.split('.')[:2])  # Short X.Y version
 release = nengo_fpga.__version__  # Full version, with tags
 pygments_style = 'friendly'
 
@@ -71,7 +74,6 @@ html_theme = 'nengo_sphinx_theme'
 html_title = "Nengo FPGA {0} docs".format(release)
 html_static_path = ['_static']
 html_favicon = os.path.join('_static', 'favicon.ico')
-html_logo = os.path.join('_static', 'full-light.svg')
 html_use_smartypants = True
 htmlhelp_basename = 'Nengodoc'
 html_last_updated_fmt = ''  # Suppress 'Last updated on:' timestamp
@@ -79,6 +81,7 @@ html_show_sphinx = False
 html_theme_options = {
     "sidebar_toc_depth": 4,
     "sidebar_logo_width": 200,
+    "nengo_logo": "nengo-fpga-full-light.svg",
 }
 
 # -- Options for LaTeX output -------------------------------------------------

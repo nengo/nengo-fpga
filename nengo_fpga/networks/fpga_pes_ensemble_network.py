@@ -69,19 +69,19 @@ class FpgaPesEnsembleNetwork(nengo.Network):
 
     Attributes
     ----------
-    input : nengo.Node
+    input : `nengo.Node`
         A node that serves as the input interface between external Nengo
         objects and the FPGA board.
-    output : nengo.Node
+    output : `nengo.Node`
         A node that serves as the output interface between the FPGA board and
         external Nengo objects.
-    error : nengo.Node
+    error : `nengo.Node`
         A node that provides the error signal to be used by the learning rule
         on the FPGA board.
-    ensemble : nengo.Ensemble
+    ensemble : `nengo.Ensemble`
         An ensemble object whose parameters are used to configure the
         ensemble implementation on the FPGA board.
-    connection : nengo.Connection
+    connection : `nengo.Connection`
         The connection object used to configure the learning connection
         implementation on the FPGA board.
 
