@@ -23,6 +23,11 @@ Release History
 0.1.1 (Unreleased)
 ==================
 
+**Added**
+
+- Added script to read device DNA from FPGA board.
+   (`#11 <https://github.com/nengo/nengo-fpga/pull/11>`__)
+
 
 0.1.0 (December 19, 2018)
 =========================
