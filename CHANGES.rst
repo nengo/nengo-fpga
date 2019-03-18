@@ -25,6 +25,9 @@ Release History
 
 **Added**
 
+- Add PR template, contributors, and update license.
+   (`#12 <https://github.com/nengo/nengo-fpga/pull/12>`__)
+
 - Added script to read device DNA from FPGA board.
    (`#11 <https://github.com/nengo/nengo-fpga/pull/11>`__)
 
