@@ -25,6 +25,9 @@ Release History
 
 **Added**
 
+- Rework documentation.
+   (`#18 <https://github.com/nengo/nengo-fpga/pull/18>`__)
+
 - Add PR template, contributors, and update license.
    (`#12 <https://github.com/nengo/nengo-fpga/pull/12>`__)
 

@@ -5,7 +5,9 @@ API
 Setting Parameters
 ==================
 
-Many of the Nengo ensemble parameters are ommitted from the ``FpgaPesEnsembleNetwork`` constructor, but all of these ensemble parameters can easily be changed once an ensemble is created:
+Many of the Nengo ensemble parameters are ommitted from the `FpgaPesEnsembleNetwork`
+constructor, but all of these ensemble parameters can easily be changed once an
+ensemble is created:
 
 .. code-block:: python
 
@@ -18,7 +20,8 @@ Many of the Nengo ensemble parameters are ommitted from the ``FpgaPesEnsembleNet
    ens.ensemble.intercepts = nengo.dists.Choice([-0.5])
    ens.ensemble.max_rates = nengo.dists.Choice([100])
 
-Since our ``FpgaPesEnsembleNetwork`` class also encompasses the connection to the FPGA ensemble, we can similarly change the connection parameters:
+Since our `FpgaPesEnsembleNetwork` class also encompasses the connection to
+the FPGA ensemble, we can similarly change the connection parameters:
 
 .. code-block:: python
 
@@ -26,10 +29,12 @@ Since our ``FpgaPesEnsembleNetwork`` class also encompasses the connection to th
    ens.connection.synapse = None
    ens.connection.solver = nengo.solvers.LstsqL2(reg=0.01)
 
-The ``02-mnist_vision_network`` example demonstrates this capability.
+The `02-mnist_vision_network` example demonstrates this capability.
 
 .. seealso::
-   Check out the Nengo docs for a full list of `ensemble parameters <https://www.nengo.ai/nengo/frontend_api.html#nengo.Ensemble>`_ and `connection parameter <https://www.nengo.ai/nengo/frontend_api.html#nengo.Connection>`_.
+   Check out the Nengo docs for a full list of `ensemble parameters
+   <https://www.nengo.ai/nengo/frontend_api.html#nengo.Ensemble>`_ and
+   `connection parameter <https://www.nengo.ai/nengo/frontend_api.html#nengo.Connection>`_.
 
 
 Supported Neuron Types
