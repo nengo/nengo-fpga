@@ -15,7 +15,7 @@
 # ssh_pwd =
 # # Refer to the online documentation for SSH key configuration options
 # remote_script = /opt/nengo-de1/nengo_de1/single_pes_net.py
-# dna_script = /opt/nengo-de1/nengo_de1/dna_script.py
+# id_script = /opt/nengo-de1/nengo_de1/id_script.py
 # remote_tmp = /opt/nengo-de1/params
 # udp_port = 0
 
@@ -27,6 +27,6 @@
 # ssh_pwd = xilinx
 # # Refer to the online documentation for SSH key configuration options
 # remote_script = /opt/nengo-pynq/nengo_pynq/single_pes_net.py
-# dna_script = /opt/nengo-pynq/nengo_pynq/dna_script.py
+# id_script = /opt/nengo-pynq/nengo_pynq/id_script.py
 # remote_tmp = /opt/nengo-pynq/params
 # udp_port = 0

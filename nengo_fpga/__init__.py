@@ -1,7 +1,7 @@
 from . import utils
 from .simulator import Simulator
 from .fpga_config import fpga_config
-from . import dna_extractor
+from . import id_extractor
 
 # monkey-patch Network.add so that we can give a better error message
 # if someone tries to add new objects.

@@ -11,7 +11,7 @@ Supported Hardware
 ==================
 
 Boards and IP-only packages can be purchased through
-`Applied Brain Research <https://appliedbrainresearch.com/products/#board>`_.
+`Applied Brain Research <https://appliedbrainresearch.com/products/brainboard/>`_.
 
 
 DE1-SoC
@@ -21,7 +21,7 @@ DE1-SoC
       :alt: DE1 board
       :width: 45%
       :align: right
-      :target: https://appliedbrainresearch.com/products/#board
+      :target: https://appliedbrainresearch.com/products/brainboard/
 
 .. Pipes add vertical space
 
@@ -43,7 +43,7 @@ PYNQ-Z1
       :alt: PYNQ board
       :width: 45%
       :align: right
-      :target: https://appliedbrainresearch.com/products/#board
+      :target: https://appliedbrainresearch.com/products/brainboard/
 
 |
 |

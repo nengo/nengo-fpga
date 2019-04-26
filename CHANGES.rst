@@ -23,6 +23,12 @@ Release History
 0.1.1 (Unreleased)
 ==================
 
+**Changed**
+
+- Rename "DNA" to "ID" everywhere.
+   (`#20 <https://github.com/nengo/nengo-fpga/pull/20>`__)
+
+
 **Added**
 
 - Rework documentation.

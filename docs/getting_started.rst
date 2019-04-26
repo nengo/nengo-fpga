@@ -101,7 +101,7 @@ using a descriptive name such as `[pynq]` or `[de1]`.
    ssh_pwd =
    # Refer to the online documentation for SSH key configuration options
    remote_script = /opt/nengo-de1/nengo_de1/single_pes_net.py
-   dna_script = /opt/nengo-de1/nengo_de1/dna_script.py
+   id_script = /opt/nengo-de1/nengo_de1/id_script.py
    remote_tmp = /opt/nengo-de1/params
    udp_port = 0
 
@@ -113,7 +113,7 @@ using a descriptive name such as `[pynq]` or `[de1]`.
    ssh_pwd = xilinx
    # Refer to the online documentation for SSH key configuration options
    remote_script = /opt/nengo-pynq/nengo_pynq/single_pes_net.py
-   dna_script = /opt/nengo-pynq/nengo_pynq/dna_script.py
+   id_script = /opt/nengo-pynq/nengo_pynq/id_script.py
    remote_tmp = /opt/nengo-pynq/params
    udp_port = 0
 
@@ -133,8 +133,8 @@ board-specific documentation.
   (see :ref:`ssh-key`) as an alternate form of authentication.
 - **remote_script**: The location of the main communication script on the FPGA
   board.
-- **dna_script**: The location of the script that extracts the unique device
-  identifier (called Device ID).
+- **id_script**: The location of the script that extracts the unique device
+  identifier.
 - **remote_tmp**: Temporary location used to store data as it is transferred
   between the host and FPGA board.
 - **udp_port**: The port used for UDP communications between the host and FPGA
@@ -159,7 +159,7 @@ Reading Device ID
 
 To easily read your Device ID, first ensure you have setup your board to be
 NengoFPGA ready. Instructions on how to do this can be found in each board's
-respective documentation (see :ref:`here <board-setup>`). Additionally, ensure
+respective documentation (see :ref:`Board Setup <board-setup>`). Additionally, ensure
 you have reviewed the :ref:`NengoFPGA configuration <nengofpga-config>` section,
 and appropriately modified the `fpga_config` file.
 

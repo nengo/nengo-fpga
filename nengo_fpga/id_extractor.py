@@ -7,8 +7,8 @@ import numpy as np
 from nengo_fpga.fpga_config import fpga_config
 
 
-class DNAExtractor(object):
-    """ Class that connects to the FPGA and extracts the Device DNA
+class IDExtractor(object):
+    """ Class that connects to the FPGA and extracts the Device ID
 
     Parameters
     ----------
@@ -33,7 +33,6 @@ class DNAExtractor(object):
         self.ssh_info_str = ''
         self.ssh_lock = False
 
-
         # Check if the desired FPGA name is defined in the configuration file
         if self.config_found:
             # Handle the tcp port selection: Use the config specified port.
@@ -44,7 +43,7 @@ class DNAExtractor(object):
             if self.tcp_port == 0:
                 self.tcp_port = int(np.random.uniform(low=20000, high=65535))
 
-            # Make the TCP socket for receiving DNA.
+            # Make the TCP socket for receiving Device ID.
             self.tcp_init = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.tcp_init.bind((fpga_config.get('host', 'ip'), self.tcp_port))
             self.tcp_init.settimeout(self.timeout)
@@ -191,7 +190,7 @@ class DNAExtractor(object):
         # remote side ssh script (with appropriate arguments)
         if self.config_found:
             ssh_str = \
-                ('python ' + fpga_config.get(self.fpga_name, 'dna_script') +
+                ('python ' + fpga_config.get(self.fpga_name, 'id_script') +
                  ' --host_ip="%s"' % fpga_config.get('host', 'ip') +
                  ' --tcp_port=%i' % self.tcp_port +
                  '\n')
@@ -199,7 +198,7 @@ class DNAExtractor(object):
             ssh_str = ''
         return ssh_str
 
-    def recv_DNA(self):
+    def recv_id(self):
         # Try to connect to FPGA socket a few times
         connect_attempts = 0
         while True:
@@ -221,9 +220,9 @@ class DNAExtractor(object):
                           " trying again..." % (self.fpga_name, self.timeout),
                           flush=True)
 
-        # Read DNA once socket connected successfully
-        self.DNA_bytes = self.tcp_recv.recv(8)
-        self.DNA_int = int.from_bytes(self.DNA_bytes, 'big')
+        # Read ID once socket connected successfully
+        self.id_bytes = self.tcp_recv.recv(8)
+        self.id_int = int.from_bytes(self.id_bytes, 'big')
 
 
 if __name__ == "__main__":
@@ -231,7 +230,7 @@ if __name__ == "__main__":
     import sys
 
     parser = argparse.ArgumentParser(
-        description='Generic script for running the DNA Extractor on the ' +
+        description='Generic script for running the ID Extractor on the ' +
         'FPGA board.')
 
     # FPGA board name
@@ -246,17 +245,17 @@ if __name__ == "__main__":
 
     # Parse the arguments
     args = parser.parse_args()
-    filename = 'dna_' + args.fpga_name + '.txt'
+    filename = 'id_' + args.fpga_name + '.txt'
 
-    # Connect to FPGA, run script to get DNA, write DNA to file
-    fpga = DNAExtractor(args.fpga_name)
+    # Connect to FPGA, run script to get ID, write ID to file
+    fpga = IDExtractor(args.fpga_name)
     fpga.connect()
-    fpga.recv_DNA()
+    fpga.recv_id()
 
-    DNA_str = "Found board DNA: %#0.16x" % fpga.DNA_int
+    id_str = "Found board ID: %#0.16X" % fpga.id_int
 
     with open(filename, 'w') as file:
-        file.write(DNA_str)
+        file.write(id_str)
     fpga.cleanup()
-    print(DNA_str)
+    print(id_str)
     print("Written to file %s" % filename)
