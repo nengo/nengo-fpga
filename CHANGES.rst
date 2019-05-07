@@ -31,8 +31,12 @@ Release History
 
 **Added**
 
+- Quickstart guide.
+   (`#20 <https://github.com/nengo/nengo-fpga/pull/20>`__)
+
 - Rework documentation.
    (`#18 <https://github.com/nengo/nengo-fpga/pull/18>`__)
+   (`#20 <https://github.com/nengo/nengo-fpga/pull/20>`__)
 
 - Add PR template, contributors, and update license.
    (`#12 <https://github.com/nengo/nengo-fpga/pull/12>`__)

@@ -10,7 +10,7 @@ Appendix
 Supported Hardware
 ==================
 
-Boards and IP-only packages can be purchased through
+IP packages can be purchased through
 `Applied Brain Research <https://appliedbrainresearch.com/products/brainboard/>`_.
 
 
@@ -21,7 +21,7 @@ DE1-SoC
       :alt: DE1 board
       :width: 45%
       :align: right
-      :target: https://appliedbrainresearch.com/products/brainboard/
+      :target: https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&No=836
 
 .. Pipes add vertical space
 
@@ -30,7 +30,9 @@ DE1-SoC
 
 The DE1-SoC board is manufactured by Terasic and uses an
 Intel Altera Cyclone V FPGA paired with a dual core ARM Cortex A9.
-(`DE1 docs <https://www.nengo.ai/nengo-de1/>`_)
+The board is available for `purchase from Terasic <https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&No=836>`_.
+See the (`Nengo DE1 docs <https://www.nengo.ai/nengo-de1/>`_) for how to use
+this board with NengoFPGA.
 
 |
 |
@@ -43,14 +45,16 @@ PYNQ-Z1
       :alt: PYNQ board
       :width: 45%
       :align: right
-      :target: https://appliedbrainresearch.com/products/brainboard/
+      :target: https://store.digilentinc.com/pynq-z1-python-productivity-for-zynq-7000-arm-fpga-soc/
 
 |
 |
 
 The PYNQ-Z1 board is manufactured by Digilent and uses a ZYNQ 7020 FPGA
-paired with a dual core ARM Cortex A9.
-(`PYNQ docs <https://www.nengo.ai/nengo-pynq/>`_)
+paired with a dual core ARM Cortex A9. The board is available for
+`purchase from Digilent <https://store.digilentinc.com/pynq-z1-python-productivity-for-zynq-7000-arm-fpga-soc/>`_.
+See the (`Nengo PYNQ docs <https://www.nengo.ai/nengo-pynq/>`_) for how to use
+this board with NengoFPGA.
 
 |
 |

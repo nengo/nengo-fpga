@@ -2,6 +2,8 @@
 Getting Started
 ***************
 
+.. highlight:: none
+
 Things You Need
 ===============
 
@@ -14,7 +16,46 @@ Things You Need
 Installation Quick Reference Guide
 ==================================
 
-Placeholder
+.. Do we have a troubleshooting piece here incase something doesn't work?
+
+.. rst-class:: compact
+
+1. Get the your board NengoFPGA ready using the
+   :ref:`device-specific board setup documentation <board-setup>`.
+#. :ref:`Install NengoFPGA <software-install>`.
+#. :ref:`Edit the NengoFPGA config file <nengofpga-config>` to match your setup.
+#. Test NengoFPGA by running the ID extractor script:
+
+   i. In a terminal on your computer navigate to the root `nengo-fpga` directory.
+   #. Run the ID extractor script with::
+
+         python nengo_fpga/id_extractor.py <board>
+
+      where **<board>** is the board name as it appears in `fpga_config`.
+      See the `Copy Protection`_ section for more information.
+
+#. Now with the Device ID available, you are ready to
+   :ref:`acquire your bitstreams <get-bitstreams>`.
+#. Once the bitstreams and supporting files have been delivered, copy these
+   files to the appropriate location as outlined in the
+   :ref:`device-specific bitstream documentation <update-bitstreams>`.
+#. Test NengoFPGA by running an example script:
+
+   i. Navigate to `nengo-fpga/docs/examples`.
+   #. Run the basic example script::
+
+         python basic_example.py <board>
+
+      where **<board>** is the board name as it appears in `fpga_config`.
+
+   #. If the script has a successful run you will see a lot of `[INFO]` printed
+      to the console indicating the status of the NengoFPGA system. Near the
+      bottom you will see the RMSE of the network printed::
+
+        Computed RMSE: 0.00105
+
+      You may get a slightly different value but if your NengoFPGA system
+      is functioning correctly, this should be near 0.001.
 
 
 .. _software-install:
@@ -35,10 +76,10 @@ or navigate to the `repository <https://github.com/nengo/nengo-fpga>`_ and downl
 FPGA Board Setup
 ================
 
-Follow docs for your particular FPGA device:
+Follow documentation for your particular FPGA device:
 
-- `Terasic DE1-SoC <https://www.nengo.ai/nengo-de1/getting_started.html>`_ (Intel Cyclone V)
-- `Digilent PYNQ <https://www.nengo.ai/nengo-pynq/getting_started.html>`_ (Xilinx Zynq)
+- `Board setup for Terasic DE1-SoC <https://www.nengo.ai/nengo-de1/getting_started.html>`_ (Intel Cyclone V)
+- `Board setup for Digilent PYNQ <https://www.nengo.ai/nengo-pynq/getting_started.html>`_ (Xilinx Zynq)
 
 The full list of hardware that NengoFPGA supports, and the links to their
 respective documentation can be found :ref:`here <supported-hardware>`.
@@ -90,6 +131,10 @@ FPGA Board
 The entries that define the FPGA board parameters have more values than the
 host entry, the name (eg. `[pynq]`) can be anything, though we recommend
 using a descriptive name such as `[pynq]` or `[de1]`.
+
+.. note::
+   Every board connected to the same network *must* have its own entry
+   in the config file.
 
 .. code-block:: none
 
@@ -154,19 +199,73 @@ Each bitstream is compiled with your unique board identifier (called Device ID)
 and therefore you will need to provide this unique ID to us before we
 can compile and deliver your tailored bitstream.
 
+.. _device-id:
+
 Reading Device ID
 ------------------
 
 To easily read your Device ID, first ensure you have setup your board to be
 NengoFPGA ready. Instructions on how to do this can be found in each board's
-respective documentation (see :ref:`Board Setup <board-setup>`). Additionally, ensure
-you have reviewed the :ref:`NengoFPGA configuration <nengofpga-config>` section,
+respective documentation (see :ref:`Board Setup <board-setup>`).
+Additionally, ensure you have reviewed the
+:ref:`NengoFPGA configuration <nengofpga-config>` section,
 and appropriately modified the `fpga_config` file.
 
-Once done, simply run the `dna_extractor.py` script located in the `nengo_fpga`
+Once done, simply run the `id_extractor.py` script located in the `nengo_fpga`
 directory from within the `nengo-fpga` root folder. This will print the Device
 ID as well as save it to a file for future reference. The script requires that
-you provide the name of your board as it appears in the `fpga_config` file.
-For example, from the root directory (`nengo-fpga`) run::
+you provide the name of your board as it appears in the `fpga_config` file
+(eg. pynq, de1). From the root directory (`nengo-fpga`) run::
 
-   python nengo_fpga/dna_extractor.py pynq
+   python nengo_fpga/id_extractor.py <board>
+
+After running this script you will see some info printed to the console
+indicating the status of the NengoFPGA system. Upon successful execution
+of the script the final lines should read::
+
+   Found board ID: 0X0123456789ABCDEF
+   Written to file id_<board>.txt
+
+Now that you have your Device ID, you are ready to
+:ref:`acquire your bitstreams <get-bitstreams>`.
+
+Bitstreams
+==========
+
+Compiled FPGA designs are binary files that configure the hardware, literally
+strings of bits, so compiled designs are often called *bitstreams*. When
+getting started or updating you NengoFPGA system, you will need to get bitstreams
+for your device.
+
+
+.. _get-bitstreams:
+
+Acquiring NengoFPGA Bitstreams
+------------------------------
+
+If you haven't already, you will need to :ref:`get your Device ID <device-id>`.
+
+To receive your tailored bitstreams, please send us an email at
+`support@appliedbrainresearch.freshdesk.com`_ with the following info:
+
+- Your Device ID. Either the hex string itself or attach the `id_<board>.text`
+  file to the email.
+- Which :ref:`supported hardware device <supported-hardware>` you are using.
+- To help our support team provide a prompt response, please start your
+  subject header with the term "NengoFPGA".
+
+
+.. _support@appliedbrainresearch.freshdesk.com: mailto:support@appliedbrainresearch.freshdesk.com?subject=NengoFPGA\ -\
+
+
+.. _update-bitstreams:
+
+Updating NengoFPGA Bitstreams
+-----------------------------
+
+Once you have received your bitstreams, follow documentation for your particular
+FPGA device for how to copy them to the board and get them running:
+
+- `Updating bitstreams for Terasic DE1-SoC <https://www.nengo.ai/nengo-de1/usage.html#updating-bitstreams>`_ (Intel Cyclone V)
+- `Updating bitstreams for Digilent PYNQ <https://www.nengo.ai/nengo-pynq/usage.html#updating-bitstreams>`_ (Xilinx Zynq)
+
