@@ -23,4 +23,4 @@ htmlcov
 .idea
 .pytest_cache/
 mnist.pkl.gz
-dna_*.txt
+id_*.txt

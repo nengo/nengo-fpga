@@ -8,7 +8,7 @@ Basic Use
 NengoFPGA is an extension of `Nengo core <https://www.nengo.ai/nengo/>`_. Networks
 and models are described using traditional Nengo workflow and a single ensemble
 with PES learning will be replaced with an FPGA ensemble using the
-`FpgaPesEnsembleNetwork`. For example, consider the following network snippet:
+``FpgaPesEnsembleNetwork``. For example, consider the following network snippet:
 
 .. code-block:: python
 
@@ -40,7 +40,7 @@ with PES learning will be replaced with an FPGA ensemble using the
 
       ...
 
-Nengo FPGA will replace the learning rule and the `post` ensemble to create a
+NengoFPGA will replace the learning rule and the ``post`` ensemble to create a
 network that looks like this:
 
 .. code-block:: python
@@ -76,7 +76,7 @@ network that looks like this:
 
 This is designed to work with Nengo GUI, however you can see `Scripting`_ below
 if you prefer not to use the GUI. To view and run your networks, simply pass
-`nengo_fpga` as the backend to Nengo GUI.
+``nengo_fpga`` as the backend to Nengo GUI:
 
 .. code-block:: bash
 
@@ -86,12 +86,12 @@ if you prefer not to use the GUI. To view and run your networks, simply pass
    Ensure you've configured your board **and** NengoFPGA as outlined in
    `Configuration`_ above.
 
-For any questions visit the `Nengo Forum <https://forum.nengo.ai>`_.
+For any questions please visit the `Nengo Forum <https://forum.nengo.ai>`_.
 
 Scripting
 =========
 
-If you are not using Nengo GUI you can use the `nengo_fpga` simulator in
+If you are not using Nengo GUI, you can use the ``nengo_fpga`` simulator in
 Nengo's scripting environment as well:
 
 .. code-block:: python
@@ -110,18 +110,18 @@ Nengo's scripting environment as well:
 Examples
 ========
 
-NengoFPGA ships with a few example implementations in the `nengo-fpga/docs/examples`
+NengoFPGA ships with a few example implementations in the ``nengo-fpga/docs/examples``
 folder. These examples are designed to be used with Nengo GUI, so first we will
 install that.
 
 1. Install the GUI with ``pip install nengo-gui``.
-#. In a terminal window, navigate to the `nengo-fpga/docs/examples` directory.
+#. In a terminal window, navigate to the ``nengo-fpga/docs/examples`` directory.
 #. Try running an example with ``nengo <file name> -b nengo_fpga``. This
    should open the Nengo GUI interface in a browser and display the code on the
    right and a graphical representation on the left.
-#. Near the top of the file you should see `# --- BOARD SELECT ---`, select
-   the appropriate board here. (The names `de1` and `pynq` correspond to the
-   headers in the `fpga_config` file).
+#. Near the top of the file you should see **# --- BOARD SELECT ---**, select
+   the appropriate board here. (The names **de1** and **pynq** correspond to the
+   headers in the ``fpga_config`` file).
 #. Click the play button in the bottom right to start the simulation. It may
    take several seconds to build the model and begin running.
 

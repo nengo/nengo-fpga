@@ -52,6 +52,7 @@ nbsphinx_timeout = 300
 nbsphinx_execute = 'always'
 
 # -- sphinx
+nitpicky = True
 exclude_patterns = ['_build', 'examples/.ipynb_checkpoints']
 source_suffix = '.rst'
 source_encoding = 'utf-8'
@@ -61,7 +62,7 @@ master_doc = 'index'
 mathjax_path = ("https://cdn.mathjax.org/mathjax/latest/MathJax.js"
                 "?config=TeX-AMS-MML_HTMLorMML")
 
-project = u'Nengo FPGA'
+project = u'NengoFPGA'
 authors = u'Applied Brain Research'
 copyright = nengo_fpga.__copyright__
 # version = '.'.join(nengo_fpga.__version__.split('.')[:2])  # Short X.Y version
@@ -71,7 +72,7 @@ pygments_style = 'friendly'
 # -- Options for HTML output --------------------------------------------------
 
 html_theme = 'nengo_sphinx_theme'
-html_title = "Nengo FPGA {0} docs".format(release)
+html_title = "NengoFPGA {0} docs".format(release)
 html_static_path = ['_static']
 html_favicon = os.path.join('_static', 'favicon.ico')
 html_use_smartypants = True

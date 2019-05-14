@@ -25,6 +25,9 @@ Release History
 
 **Changed**
 
+- Docs audit for consistency.
+   (`#22 <https://github.com/nengo/nengo-fpga/pull/22>`__)
+
 - Rename "DNA" to "ID" everywhere.
    (`#20 <https://github.com/nengo/nengo-fpga/pull/20>`__)
 
@@ -32,7 +35,7 @@ Release History
 **Added**
 
 - Quickstart guide.
-   (`#20 <https://github.com/nengo/nengo-fpga/pull/20>`__)
+   (`#21 <https://github.com/nengo/nengo-fpga/pull/21>`__)
 
 - Rework documentation.
    (`#18 <https://github.com/nengo/nengo-fpga/pull/18>`__)
@@ -48,4 +51,4 @@ Release History
 0.1.0 (December 19, 2018)
 =========================
 
-Initial release of Nengo FPGA!
+Initial release of NengoFPGA!

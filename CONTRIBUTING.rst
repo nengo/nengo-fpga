@@ -1,14 +1,14 @@
-**************************
-Contributing to Nengo FPGA
-**************************
+*************************
+Contributing to NengoFPGA
+*************************
 
 Issues and pull requests are always welcome!
-We appreciate help from the community to make Nengo FPGA better.
+We appreciate help from the community to make NengoFPGA better.
 
 Filing issues
 =============
 
-If you find a bug in Nengo FPGA,
+If you find a bug in NengoFPGA,
 or think that a certain feature is missing,
 please consider
 `filing an issue <https://github.com/nengo/nengo-fpga/issues>`_!

@@ -1,16 +1,16 @@
-******************
-Nengo FPGA license
-******************
+*****************
+NengoFPGA license
+*****************
 
 Copyright (c) 2013-2019 Applied Brain Research Inc.
 
-Nengo FPGA is made available under a proprietary license that permits using,
-copying, sharing, and making derivative works from Nengo FPGA and its source
+NengoFPGA is made available under a proprietary license that permits using,
+copying, sharing, and making derivative works from NengoFPGA and its source
 code for any non-commercial purpose, as long as the above copyright notice and
 this permission notice are included in all copies or substantial portions
 of the software.
 
-If you would like to use Nengo FPGA commercially, licenses can be
+If you would like to use NengoFPGA commercially, licenses can be
 purchased from Applied Brain Research, Inc. Please contact
 info@appliedbrainresearch.com for more information.
 
@@ -25,7 +25,7 @@ SOFTWARE.
 Licensed code
 =============
 
-Nengo FPGA imports or vendorizes several open source libraries.
+NengoFPGA imports or vendorizes several open source libraries.
 
 * `NumPy <http://www.numpy.org/>`_ - Used under
   `BSD license <http://www.numpy.org/license.html>`__

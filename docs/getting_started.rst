@@ -2,8 +2,6 @@
 Getting Started
 ***************
 
-.. highlight:: none
-
 Things You Need
 ===============
 
@@ -26,13 +24,16 @@ Installation Quick Reference Guide
 #. :ref:`Edit the NengoFPGA config file <nengofpga-config>` to match your setup.
 #. Test NengoFPGA by running the ID extractor script:
 
-   i. In a terminal on your computer navigate to the root `nengo-fpga` directory.
-   #. Run the ID extractor script with::
+   i. In a terminal on your computer navigate to the root ``nengo-fpga``
+      directory.
+   #. Run the ID extractor script with:
+
+      .. code-block:: bash
 
          python nengo_fpga/id_extractor.py <board>
 
-      where **<board>** is the board name as it appears in `fpga_config`.
-      See the `Copy Protection`_ section for more information.
+   where **<board>** is the board name as it appears in ``fpga_config``.
+   See the `Copy Protection`_ section for more information.
 
 #. Now with the Device ID available, you are ready to
    :ref:`acquire your bitstreams <get-bitstreams>`.
@@ -41,18 +42,22 @@ Installation Quick Reference Guide
    :ref:`device-specific bitstream documentation <update-bitstreams>`.
 #. Test NengoFPGA by running an example script:
 
-   i. Navigate to `nengo-fpga/docs/examples`.
-   #. Run the basic example script::
+   i. Navigate to ``nengo-fpga/docs/examples``.
+   #. Run the basic example script:
+
+      .. code-block:: bash
 
          python basic_example.py <board>
 
-      where **<board>** is the board name as it appears in `fpga_config`.
+      where **<board>** is the board name as it appears in ``fpga_config``.
 
-   #. If the script has a successful run you will see a lot of `[INFO]` printed
+   #. If the script has a successful run you will see a lot of **[INFO]** printed
       to the console indicating the status of the NengoFPGA system. Near the
-      bottom you will see the RMSE of the network printed::
+      bottom you will see the RMSE of the network printed:
 
-        Computed RMSE: 0.00105
+      .. code-block:: none
+
+         Computed RMSE: 0.00105
 
       You may get a slightly different value but if your NengoFPGA system
       is functioning correctly, this should be near 0.001.
@@ -63,11 +68,15 @@ Installation Quick Reference Guide
 NengoFPGA Software Installation
 ===============================
 
-Download the NengoFPGA source code from github using git::
+Download the NengoFPGA source code from github using git:
+
+.. code-block:: bash
 
    git clone https://github.com/nengo/nengo-fpga.git
 
-or navigate to the `repository <https://github.com/nengo/nengo-fpga>`_ and download the files manually. Once downloaded, navigate to the ``nengo-fpga`` folder in a terminal window and install with::
+or navigate to the `repository <https://github.com/nengo/nengo-fpga>`_ and download the files manually. Once downloaded, navigate to the ``nengo-fpga`` folder in a terminal window and install with:
+
+.. code-block:: bash
 
    pip install -e .
 
@@ -91,30 +100,30 @@ NengoFPGA Software Configuration
 
 NengoFPGA is the frontend that connects to one of many backend FPGA devices.
 You will need to have a :ref:`supported FPGA board <supported-hardware>` with access
-to ABR designs. Each FPGA board will have it's own setup and configuration
+to Applied Brain Research's designs. Each FPGA board will have it's own setup and configuration
 procedure outlined in it's own documentation, however, the NengoFPGA frontend
 has its own configuration as outlined below.
 
-The NengoFPGA default config file, `fpga_config`, is located in the root
-directory of `nengo-fpga` and contains example settings for your host machine
+The NengoFPGA default config file, ``fpga_config``, is located in the root
+directory of ``nengo-fpga`` and contains example settings for your host machine
 as well as the FPGA board you are using. You can also create a copy in the
 directory in which your project files are located. Anything in square brackets
-(eg. `[host]`) defines a new entry name and everything below that name up
+(eg. **[host]**) defines a new entry name and everything below that name up
 until the name defines parameters of that entry.
 
 Host
 ----
 
 First we will look at the host configuration; this is information about your
-computer and must be called `[host]`:
+computer and must be called **[host]**:
 
 .. code-block:: none
 
    [host]
    ip = 10.162.177.10
 
-Make sure these lines are uncommented (remove the leading # **and** space so it
-appears as above). This is just an example value for `ip`, you will need to
+Make sure these lines are uncommented (remove the leading # *and* space so it
+appears as above). This is just an example value for **ip**, you will need to
 replace this with your computer's actual IP address, see :ref:`ip-addr` for
 instructions on finding your IP address.
 
@@ -129,8 +138,8 @@ FPGA Board
 .. do we want any of this in the board-specific repos?
 
 The entries that define the FPGA board parameters have more values than the
-host entry, the name (eg. `[pynq]`) can be anything, though we recommend
-using a descriptive name such as `[pynq]` or `[de1]`.
+host entry, the name (eg. **[pynq]**) can be anything, though we recommend
+using a descriptive name such as **[pynq]** or **[de1]**.
 
 .. note::
    Every board connected to the same network *must* have its own entry
@@ -173,8 +182,8 @@ board-specific documentation.
 - **ssh_port**: The port used to open SSH communications between the host
   and FPGA board.
 - **ssh_user**: SSH username to use to login to the board.
-- **ssh_pwd**: Password for `ssh_user` to use to login to the board. Note
-  that the `fpga_config` file supports the use of SSH keys
+- **ssh_pwd**: Password for **ssh_user** to use to login to the board. Note
+  that the ``fpga_config`` file supports the use of SSH keys
   (see :ref:`ssh-key`) as an alternate form of authentication.
 - **remote_script**: The location of the main communication script on the FPGA
   board.
@@ -209,19 +218,23 @@ NengoFPGA ready. Instructions on how to do this can be found in each board's
 respective documentation (see :ref:`Board Setup <board-setup>`).
 Additionally, ensure you have reviewed the
 :ref:`NengoFPGA configuration <nengofpga-config>` section,
-and appropriately modified the `fpga_config` file.
+and appropriately modified the ``fpga_config`` file.
 
-Once done, simply run the `id_extractor.py` script located in the `nengo_fpga`
-directory from within the `nengo-fpga` root folder. This will print the Device
+Once done, simply run the ``id_extractor.py`` script located in the ``nengo_fpga``
+directory from within the ``nengo-fpga`` root folder. This will print the Device
 ID as well as save it to a file for future reference. The script requires that
-you provide the name of your board as it appears in the `fpga_config` file
-(eg. pynq, de1). From the root directory (`nengo-fpga`) run::
+you provide the name of your board as it appears in the ``fpga_config`` file
+(eg. pynq, de1). From the root directory (``nengo-fpga``) run:
+
+.. code-block:: bash
 
    python nengo_fpga/id_extractor.py <board>
 
-After running this script you will see some info printed to the console
+After running this script you will see some information printed to the console
 indicating the status of the NengoFPGA system. Upon successful execution
-of the script the final lines should read::
+of the script the final lines should read:
+
+.. code-block:: none
 
    Found board ID: 0X0123456789ABCDEF
    Written to file id_<board>.txt
@@ -246,16 +259,17 @@ Acquiring NengoFPGA Bitstreams
 If you haven't already, you will need to :ref:`get your Device ID <device-id>`.
 
 To receive your tailored bitstreams, please send us an email at
-`support@appliedbrainresearch.freshdesk.com`_ with the following info:
+`support@appliedbrainresearch.com`_ with the following information:
 
-- Your Device ID. Either the hex string itself or attach the `id_<board>.text`
+- Your Device ID. Either the hex string itself or attach the ``id_<board>.txt``
   file to the email.
-- Which :ref:`supported hardware device <supported-hardware>` you are using.
+- Which :ref:`supported hardware device <supported-hardware>` is associated with
+  that Device ID.
 - To help our support team provide a prompt response, please start your
   subject header with the term "NengoFPGA".
 
 
-.. _support@appliedbrainresearch.freshdesk.com: mailto:support@appliedbrainresearch.freshdesk.com?subject=NengoFPGA\ -\
+.. _support@appliedbrainresearch.com: mailto:support@appliedbrainresearch.com?subject=NengoFPGA\ -\
 
 
 .. _update-bitstreams:
