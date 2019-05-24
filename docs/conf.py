@@ -4,16 +4,9 @@
 # to its containing dir.
 
 import os
-import sys
 
-try:
-    import nengo_fpga
-    import nengo_sphinx_theme
-except ImportError:
-    print("To build the documentation, nengo_fpga and nengo_sphinx_theme "
-          "must be installed in the current environment. Please install these "
-          "and their requirements first. A virtualenv is recommended!")
-    sys.exit(1)
+import nengo_fpga
+
 
 extensions = [
     'sphinx.ext.autodoc',
@@ -24,6 +17,8 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
     'numpydoc',
+    "nbsphinx",
+    "nengo_sphinx_theme",
 ]
 
 default_role = 'py:obj'
@@ -50,13 +45,17 @@ numpydoc_show_class_members = False
 nbsphinx_allow_errors = False
 nbsphinx_timeout = 300
 nbsphinx_execute = 'always'
+nbsphinx_timeout = -1
 
 # -- sphinx
 nitpicky = True
-exclude_patterns = ['_build', 'examples/.ipynb_checkpoints']
+exclude_patterns = ['_build', '**/.ipynb_checkpoints']
 source_suffix = '.rst'
 source_encoding = 'utf-8'
 master_doc = 'index'
+linkcheck_timeout = 30
+linkcheck_ignore = [r"http://localhost:\d+"]
+linkcheck_anchors = True
 
 # Need to include https Mathjax path for sphinx < v1.3
 mathjax_path = ("https://cdn.mathjax.org/mathjax/latest/MathJax.js"
@@ -64,10 +63,10 @@ mathjax_path = ("https://cdn.mathjax.org/mathjax/latest/MathJax.js"
 
 project = u'NengoFPGA'
 authors = u'Applied Brain Research'
-copyright = nengo_fpga.__copyright__
-# version = '.'.join(nengo_fpga.__version__.split('.')[:2])  # Short X.Y version
+copyright = "2013-2019 Applied Brain Research"
+version = '.'.join(nengo_fpga.__version__.split('.')[:2])  # Short X.Y version
 release = nengo_fpga.__version__  # Full version, with tags
-pygments_style = 'friendly'
+pygments_style = "sphinx"
 
 # -- Options for HTML output --------------------------------------------------
 
@@ -76,7 +75,7 @@ html_title = "NengoFPGA {0} docs".format(release)
 html_static_path = ['_static']
 html_favicon = os.path.join('_static', 'favicon.ico')
 html_use_smartypants = True
-htmlhelp_basename = 'Nengodoc'
+htmlhelp_basename = 'NengoFPGA'
 html_last_updated_fmt = ''  # Suppress 'Last updated on:' timestamp
 html_show_sphinx = False
 html_theme_options = {

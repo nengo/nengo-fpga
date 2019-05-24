@@ -88,6 +88,8 @@ if you prefer not to use the GUI. To view and run your networks, simply pass
 
 For any questions please visit the `Nengo Forum <https://forum.nengo.ai>`_.
 
+.. _scripting:
+
 Scripting
 =========
 
@@ -103,27 +105,6 @@ Nengo's scripting environment as well:
 
       ...
 
-   with nengo_fpga.simulator(model) as sim:
+   with nengo_fpga.Simulator(model) as sim:
       sim.run(1)
 
-
-Examples
-========
-
-NengoFPGA ships with a few example implementations in the ``nengo-fpga/docs/examples``
-folder. These examples are designed to be used with Nengo GUI, so first we will
-install that.
-
-1. Install the GUI with ``pip install nengo-gui``.
-#. In a terminal window, navigate to the ``nengo-fpga/docs/examples`` directory.
-#. Try running an example with ``nengo <file name> -b nengo_fpga``. This
-   should open the Nengo GUI interface in a browser and display the code on the
-   right and a graphical representation on the left.
-#. Near the top of the file you should see **# --- BOARD SELECT ---**, select
-   the appropriate board here. (The names **de1** and **pynq** correspond to the
-   headers in the ``fpga_config`` file).
-#. Click the play button in the bottom right to start the simulation. It may
-   take several seconds to build the model and begin running.
-
-Detailed walkthroughs of each example can be found in the :ref:`examples
-<examples>` section.

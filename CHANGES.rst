@@ -28,6 +28,9 @@ Release History
 - Add firewall tip to docs.
    (`#24 <https://github.com/nengo/nengo-fpga/pull/24>`__)
 
+- Notebook examples and example descriptions.
+   (`#23 <https://github.com/nengo/nengo-fpga/pull/23>`__)
+
 - Quickstart guide.
    (`#21 <https://github.com/nengo/nengo-fpga/pull/21>`__)
 

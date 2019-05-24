@@ -37,3 +37,7 @@ NengoFPGA imports or vendorizes several open source libraries.
   `BSD license <https://github.com/ipython/ipython/blob/master/COPYING.rst>`__
 * `Paramiko <https://www.paramiko.org/>`_ - Used under
   `LGPL license <https://github.com/paramiko/paramiko/blob/master/LICENSE>`__
+* `matplotlib <https://matplotlib.org/>`_ - Used under
+  `modified PSF license <https://matplotlib.org/users/license.html>`__
+* `Pillow <https://github.com/python-pillow/Pillow>`__ Used under
+  `Open Source PIL Software License <https://github.com/python-pillow/Pillow/blob/master/LICENSE>`__

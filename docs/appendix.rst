@@ -189,3 +189,48 @@ Linux and Mac
 -------------
 
 1. Open a terminal and type ``ifconfig | grep "inet "``
+
+
+.. _jupyter:
+
+Using Jupyter Notebooks
+=======================
+
+Jupyter notebooks are a nice way to add explanations to your code and step
+through systems piece by piece. NengoFPGA uses notebooks to illustrate
+some simple examples. The following instructions will get you started with
+Jupyter so you can run the examples locally or create your own notebook!
+
+
+.. rst-class:: compact
+
+1. Install Jupyter:
+
+   .. code-block:: bash
+
+      pip install jupyter
+
+#. Start a local Jupyter server:
+
+   i. In a terminal, navigate to the examples folder,
+      ``nengo_fpga/docs/examples/notebooks``.
+   #. Start the server with:
+
+      .. code-block:: bash
+
+         jupyter-notebook
+
+      This will open a file explorer in your browser.
+
+#. Open a notebook by double clicking on one of the ``.ipynb`` files.
+#. You may need to select a kernel, the Python engine that will run code
+   under the hood for you. At the top, click the **kernel** menu then hover
+   over **Change kernel** and select the desired Python version.
+#. Click on the first code cell in the notebook and execute it by clicking
+   the play button at the top or pressing **Shift+Enter**. This will run the code in the current cell and move you to the next cell in the notebook.
+#. Step through the notebook by continuing to execute cells, you can execute
+   the text cells as cell, so no need to jump down and click on each code cell!
+
+.. tip::
+   Be sure to execute cells in order otherwise you may get unexpected results.
+   If you make changes to code in a cell be sure to rerun that cell and any other cells affected by that change!
