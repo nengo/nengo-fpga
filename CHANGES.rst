@@ -23,16 +23,10 @@ Release History
 0.1.1 (Unreleased)
 ==================
 
-**Changed**
-
-- Docs audit for consistency.
-   (`#22 <https://github.com/nengo/nengo-fpga/pull/22>`__)
-
-- Rename "DNA" to "ID" everywhere.
-   (`#20 <https://github.com/nengo/nengo-fpga/pull/20>`__)
-
-
 **Added**
+
+- Add firewall tip to docs.
+   (`#24 <https://github.com/nengo/nengo-fpga/pull/24>`__)
 
 - Quickstart guide.
    (`#21 <https://github.com/nengo/nengo-fpga/pull/21>`__)
@@ -46,6 +40,15 @@ Release History
 
 - Added script to read device DNA from FPGA board.
    (`#11 <https://github.com/nengo/nengo-fpga/pull/11>`__)
+
+
+**Changed**
+
+- Docs audit for consistency.
+   (`#22 <https://github.com/nengo/nengo-fpga/pull/22>`__)
+
+- Rename "DNA" to "ID" everywhere.
+   (`#20 <https://github.com/nengo/nengo-fpga/pull/20>`__)
 
 
 0.1.0 (December 19, 2018)

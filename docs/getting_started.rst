@@ -62,6 +62,13 @@ Installation Quick Reference Guide
       You may get a slightly different value but if your NengoFPGA system
       is functioning correctly, this should be near 0.001.
 
+   .. tip::
+      If you run the ``basic_example.py`` script and it hangs waiting for the
+      simulation to begin but does not display any errors, then it is likely
+      a firewall issue. Ensure your firewall allows connections to and from
+      the board IP address.
+
+
 
 .. _software-install:
 
