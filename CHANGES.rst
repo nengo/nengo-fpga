@@ -25,6 +25,9 @@ Release History
 
 **Added**
 
+- Add license to docs.
+   (`#25 <https://github.com/nengo/nengo-fpga/pull/25>`__)
+
 - Add firewall tip to docs.
    (`#24 <https://github.com/nengo/nengo-fpga/pull/24>`__)
 

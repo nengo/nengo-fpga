@@ -1,5 +1,5 @@
 *****************
-NengoFPGA license
+NengoFPGA License
 *****************
 
 Copyright (c) 2013-2019 Applied Brain Research Inc.
@@ -22,7 +22,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Licensed code
+Licensed Code
 =============
 
 NengoFPGA imports or vendorizes several open source libraries.
