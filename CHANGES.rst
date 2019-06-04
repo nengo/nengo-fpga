@@ -74,6 +74,11 @@ Release History
   fpga_config file.
   (`#33 <https://github.com/nengo/nengo-fpga/pull/33>`__)
 
+**Fixed**
+
+- Now throwing an exception on unsupported neuron type.
+   (`#26 <https://github.com/nengo/nengo-fpga/pull/26>`__)
+
 
 0.1.0 (December 19, 2018)
 -------------------------

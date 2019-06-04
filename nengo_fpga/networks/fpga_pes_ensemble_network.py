@@ -210,7 +210,7 @@ class FpgaPesEnsembleNetwork(nengo.Network):
             return
 
         # Clean up any existing argument data files
-        if os.path.exists(self.local_data_filepath):
+        if os.path.isfile(self.local_data_filepath):
             os.remove(self.local_data_filepath)
 
     def connect_thread_func(self):
@@ -443,12 +443,9 @@ def build_FpgaPesEnsembleNetwork(model, network):
             ens_args['neuron_type'] = \
                 network.neuron_str_map[type(network.ensemble.neuron_type)]
         else:
-            warn_str = \
-                'Neuron type "' + str(type(network.ensemble.neuron_type)) + \
-                '" is currently not supported. Using default "' + \
-                str(type(network.default_neuron_type)) + '" neuron.'
-            logger.warn(warn_str)
-            print('WARNING: ' + warn_str)
+            raise nengo.exceptions.BuildError(
+                'Neuron type "%s" is not supported.' %
+                type(network.ensemble.neuron_type))
 
         ens_args['scaled_encoders'] = \
             param_model.params[network.ensemble].scaled_encoders
@@ -464,7 +461,7 @@ def build_FpgaPesEnsembleNetwork(model, network):
                 network.connection.learning_rule_type.learning_rate
         else:
             raise nengo.exceptions.BuildError(
-                'Learning rule "%s" not supported.' %
+                'Learning rule "%s" is not supported.' %
                 type(network.connection.learning_rule_type))
 
         # Save the NPZ data file
