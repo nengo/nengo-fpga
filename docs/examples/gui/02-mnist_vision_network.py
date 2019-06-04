@@ -31,11 +31,9 @@ def one_hot(labels, c=None):
     y[np.arange(n), labels] = 1
     return y
 
-
 # ---------------- BOARD SELECT ----------------------- #
-# Uncomment whichever board you are using
+# Change this to your desired device name
 board = 'de1'
-# board = 'pynq'
 # ---------------- BOARD SELECT ----------------------- #
 
 # Set the nengo logging level to 'info' to display all of the information

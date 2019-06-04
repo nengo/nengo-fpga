@@ -9,9 +9,8 @@ from nengo_fpga.networks import FpgaPesEnsembleNetwork
 nengo.utils.logging.log('info')
 
 # ---------------- BOARD SELECT ----------------------- #
-# Uncomment whichever board you are using
+# Change this to your desired device name
 board = 'de1'
-# board = 'pynq'
 # ---------------- BOARD SELECT ----------------------- #
 
 
