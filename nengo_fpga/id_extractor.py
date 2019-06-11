@@ -252,7 +252,7 @@ if __name__ == "__main__":
     fpga.connect()
     fpga.recv_id()
 
-    id_str = "Found board ID: %#0.16X" % fpga.id_int
+    id_str = "Found board ID: 0x%0.16X" % fpga.id_int
 
     with open(filename, 'w') as file:
         file.write(id_str)

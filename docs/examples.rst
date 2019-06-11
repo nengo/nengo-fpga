@@ -272,17 +272,6 @@ learned action. In this way, the agent learns to associate specific radar
 states with the action that will provide it the highest reward (and hopefully
 avoid the walls).
 
-This example has an optional requirement.
-
-.. rst-class:: compact
-
-1. (Optional) ``keyboard-state`` branch of Nengo GUI. This will allow you to
-   control the GUI simulation using key presses.
-
-.. should we include instructions on installing a dev version of the GUI
-   and how to switch branches? or just leave it for people who know what
-   they are doing and hopefully it gets merged soon.
-
 To run this example in Nengo, from the |gui_dir| directory, run:
 
 .. code-block:: none
@@ -392,10 +381,9 @@ that make up the map.
 Controlling the simulation with the keyboard
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you have the ``keyboard-state`` branch of Nengo GUI you should see
-instructions printed in the console pane on the bottom right. These
-instructions will inform you on which keyboard presses can be used to
-disable / permanently enable learning; reset the agent's location back to the
+You should see instructions printed in the console pane on the bottom right.
+These instructions will inform you on which keyboard presses can be used to
+disable or permanently enable learning; reset the agent's location back to the
 start location; and change the world map.
 
 If you do not see instructions for key presses then this feature is currently

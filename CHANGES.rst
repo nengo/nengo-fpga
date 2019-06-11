@@ -50,6 +50,9 @@ Release History
 
 **Changed**
 
+- Rework usage page in docs.
+   (`#27 <https://github.com/nengo/nengo-fpga/pull/27>`__)
+
 - Docs audit for consistency.
    (`#22 <https://github.com/nengo/nengo-fpga/pull/22>`__)
 
