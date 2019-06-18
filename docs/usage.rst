@@ -7,7 +7,7 @@ Converting from Standard Nengo
 
 NengoFPGA is an extension of `Nengo core <https://www.nengo.ai/nengo/>`_.
 Networks and models are described using the traditional Nengo workflow and a
-single ensemble, including PES learning, will be replaced with an FPGA ensemble
+single ensemble, including PES learning, can be replaced with an FPGA ensemble
 using the ``FpgaPesEnsembleNetwork`` class. For example, consider the following
 example of a learned communication channel built with standard Nengo:
 
@@ -22,100 +22,153 @@ example of a learned communication channel built with standard Nengo:
 
    with nengo.Network() as model:
 
-      # Input stimulus
-      input_node = nengo.Node(input_func)
+       # Input stimulus
+       input_node = nengo.Node(input_func)
 
-      # Two ensembles of neurons
-      pre = nengo.Ensemble(50, 2)
-      post = nengo.Ensemble(50, 2)
+       # "Pre" ensemble of neurons, and connection from the input
+       pre = nengo.Ensemble(50, 2)
+       nengo.Connection(input_node, pre)
 
-      # Connect input, pre, and post
-      nengo.Connection(input_node, pre)
-      conn = nengo.Connection(pre, post)
+       # "Post" ensemble of neurons, and connection from "Pre"
+       post = nengo.Ensemble(50, 2)
+       conn = nengo.Connection(pre, post)
 
-      # Create an ensemble for the error signal
-      # Error = actual - target = post - pre
-      error = nengo.Ensemble(50, 2)
-      nengo.Connection(post, error)
-      nengo.Connection(pre, error, transform=-1)
+       # Create an ensemble for the error signal
+       # Error = actual - target = post - input
+       error = nengo.Ensemble(50, 2)
+       nengo.Connection(post, error)
+       nengo.Connection(input_node, error, transform=-1)
 
-      # Add the learning rule on the pre-post connection
-      conn.learning_rule_type = nengo.PES(learning_rate=1e-4)
+       # Add the learning rule on the pre-post connection
+       conn.learning_rule_type = nengo.PES(learning_rate=1e-4)
 
-      # Connect the error into the learning rule
-      nengo.Connection(error, conn.learning_rule)
+       # Connect the error into the learning rule
+       nengo.Connection(error, conn.learning_rule)
 
+The Nengo code above creates two neural ensembles, ``pre`` and ``post``, and
+forms a PES-learning connection between these two ensembles. The weights of
+this connection are modulated by an error signal computed byt a third neural
+ensemble (``error``).
 
-NengoFPGA will replace the learning rule and the ``post`` ensemble and run
-them on the FPGA. First we need to import the ``FpgaPesEnsembleNetwork``:
+NengoFPGA can be used to replace the ``pre`` ensemble with an ensemble that
+will run on the FPGA. Converting the Nengo model above into a NengoFPGA model
+proceeds in three steps:
+
+1. Replacing the desired neural ensemble with and FPGA ensemble.
+#. Making the appropriate connections to and from the FPGA ensemble.
+#. If desired (i.e., if learning is required), making the connections to and
+   from an error-computing neural ensemble.
+
+Constructing the FPGA Ensemble
+------------------------------
+
+To use the FPGA ensemble, first import the ``FpgaPesEnsembleNetwork`` class:
 
 .. code-block:: python
 
    from nengo_fpga.networks import FpgaPesEnsembleNetwork
 
-Now we can use this class to replace pieces of our Nengo network and offload
-them to the FPGA. From the standard Nengo model we replace the following pieces
+In the code above, the ``pre`` ensemble is to be replaced by the FPGA
+ensemble. The standard Nengo code for the ``pre`` ensemble was:
 
 .. code-block:: python
 
-   # Post-synaptic ensemble
-   post = nengo.Ensemble(50, 2)
+   # "Pre" ensemble of neurons, and connection from the input
+   pre = nengo.Ensemble(50, 2)
 
-   # Learning rule on the pre-post connection
-   conn.learning_rule_type = nengo.PES(learning_rate=1e-4)
-
-with the NengoFPGA counterparts
+and this is replaced with the ``FpgaPesEnsembleNetwork`` class. Since learning
+is desired in the above model, the learning rule definition on the pre-post
+connection (``conn.learning_rule_type = nengo.PES(learning_rate=1e-4)``) has been
+removed and rolled into the ``FpgaPesEnsembleNetwork`` constructor.
 
 .. code-block:: python
 
    # Post-synaptic ensemble & learning rule
-   post_fpga = FpgaPesEnsembleNetwork('de1', n_neurons=50,
-                                      dimensions=2,
-                                      learning_rate=1e-4)
+   ens_fpga = FpgaPesEnsembleNetwork('de1', n_neurons=50,
+                                     dimensions=2,
+                                     learning_rate=1e-4)
 
-
-Notice that the ``post_fpga`` ensemble maintains the same arguments as the
-original ``post`` ensemble and the learning rule which it encompasses --
-50 neurons, 2 dimensions, and a learning rate of 1e-4. The ``post_fpga`` has
+Notice that the ``ens_fpga`` ensemble maintains the same arguments as the
+original ``pre`` ensemble and the learning rule which it encompasses --
+50 neurons, 2 dimensions, and a learning rate of 1e-4. The ``ens_fpga`` has
 an additional argument, in this case ``'de1'``, which specifies the desired
 FPGA device
 (see :ref:`NengoFPGA Software Configuration <nengofpga-config>`
 for more details).
 
-Now that we've replaced the post-synaptic ensemble and the learning rule with
-the new ``post_fpga`` ensemble, we will need to update the connections as well.
-The original connections
+Connecting the FPGA Ensemble
+----------------------------
+
+With the FPGA ensemble created, the connections to and from the original
+``pre`` ensemble will have to be updated. The original connections are defined
+as:
 
 .. code-block:: python
+
+   # Connection from input to pre-synaptic ensemble
+   nengo.Connection(input_node, pre)
 
    # Connection from pre- to post-synaptic ensembles
    conn = nengo.Connection(pre, post)
 
-   # Connection from post-synaptic ensemble to error
-   nengo.Connection(post, error)
-
-   # Connection from error into the learning rule
-   nengo.Connection(error, conn.learning_rule)
-
-are replaced with the slightly modified FPGA versions
+and are replaced with the slightly modified FPGA versions:
 
 .. code-block:: python
 
+   # Connection from input to pre-synaptic ensembles
+   nengo.Connection(input_node, ens_fpga.input)  # Note the added '.input'
+
    # Connection from pre- to post-synaptic ensembles
-   nengo.Connection(pre, post_fpga.input)  # Note the added '.input'
+   nengo.Connection(ens_fpga.output, post)  # Note the added '.output'
 
-   # Connection from post-synaptic ensemble to error
-   nengo.Connection(post_fpga.output, error)  # Note the added '.output'
+The NengoFPGA connections are very similar to the original Nengo connections
+with the exception that they use the interfaces of the
+``FpgaPesEnsembleNetwork`` object.
+The ``ens_fpga.input`` and ``ens_fpga.output`` replace the input and output
+of the original ``pre`` ensemble.
 
-   # Connection from error into the learning rule
-   nengo.Connection(error, post_fpga.error)  # Note connected to the FPGA
+Connecting the Error Ensemble
+-----------------------------
 
-These NengoFPGA connections are very similar to the original Nengo connections
-except now we are using the interfaces of the ``FpgaPesEnsembleNetwork`` object.
-The ``poast_fpga.input`` and ``post_fpga.output`` replace the input and output
-of the original ``post`` ensemble and the ``post_fpga.error`` interface replaces
-the connection into the learning rule, which is now encompassed in the
-``post_fpga`` object.
+In the original Nengo model, a neural ensemble was used to compute the error
+signal that drives the PES learning rule. Using NengoFPGA, this neural
+ensemble is still needed, and the only change required is to modify the
+connections from this error ensemble to the FPGA ensemble. The original Nengo
+model defined the error ensemble and associated connections as:
+
+.. code-block:: python
+
+   # Create an ensemble for the error signal
+   # Error = actual - target = post - pre
+   error = nengo.Ensemble(50, 2)
+   nengo.Connection(post, error)
+   nengo.Connection(input_node, error, transform=-1)
+
+   # Add the learning rule on the pre-post connection
+   conn.learning_rule_type = nengo.PES(learning_rate=1e-4)
+
+   # Connect the error into the learning rule
+   nengo.Connection(error, conn.learning_rule)
+
+The NengoFPGA equivalent code would be:
+
+.. code-block:: python
+
+   # Create an ensemble for the error signal
+   # Error = actual - target = post - pre
+   error = nengo.Ensemble(50, 2)  # Remains unchanged
+   nengo.Connection(post, error)  # Remains unchanged
+   nengo.Connection(input_node, error, transform=-1)  # Remains unchanged
+
+   # Connect the error into the learning rule
+   nengo.Connection(error, ens_fpga.error)
+
+Note that -- as mentioned previously -- in the NengoFPGA equivalent code, the
+``learning_rule_type`` definition of the pre-post connection has been removed.
+
+
+Final NengoFPGA Model
+---------------------
 
 Altogether the NengoFPGA version of the learned communication channel would
 look something like this:
@@ -132,28 +185,27 @@ look something like this:
 
    with nengo.Network() as model:
 
-      # Input stimulus
-      input_node = nengo.Node(input_func)
+       # Input stimulus
+       input_node = nengo.Node(input_func)
 
-      # Two ensembles of neurons, one standard Nengo, one on the FPGA
-      pre = nengo.Ensemble(50, 2)
-      post_fpga = FpgaPesEnsembleNetwork('de1', n_neurons=50,
+       # "Pre" ensemble of neurons, and connection from the input
+       ens_fpga = FpgaPesEnsembleNetwork('de1', n_neurons=50,
                                          dimensions=2,
                                          learning_rate=1e-4)
+       nengo.Connection(input_node, ens_fpga.input)  # Note the added '.input'
 
-      # Connect input, pre, and post
-      nengo.Connection(input_node, pre)
-      nengo.Connection(pre, post_fpga.input)  # Note the added '.input'
+       # "Post" ensemble of neurons, and connection from "Pre"
+       post = nengo.Ensemble(50, 2)
+       conn = nengo.Connection(ens_fpga.output, post)  # Note the added '.output'
 
-      # Create an ensemble for the error signal
-      # Error = actual - target = post - pre
-      error = nengo.Ensemble(50, dimensions=2)
-      nengo.Connection(post_fpga.output, error)  # Note the added '.output'
-      nengo.Connection(pre, error, transform=-1)
+       # Create an ensemble for the error signal
+       # Error = actual - target = post - pre
+       error = nengo.Ensemble(50, 2)
+       nengo.Connection(post, error)
+       nengo.Connection(input_node, error, transform=-1)
 
-      # Connect the error into the learning rule
-      nengo.Connection(error, post_fpga.error)  # Note connected to the FPGA
-
+       # Connect the error into the learning rule
+       nengo.Connection(error, ens_fpga.error)
 
 
 Basic Use
