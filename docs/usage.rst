@@ -34,7 +34,7 @@ example of a learned communication channel built with standard Nengo:
        conn = nengo.Connection(pre, post)
 
        # Create an ensemble for the error signal
-       # Error = actual - target = post - input
+       # Error = actual - target = "post" - input
        error = nengo.Ensemble(50, 2)
        nengo.Connection(post, error)
        nengo.Connection(input_node, error, transform=-1)
@@ -47,7 +47,7 @@ example of a learned communication channel built with standard Nengo:
 
 The Nengo code above creates two neural ensembles, ``pre`` and ``post``, and
 forms a PES-learning connection between these two ensembles. The weights of
-this connection are modulated by an error signal computed byt a third neural
+this connection are modulated by an error signal computed by a third neural
 ensemble (``error``).
 
 NengoFPGA can be used to replace the ``pre`` ensemble with an ensemble that
@@ -83,7 +83,7 @@ removed and rolled into the ``FpgaPesEnsembleNetwork`` constructor.
 
 .. code-block:: python
 
-   # Post-synaptic ensemble & learning rule
+   # "Pre" ensemble & learning rule
    ens_fpga = FpgaPesEnsembleNetwork('de1', n_neurons=50,
                                      dimensions=2,
                                      learning_rate=1e-4)
@@ -105,20 +105,20 @@ as:
 
 .. code-block:: python
 
-   # Connection from input to pre-synaptic ensemble
+   # Connection from input to "pre" ensemble
    nengo.Connection(input_node, pre)
 
-   # Connection from pre- to post-synaptic ensembles
+   # Connection from "pre" to "post" ensemble
    conn = nengo.Connection(pre, post)
 
 and are replaced with the slightly modified FPGA versions:
 
 .. code-block:: python
 
-   # Connection from input to pre-synaptic ensembles
+   # Connection from input to "pre" (FPGA) ensemble
    nengo.Connection(input_node, ens_fpga.input)  # Note the added '.input'
 
-   # Connection from pre- to post-synaptic ensembles
+   # Connection from "pre" (FPGA) to "post" ensemble
    nengo.Connection(ens_fpga.output, post)  # Note the added '.output'
 
 The NengoFPGA connections are very similar to the original Nengo connections
@@ -139,7 +139,7 @@ model defined the error ensemble and associated connections as:
 .. code-block:: python
 
    # Create an ensemble for the error signal
-   # Error = actual - target = post - pre
+   # Error = actual - target = "post" - input
    error = nengo.Ensemble(50, 2)
    nengo.Connection(post, error)
    nengo.Connection(input_node, error, transform=-1)
@@ -155,16 +155,17 @@ The NengoFPGA equivalent code would be:
 .. code-block:: python
 
    # Create an ensemble for the error signal
-   # Error = actual - target = post - pre
+   # Error = actual - target = "post" - input
    error = nengo.Ensemble(50, 2)  # Remains unchanged
    nengo.Connection(post, error)  # Remains unchanged
    nengo.Connection(input_node, error, transform=-1)  # Remains unchanged
 
    # Connect the error into the learning rule
-   nengo.Connection(error, ens_fpga.error)
+   nengo.Connection(error, ens_fpga.error)  # Note the added '.error'
 
 Note that -- as mentioned previously -- in the NengoFPGA equivalent code, the
-``learning_rule_type`` definition of the pre-post connection has been removed.
+``learning_rule_type`` definition of the pre-post connection has been removed
+as this is declared in the ``FpgaPesEnsembleNetwork`` object.
 
 
 Final NengoFPGA Model
@@ -199,7 +200,7 @@ look something like this:
        conn = nengo.Connection(ens_fpga.output, post)  # Note the added '.output'
 
        # Create an ensemble for the error signal
-       # Error = actual - target = post - pre
+       # Error = actual - target = "post" - input
        error = nengo.Ensemble(50, 2)
        nengo.Connection(post, error)
        nengo.Connection(input_node, error, transform=-1)
