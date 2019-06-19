@@ -206,7 +206,7 @@ look something like this:
        nengo.Connection(input_node, error, transform=-1)
 
        # Connect the error into the learning rule
-       nengo.Connection(error, ens_fpga.error)
+       nengo.Connection(error, ens_fpga.error)  # Note the added '.error'
 
 
 Basic Use
