@@ -24,6 +24,9 @@ Release History
 
 **Added**
 
+- Add example setting encoders/decoders.
+  (`#30 <https://github.com/nengo/nengo-fpga/pull/30>`__)
+
 - Add purchase link to docs.
   (`#29 <https://github.com/nengo/nengo-fpga/pull/29>`__)
 

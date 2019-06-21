@@ -29,6 +29,7 @@ See :ref:`Using Jupyter Notebooks <jupyter>` for help.
 
    examples/notebooks/00-communication_channel
    examples/notebooks/01-learn_communication_channel
+   examples/notebooks/02-set_neuron_params
 
 
 GUI Examples
@@ -102,7 +103,7 @@ To run this example in Nengo, from the |gui_dir| directory, run:
 
 .. code-block:: none
 
-   nengo 02-mnist_vision_network.py -b nengo_fpga
+   nengo 00-mnist_vision_network.py -b nengo_fpga
 
 .. note::
 
@@ -163,7 +164,7 @@ To run this example in Nengo, from the |gui_dir| directory, run:
 
 .. code-block:: none
 
-   nengo 03-adaptive_pendulum.py -b nengo_fpga
+   nengo 01-adaptive_pendulum.py -b nengo_fpga
 
 When the model is loaded into Nengo GUI, you should see a graphical
 representation similar to the image below.
@@ -276,7 +277,7 @@ To run this example in Nengo, from the |gui_dir| directory, run:
 
 .. code-block:: none
 
-   nengo 04-RL_demo.py -b nengo_fpga
+   nengo 02-RL_demo.py -b nengo_fpga
 
 When the model is loaded into Nengo GUI, you should see a graphical
 representation similar to the image below.
