@@ -19,6 +19,6 @@ but NengoFPGA provides a unified frontend for both devices.
    api
    appendix
    contact
-   license
+   project
 
 .. todolist::
