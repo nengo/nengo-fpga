@@ -78,8 +78,8 @@ ensemble. The standard Nengo code for the ``pre`` ensemble was:
 
 and this is replaced with the ``FpgaPesEnsembleNetwork`` class. Since learning
 is desired in the above model, the learning rule definition on the pre-post
-connection (``conn.learning_rule_type = nengo.PES(learning_rate=1e-4)``) has been
-removed and rolled into the ``FpgaPesEnsembleNetwork`` constructor.
+connection (``conn.learning_rule_type = nengo.PES(learning_rate=1e-4)``) has
+been removed and rolled into the ``FpgaPesEnsembleNetwork`` constructor.
 
 .. code-block:: python
 
@@ -236,7 +236,8 @@ Nengo GUI:
    nengo <my_file.py> -b nengo_fpga
 
 This should open the GUI in a browser and display the network from
-``my_file.py``. You can begin execution by clicking the play button in the bottom left corner. this may take a few moments to establish a connection and
+``my_file.py``. You can begin execution by clicking the play button in the
+bottom left corner. this may take a few moments to establish a connection and
 initialize the FPGA device.
 
 .. _scripting:
@@ -273,3 +274,28 @@ Simply replace the ``Simulator`` with the one from NengoFPGA:
 
    with nengo_fpga.Simulator(model) as sim:
       sim.run(1)
+
+
+Maximum Model Size
+==================
+
+When running Nengo models on other hardware there is no set limit to model or
+network size. The system will continue to allocate resources (like memory) until
+it runs out which leads to different limits depending on the capabilities of
+your hardware. On the other hand, the NengoFPGA design is fixed and therefore we
+must provision resources up front. As a result, we have specific upper bounds
+which are chosen such that the resource allocation balances performance and
+flexibility for the given architecture. We store all  neuron parameters on-chip
+giving us bounds based on specific memory requirements:
+
+   - The maximum number of neurons, *N*, used to allocate memory for things like
+     neuron activity and bias.
+   - The maximum number of representational dimensions (input or output), *D*,
+     used to allocate memory for things like the input and output vector.
+   - The maximum product of neurons and dimensions, *NxD*, used to allocate
+     memory for things like encoder and decoder matrices.
+
+These maximum model size values are summarized in the hardware-specific documentation:
+
+   - `DE1-SoC feasible model size <https://www.nengo.ai/nengo-de1/appendix.html#maximum-model-size>`_
+   - `PYNQ-Z1 feasible model size <https://www.nengo.ai/nengo-pynq/appendix.html#maximum-model-size>`_

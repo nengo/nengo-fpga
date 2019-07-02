@@ -24,6 +24,9 @@ Release History
 
 **Added**
 
+- Add model size bounds to docs.
+  (`#31 <https://github.com/nengo/nengo-fpga/pull/31>`__)
+
 - Add example setting encoders/decoders.
   (`#30 <https://github.com/nengo/nengo-fpga/pull/30>`__)
 
