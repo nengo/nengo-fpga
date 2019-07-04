@@ -23,6 +23,11 @@ If you wish to experiment with these examples yourself, you can do so by
 running the notebook from your own computer.
 See :ref:`Using Jupyter Notebooks <jupyter>` for help.
 
+The example notebooks describe how to construct a communication channel in
+NengoFPGA, construct a learned communication channel in NengoFPGA, set the
+ensemble and connection parameters of the adaptive neural ensemble on the FPGA,
+and compares the simulation run time wall clock performance between Nengo
+simulations run on your PC, versus on the FPGA.
 
 .. toctree::
    :maxdepth: 1
@@ -30,6 +35,7 @@ See :ref:`Using Jupyter Notebooks <jupyter>` for help.
    examples/notebooks/00-communication_channel
    examples/notebooks/01-learn_communication_channel
    examples/notebooks/02-set_neuron_params
+   examples/notebooks/03-speed_comparison
 
 
 GUI Examples
