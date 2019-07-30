@@ -17,9 +17,9 @@ IP packages can be purchased through
 DE1-SoC
 -------
 
-   .. image:: _static/de1.jpg
+   .. image:: _static/de1.png
       :alt: DE1 board
-      :width: 45%
+      :width: 28%
       :align: right
       :target: https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&No=836
 
@@ -41,9 +41,9 @@ this board with NengoFPGA.
 PYNQ-Z1
 -------
 
-   .. image:: _static/pynq.jpg
+   .. image:: _static/pynq.png
       :alt: PYNQ board
-      :width: 45%
+      :width: 30%
       :align: right
       :target: https://store.digilentinc.com/pynq-z1-python-productivity-for-zynq-7000-arm-fpga-soc/
 
@@ -58,7 +58,7 @@ this board with NengoFPGA.
 
 |
 |
-
+|
 
 .. _ssh-key:
 
@@ -131,11 +131,11 @@ Linux and Mac
 
       ssh-copy-id -i ~/.ssh/id_rsa.pub xilinx@10.162.177.99
 
-.. note::
-   If the ``ssh-copy-id`` command does not work, or is unavailable, copy the
-   contents of the ``*.pub`` file (this is the generated SSH *public key*)
-   located in the same location as the SSH *private key* into the
-   ``~/.ssh/authorized_keys`` of the appropriate user on the FPGA board.
+   .. note::
+      If the ``ssh-copy-id`` command does not work, or is unavailable, copy the
+      contents of the ``*.pub`` file (this is the generated SSH *public key*)
+      located in the same location as the SSH *private key* into the
+      ``~/.ssh/authorized_keys`` of the appropriate user on the FPGA board.
 
 
 Configuring the ``fpga_config`` File
@@ -231,6 +231,7 @@ Jupyter so you can run the examples locally or create your own notebook!
 #. Step through the notebook by continuing to execute cells, you can execute
    the text cells as cell, so no need to jump down and click on each code cell!
 
-.. tip::
+.. note::
    Be sure to execute cells in order otherwise you may get unexpected results.
-   If you make changes to code in a cell be sure to rerun that cell and any other cells affected by that change!
+   If you make changes to code in a cell be sure to rerun that cell and any
+   other cells affected by that change!

@@ -42,8 +42,8 @@ Supported Neuron Types
 
 Currently NengoFPGA supports the following neuron types:
 
-   - `nengo.RecitifiedLinear <https://www.nengo.ai/nengo/frontend_api.html#nengo.RectifiedLinear>`_
-   - `nengo.SpikingRectifiedLinear <https://www.nengo.ai/nengo/frontend_api.html#nengo.SpikingRectifiedLinear>`_
+- `nengo.RecitifiedLinear <https://www.nengo.ai/nengo/frontend_api.html#nengo.RectifiedLinear>`_
+- `nengo.SpikingRectifiedLinear <https://www.nengo.ai/nengo/frontend_api.html#nengo.SpikingRectifiedLinear>`_
 
 
 Objects and Functions

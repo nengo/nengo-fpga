@@ -288,14 +288,14 @@ which are chosen such that the resource allocation balances performance and
 flexibility for the given architecture. We store all  neuron parameters on-chip
 giving us bounds based on specific memory requirements:
 
-   - The maximum number of neurons, *N*, used to allocate memory for things like
-     neuron activity and bias.
-   - The maximum number of representational dimensions (input or output), *D*,
-     used to allocate memory for things like the input and output vector.
-   - The maximum product of neurons and dimensions, *NxD*, used to allocate
-     memory for things like encoder and decoder matrices.
+- The maximum number of neurons, *N*, used to allocate memory for things like
+  neuron activity and bias.
+- The maximum number of representational dimensions (input or output), *D*,
+  used to allocate memory for things like the input and output vector.
+- The maximum product of neurons and dimensions, *NxD*, used to allocate
+  memory for things like encoder and decoder matrices.
 
 These maximum model size values are summarized in the hardware-specific documentation:
 
-   - `DE1-SoC feasible model size <https://www.nengo.ai/nengo-de1/appendix.html#maximum-model-size>`_
-   - `PYNQ-Z1 feasible model size <https://www.nengo.ai/nengo-pynq/appendix.html#maximum-model-size>`_
+- `DE1-SoC feasible model size <https://www.nengo.ai/nengo-de1/appendix.html#maximum-model-size>`_
+- `PYNQ-Z1 feasible model size <https://www.nengo.ai/nengo-pynq/appendix.html#maximum-model-size>`_

@@ -33,8 +33,8 @@ Installation Quick Reference Guide
 
          python nengo_fpga/id_extractor.py <board>
 
-   where **<board>** is the board name as it appears in ``fpga_config``.
-   See the `Copy Protection`_ section for more information.
+      where **<board>** is the board name as it appears in ``fpga_config``.
+      See the `Copy Protection`_ section for more information.
 
 #. Now with the Device ID available, you are ready to
    :ref:`acquire your bitstreams <get-bitstreams>`.
@@ -63,7 +63,7 @@ Installation Quick Reference Guide
       You may get a slightly different value but if your NengoFPGA system
       is functioning correctly, this should be near 0.001.
 
-   .. tip::
+   .. note::
       If you run the ``basic_example.py`` script and it hangs waiting for the
       simulation to begin but does not display any errors, then it is likely
       a firewall issue. Ensure your firewall allows connections to and from
@@ -149,7 +149,7 @@ The entries that define the FPGA board parameters have more values than the
 host entry, the name (eg. **[pynq]**) can be anything, though we recommend
 using a descriptive name such as **[pynq]** or **[de1]**.
 
-.. note::
+.. caution::
    Every board connected to the same network *must* have its own entry
    in the config file.
 

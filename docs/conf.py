@@ -80,7 +80,6 @@ html_last_updated_fmt = ''  # Suppress 'Last updated on:' timestamp
 html_show_sphinx = False
 html_theme_options = {
     "sidebar_toc_depth": 4,
-    "sidebar_logo_width": 200,
     "nengo_logo": "nengo-fpga-full-light.svg",
 }
 

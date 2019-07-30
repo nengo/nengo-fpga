@@ -58,6 +58,9 @@ Release History
 
 **Changed**
 
+- Update the docs theme.
+  (`#32 <https://github.com/nengo/nengo-fpga/pull/32>`__)
+
 - Rework usage page in docs.
   (`#27 <https://github.com/nengo/nengo-fpga/pull/27>`__)
 

@@ -123,9 +123,9 @@ To run this example in Nengo, from the |gui_dir| directory, run:
 When the model is loaded into Nengo GUI, you should see a graphical
 representation similar to the image below.
 
-   .. image:: _static/mnist_gui.png
-      :alt: MNIST Example GUI
-      :width: 100%
+.. image:: _static/mnist_gui.png
+  :alt: MNIST Example GUI
+  :width: 100%
 
 In the top half of the graphical pane, you should see the high-level
 representation of the MNIST network. The bottom half of the graphical pane
@@ -142,10 +142,10 @@ is divided into three sections:
 
 When the simulation is run, you should see an output like the image below.
 
-   .. image:: _static/mnist.gif
-      :alt: MNIST Simulation
-      :width: 75%
-      :align: center
+.. image:: _static/mnist.gif
+  :alt: MNIST Simulation
+  :width: 75%
+  :align: center
 
 Adaptive Pendulum Control
 -------------------------
@@ -169,9 +169,9 @@ To run this example in Nengo, from the |gui_dir| directory, run:
 When the model is loaded into Nengo GUI, you should see a graphical
 representation similar to the image below.
 
-   .. image:: _static/pendulum_gui.png
-      :alt: Inverted Pendulum Example GUI
-      :width: 100%
+.. image:: _static/pendulum_gui.png
+  :alt: Inverted Pendulum Example GUI
+  :width: 100%
 
 In the top half of the graphical pane, you should see the high-level
 representation of the MNIST network. The bottom half of the graphical pane
@@ -205,30 +205,23 @@ controlled by a standard PD controller. It can be seen that in this case,
 the actual position of the pendulum never converges to the desired target
 angle.
 
-   .. list-table::
-      :widths: 50 50
-      :align: center
+.. list-table::
+  :widths: 50 50
+  :align: center
 
-      * -
+  * -
 
-         .. do not delete this table row. It adds the line above the table
-            to match the one added by the row below.
+     .. image:: _static/pendulum.gif
+        :alt: Inverted Pendulum Simulation
 
-        -
+     |nbsp| |nbsp| |nbsp| |nbsp| Adaptive Controller
 
-      * -
+    -
 
-         .. image:: _static/pendulum.gif
-            :alt: Inverted Pendulum Simulation
+     .. image:: _static/pendulum_no-learn.gif
+        :alt: Inverted Pendulum Adaptive Simulation
 
-         |nbsp| |nbsp| |nbsp| |nbsp| Adaptive Controller
-
-        -
-
-         .. image:: _static/pendulum_no-learn.gif
-            :alt: Inverted Pendulum Adaptive Simulation
-
-         |nbsp| |nbsp| Non-adaptive Controller
+     |nbsp| |nbsp| Non-adaptive Controller
 
 You can also try moving the **Extra Mass** slider up or down in the GUI and
 observe how the added or reduced mass affect the position of the pendulum,
@@ -282,9 +275,9 @@ To run this example in Nengo, from the |gui_dir| directory, run:
 When the model is loaded into Nengo GUI, you should see a graphical
 representation similar to the image below.
 
-   .. image:: _static/rl_gui.png
-      :alt: RL Example GUI
-      :width: 100%
+.. image:: _static/rl_gui.png
+  :alt: RL Example GUI
+  :width: 100%
 
 For this example, the graphical pane is divided into four quadrants.
 
@@ -312,45 +305,37 @@ When the simulation is running, the agent should move around the world, as
 shown in the images below. The images below also show the agent moving around
 the world in 3 modes:
 
-   1. Exploring: The agent is constantly using the error signal to learn
-      which is the best action to perform.
-   #. Exploiting: The learning has been disabled after the agent has spent
-      about 15 seconds in the "Exploring" mode. The agent is thus moving
-      about the world using the radar-to-action mapping it had learned in the
-      exploration phase.
-   #. No Learning: The simulation is started with learning disabled. In this
-      scenario, the agent moves forward, encounters a wall, and is unable to
-      recover.
+1. Exploring: The agent is constantly using the error signal to learn
+   which is the best action to perform.
+#. Exploiting: The learning has been disabled after the agent has spent
+   about 15 seconds in the "Exploring" mode. The agent is thus moving
+   about the world using the radar-to-action mapping it had learned in the
+   exploration phase.
+#. No Learning: The simulation is started with learning disabled. In this
+   scenario, the agent moves forward, encounters a wall, and is unable to
+   recover.
 
-   .. list-table::
-      :widths: 33 33 33
-      :align: center
+.. list-table::
+  :widths: 33 33 33
+  :align: center
 
-      * -
+  * -
 
-         .. do not delete this table row. It adds the line above the table
-            to match the one added by the row below.
+     .. image:: _static/rl_explore.gif
 
-        -
-        -
+     |nbsp| |nbsp| |nbsp| Exploring
 
-      * -
+    -
 
-         .. image:: _static/rl_explore.gif
+     .. image:: _static/rl_exploit.gif
 
-         |nbsp| |nbsp| |nbsp| Exploring
+     |nbsp| |nbsp| |nbsp| Exploiting
 
-        -
+    -
 
-         .. image:: _static/rl_exploit.gif
+     .. image:: _static/rl_no-learn.gif
 
-         |nbsp| |nbsp| |nbsp| Exploiting
-
-        -
-
-         .. image:: _static/rl_no-learn.gif
-
-         |nbsp| |nbsp| |nbsp| No Learning
+     |nbsp| |nbsp| |nbsp| No Learning
 
 Changing the world layout
 ^^^^^^^^^^^^^^^^^^^^^^^^^
