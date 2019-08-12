@@ -18,7 +18,6 @@ Release History
    - Removed
    - Fixed
 
-
 0.1.1 (Unreleased)
 ------------------
 
@@ -55,7 +54,6 @@ Release History
 - Added script to read device DNA from FPGA board.
   (`#11 <https://github.com/nengo/nengo-fpga/pull/11>`__)
 
-
 **Changed**
 
 - Update the docs theme.
@@ -69,6 +67,12 @@ Release History
 
 - Rename "DNA" to "ID" everywhere.
   (`#20 <https://github.com/nengo/nengo-fpga/pull/20>`__)
+
+**Fixed**
+
+- Fixed behaviour of code when provided FPGA name string is not found in the
+  fpga_config file.
+  (`#33 <https://github.com/nengo/nengo-fpga/pull/33>`__)
 
 
 0.1.0 (December 19, 2018)

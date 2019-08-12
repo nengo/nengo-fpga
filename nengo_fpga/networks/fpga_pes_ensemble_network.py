@@ -196,16 +196,28 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         return os.path.join(self.arg_data_path, self.arg_data_file)
 
     def close(self):
+        # Function does nothing if FPGA configuration not found in config file
+        if not self.config_found:
+            return
+
         logger.info("<%s> SSH connection closed" %
                     fpga_config.get(self.fpga_name, 'ip'))
         self.ssh_client.close()
 
     def cleanup(self):
+        # Function does nothing if FPGA configuration not found in config file
+        if not self.config_found:
+            return
+
         # Clean up any existing argument data files
         if os.path.exists(self.local_data_filepath):
             os.remove(self.local_data_filepath)
 
     def connect_thread_func(self):
+        # Function does nothing if FPGA configuration not found in config file
+        if not self.config_found:
+            return
+
         # Get the IP of the remote device from the fpga_config file
         remote_ip = fpga_config.get(self.fpga_name, 'ip')
 
@@ -326,6 +338,10 @@ class FpgaPesEnsembleNetwork(nengo.Network):
                     % (remote_ip, '\n'.join(error_strs)))
 
     def connect(self):
+        # Function does nothing if FPGA configuration not found in config file
+        if not self.config_found:
+            return
+
         logger.info("<%s> Open SSH connection" %
                     fpga_config.get(self.fpga_name, 'ip'))
         # Start a new thread to open the ssh connection. Use a thread to
@@ -348,6 +364,12 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         self.ssh_info_str += str_data
 
     def reset(self):
+        # Function does nothing if FPGA configuration not found in config file
+        if not self.config_found:
+            return
+
+        # Otherwise, close and reopen the SSH connection to the board
+        # Closing the SSH connection will terminate the board-side script
         logger.info("<%s> Resetting SSH connection:" %
                     fpga_config.get(self.fpga_name, 'ip'))
         # Close and reopen ssh connections
@@ -378,7 +400,6 @@ class FpgaPesEnsembleNetwork(nengo.Network):
 def build_FpgaPesEnsembleNetwork(model, network):
     """ Add build steps like nengo?
     """
-
 
     # Check if nengo_fpga.Simulator is being used to build this network
     if not network.using_fpga_sim:
