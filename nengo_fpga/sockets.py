@@ -230,7 +230,7 @@ class SocketStep(object):
         is sent when the current local timestep is closer to the remote
         time step than the next local timestep.
         """
-        if t <= 0.:  # Nengo calling this function to figure out output size
+        if t == 0.:  # Nengo calling this function to figure out output size
             return self.value
 
         # Send must happen before receive to avoid deadlock situations, i.e.
@@ -260,6 +260,10 @@ class SocketStep(object):
             self.recv_socket.close()
 
     def recv(self, t):
+        if self.recv_socket.t < 0:
+            raise RuntimeError(
+                "UDP Socket connection terminated by remote side.")
+
         if self.ignore_timestamp:
             self.recv_socket.recv_with_adaptive_timeout()
             self._update_value()

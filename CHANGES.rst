@@ -68,16 +68,18 @@ Release History
 - Rename "DNA" to "ID" everywhere.
   (`#20 <https://github.com/nengo/nengo-fpga/pull/20>`__)
 
+- Receiving a UDP packet with a negative timestep will now cause the Nengo
+  simulation to terminate with an exception.
+  (`#26 <https://github.com/nengo/nengo-fpga/pull/26>`__)
+
+- Now throwing an exception on unsupported neuron type.
+  (`#26 <https://github.com/nengo/nengo-fpga/pull/26>`__)
+
 **Fixed**
 
 - Fixed behaviour of code when provided FPGA name string is not found in the
   fpga_config file.
   (`#33 <https://github.com/nengo/nengo-fpga/pull/33>`__)
-
-**Fixed**
-
-- Now throwing an exception on unsupported neuron type.
-   (`#26 <https://github.com/nengo/nengo-fpga/pull/26>`__)
 
 
 0.1.0 (December 19, 2018)

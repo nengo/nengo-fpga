@@ -9,10 +9,15 @@ from nengo.builder.signal import Signal
 from nengo.builder.operator import Reset, Copy
 # Temporarily import from local sockets module
 # TODO: Remove when sockets merged into nengo_extras
-try:
-    from nengo_extras import sockets
-except ImportError:
-    from nengo_fpga import sockets
+# try:
+#     from nengo_extras import sockets
+# except ImportError:
+#     from nengo_fpga import sockets
+
+# sockets in nengo_fpga has diverged from sockets in nengo_extras (remote
+# side termination code is not in nengo_extras), use nengo_fpga.sockets until
+# they get merged into nengo_extras
+from nengo_fpga import sockets
 
 from nengo_fpga.fpga_config import fpga_config
 
