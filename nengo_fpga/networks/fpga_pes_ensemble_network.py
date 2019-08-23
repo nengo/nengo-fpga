@@ -205,6 +205,13 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         if not self.config_found:
             return
 
+        # Close the UDP socket if it is open
+        if self.udp_socket is not None:
+            logger.info("<%s> UDP Connection closed" %
+                        fpga_config.get(self.fpga_name, 'ip'))
+            self.udp_socket.close()
+
+        # Close the SSH connection
         logger.info("<%s> SSH connection closed" %
                     fpga_config.get(self.fpga_name, 'ip'))
         self.ssh_client.close()

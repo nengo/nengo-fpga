@@ -81,6 +81,10 @@ Release History
   fpga_config file.
   (`#33 <https://github.com/nengo/nengo-fpga/pull/33>`__)
 
+- Fixed simulation hanging error when two simulations are run one after the
+  other.
+  (`#34 <https://github.com/nengo/nengo-fpga/pull/34>`__)
+
 
 0.1.0 (December 19, 2018)
 -------------------------

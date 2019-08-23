@@ -365,18 +365,24 @@ class UDPReceiveSocket(nengo.Process):
         self.recv_timeout = recv_timeout
         self.loss_limit = loss_limit
         self.byte_order = byte_order
+        self.recv = None
 
     def make_step(self, shape_in, shape_out, dt, rng):
         assert len(shape_out) == 1
-        recv = _UDPSocket(
+        self.recv = _UDPSocket(
             self.listen_addr, shape_out[0], self.byte_order,
             timeout=self.recv_timeout)
-        recv.open()
-        recv.bind()
+        self.recv.open()
+        self.recv.bind()
         return SocketStep(
-            dt=dt, recv=recv, remote_dt=self.remote_dt,
+            dt=dt, recv=self.recv, remote_dt=self.remote_dt,
             connection_timeout=self.connection_timeout,
             loss_limit=self.loss_limit)
+
+    def close(self):
+        if self.recv is not None:
+            self.recv.close()
+            self.recv = None
 
 
 class UDPSendSocket(nengo.Process):
@@ -418,12 +424,18 @@ class UDPSendSocket(nengo.Process):
         self.remote_addr = remote_addr
         self.remote_dt = remote_dt
         self.byte_order = byte_order
+        self.send = None
 
     def make_step(self, shape_in, shape_out, dt, rng):
         assert len(shape_in) == 1
-        send = _UDPSocket(self.remote_addr, shape_in[0], self.byte_order)
-        send.open()
-        return SocketStep(dt=dt, send=send, remote_dt=self.remote_dt)
+        self.send = _UDPSocket(self.remote_addr, shape_in[0], self.byte_order)
+        self.send.open()
+        return SocketStep(dt=dt, send=self.send, remote_dt=self.remote_dt)
+
+    def close(self):
+        if self.send is not None:
+            self.send.close()
+            self.send = None
 
 
 class UDPSendReceiveSocket(nengo.Process):
@@ -511,22 +523,31 @@ class UDPSendReceiveSocket(nengo.Process):
         self.recv_timeout = recv_timeout
         self.loss_limit = loss_limit
         self.byte_order = byte_order
-
+        self.recv = None
+        self.send = None
 
     def make_step(self, shape_in, shape_out, dt, rng):
         assert len(shape_in) == 1
         assert len(shape_out) == 1
-        recv = _UDPSocket(
+        self.recv = _UDPSocket(
             self.listen_addr, shape_out[0], self.byte_order,
             timeout=self.recv_timeout)
-        recv.open()
-        recv.bind()
-        send = _UDPSocket(self.remote_addr, shape_in[0], self.byte_order)
-        send.open()
+        self.recv.open()
+        self.recv.bind()
+        self.send = _UDPSocket(self.remote_addr, shape_in[0], self.byte_order)
+        self.send.open()
         return SocketStep(
             dt=dt,
-            send=send, recv=recv,
+            send=self.send, recv=self.recv,
             ignore_timestamp=self.ignore_timestamp,
             remote_dt=self.remote_dt,
             connection_timeout=self.connection_timeout,
             loss_limit=self.loss_limit)
+
+    def close(self):
+        if self.recv is not None:
+            self.recv.close()
+            self.recv = None
+        if self.send is not None:
+            self.send.close()
+            self.send = None
