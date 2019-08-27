@@ -21,6 +21,6 @@ Contributor Agreement
 
 We require that all contributions be covered under
 our contributor assignment agreement. Please see
-`the agreement <https://www.nengo.ai/caa.html>`_
+`the agreement <https://www.nengo.ai/caa/>`_
 for instructions on how to sign.
 
