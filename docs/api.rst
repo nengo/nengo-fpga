@@ -20,7 +20,7 @@ ensemble is created:
    ens.ensemble.intercepts = nengo.dists.Choice([-0.5])
    ens.ensemble.max_rates = nengo.dists.Choice([100])
 
-Since our ``FpgaPesEnsembleNetwork`` class also encompasses the connection to
+Since our ``FpgaPesEnsembleNetwork`` class also encompasses the connection from
 the FPGA ensemble, we can similarly change the connection parameters:
 
 .. code-block:: python
@@ -30,6 +30,15 @@ the FPGA ensemble, we can similarly change the connection parameters:
    ens.connection.solver = nengo.solvers.LstsqL2(reg=0.01)
 
 The ``02-mnist_vision_network`` example demonstrates this capability.
+
+If a recurrent connection exists, we can similarly modify that connection:
+
+.. code-block:: python
+
+   # Modify connection parameters
+   ens.feedback.synapse = 0.05
+   ens.feedback.function = lambda x: x*0.5
+
 
 .. seealso::
    Check out the Nengo documentation for a full list of `ensemble parameters
@@ -48,10 +57,5 @@ Currently NengoFPGA supports the following neuron types:
 
 Objects and Functions
 =====================
-
-.. todo::
-   - Finish docstring for FpgaPesEnsembleNetwork
-   - Do we want to add anything else here for autodocs?
-
 
 .. autoclass:: nengo_fpga.networks.FpgaPesEnsembleNetwork
