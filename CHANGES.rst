@@ -23,6 +23,9 @@ Release History
 
 **Added**
 
+- Add on-chip feedback connection.
+  (`#35 <https://github.com/nengo/nengo-fpga/pull/35>`__)
+
 - Requirement for numpy<1.17.
   (`#39 <https://github.com/nengo/nengo-fpga/pull/39>`__)
 

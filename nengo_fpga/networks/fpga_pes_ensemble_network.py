@@ -63,6 +63,11 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         that is used to handle UDP communication between the host PC and the
         FPGA board. The full list of parameters can be found here:
         https://github.com/nengo/nengo-fpga/blob/master/nengo_fpga/sockets.py#L425
+    feedback : float or (D_out, D_in) array_like, optional
+        Defines the transform for a recurrent connection. If ``None``, no
+        recurrent connection will be built. The default synapse used for the
+        recurrent connection is ``nengo.Lowpass(0.1)``, this can be changed
+        using the ``feedback`` attribute of this class.
     label : str, optional (Default: None)
         A descriptive label for the connection.
     seed : int, optional (Default: None)
@@ -89,12 +94,17 @@ class FpgaPesEnsembleNetwork(nengo.Network):
     connection : `nengo.Connection`
         The connection object used to configure the learning connection
         implementation on the FPGA board.
+    feedback : `nengo.Connection`
+        The connection object used to configure the recurrent connection
+        implementation on the FPGA board.
 
     """
+
     def __init__(self, fpga_name, n_neurons, dimensions, learning_rate,
                  function=nengo.Default, transform=nengo.Default,
                  eval_points=nengo.Default, socket_args={},
-                 label=None, seed=None, add_to_container=None):
+                 feedback=None, label=None, seed=None,
+                 add_to_container=None):
 
         # Flags for determining whether or not the FPGA board is being used
         self.config_found = fpga_config.has_section(fpga_name)
@@ -123,7 +133,14 @@ class FpgaPesEnsembleNetwork(nengo.Network):
             self.output_dimensions = function.shape[1]
         else:
             raise nengo.exceptions.ValidationError(
-                "must be callable or array-like", "function", self)
+                "Must be callable or array-like", "function", self)
+
+        # Process feedback connection
+        if nengo.utils.compat.is_array_like(feedback):
+            self.rec_transform = feedback
+        elif feedback is not None:
+            raise nengo.exceptions.ValidationError(
+                "Must be scalar or array-like", "feedback", self)
 
         # Neuron type string map
         self.neuron_str_map = {
@@ -160,10 +177,10 @@ class FpgaPesEnsembleNetwork(nengo.Network):
                 **socket_kwargs)
         else:
             # FPGA name not found, throw a warning.
-            logger.warn("Specified FPGA configuration '" + fpga_name + "' " +
-                        'not found.')
-            print("WARNING: Specified FPGA configuration '" + fpga_name +
-                  "' not found.")
+            logger.warn("Specified FPGA configuration '" + fpga_name + "' "
+                        + 'not found.')
+            print("WARNING: Specified FPGA configuration '" + fpga_name
+                  + "' not found.")
             self.udp_socket = None
 
         # Make nengo model. Here, a dummy ensemble is created. It will be
@@ -186,8 +203,17 @@ class FpgaPesEnsembleNetwork(nengo.Network):
                 self.ensemble, self.output, function=function,
                 transform=transform, eval_points=eval_points,
                 learning_rule_type=nengo.PES(learning_rate))
+
             nengo.Connection(self.error, self.connection.learning_rule,
                              synapse=None)
+
+            if feedback is not None:
+                self.feedback = nengo.Connection(
+                    self.ensemble, self.ensemble,
+                    synapse=nengo.Lowpass(0.1),
+                    transform=self.rec_transform)
+            else:
+                self.feedback = None
 
         # Make the object lists immutable so that no extra objects can be added
         # to this network.
@@ -395,14 +421,14 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         if self.config_found:
             ssh_str = \
                 ('python ' + fpga_config.get(self.fpga_name, 'remote_script') +
-                 ' --host_ip="%s"' % fpga_config.get('host', 'ip') +
-                 ' --remote_ip="%s"' % fpga_config.get(self.fpga_name, 'ip') +
-                 ' --udp_port=%i' % self.udp_port +
-                 ' --arg_data_file="%s/%s"' %
+                 ' --host_ip="%s"' % fpga_config.get('host', 'ip')
+                 + ' --remote_ip="%s"' % fpga_config.get(self.fpga_name, 'ip')
+                 + ' --udp_port=%i' % self.udp_port
+                 + ' --arg_data_file="%s/%s"' %
                  (fpga_config.get(self.fpga_name, 'remote_tmp'),
                   self.arg_data_file) +
-                 ' --seed=%s' % str(self.seed) +
-                 '\n')
+                 ' --seed=%s' % str(self.seed)
+                 + '\n')
         else:
             ssh_str = ''
         return ssh_str
@@ -476,11 +502,32 @@ def build_FpgaPesEnsembleNetwork(model, network):
                 'Learning rule "%s" is not supported.' %
                 type(network.connection.learning_rule_type))
 
+        # Collect the feedback connection argument values
+        recur_args = {}
+        recur_args['weights'] = 0  # Necessary as flag even if not used
+
+        if network.feedback is not None:
+            # Validation
+            if network.feedback.learning_rule_type is not None:
+                raise nengo.exceptions.BuildError(
+                    'The FPGA feedback connection does not support learning.')
+
+            if not isinstance(network.feedback.synapse, nengo.Lowpass):
+                raise nengo.exceptions.BuildError(
+                    'The FPGA feedback connection only supports the '
+                    '`nengo.Lowpass` synapse.')
+
+            # Grab relevant attributes
+            recur_args['weights'] = param_model.params[
+                                                network.feedback].weights
+            recur_args['tau'] = network.feedback.synapse.tau
+
         # Save the NPZ data file
         npz_filename = 'fpen_args_' + str(id(network)) + '.npz'
         network.arg_data_file = npz_filename
         np.savez_compressed(network.local_data_filepath, sim_args=sim_args,
-                            ens_args=ens_args, conn_args=conn_args)
+                            ens_args=ens_args, conn_args=conn_args,
+                            recur_args=recur_args)
 
         # Build the nengo network using the network's udp_socket function
         # Set up input/output signals
@@ -503,8 +550,8 @@ def build_FpgaPesEnsembleNetwork(model, network):
 
         # Set up udp_socket combined input signals
         udp_socket_input_sig = \
-            Signal(np.zeros(network.input_dimensions +
-                            network.output_dimensions),
+            Signal(np.zeros(network.input_dimensions
+                            + network.output_dimensions),
                    name="udp_socket_input")
         model.add_op(Copy(input_sig, udp_socket_input_sig,
                           dst_slice=slice(0, network.input_dimensions)))

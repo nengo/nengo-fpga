@@ -24,3 +24,4 @@ htmlcov
 .pytest_cache/
 mnist.pkl.gz
 id_*.txt
+docs/.doctrees
