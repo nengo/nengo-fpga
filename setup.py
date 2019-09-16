@@ -20,5 +20,9 @@ setup(
     author='Applied Brain Research',
     description='NengoFPGA Interface',
     author_email='info@appliedbrainresearch.com',
-    install_requires=["nengo>=2.8.0", "numpy>=1.13.0", "paramiko>=2.4.1"],
+    install_requires=[
+        "nengo>=2.8.0",
+        "numpy>=1.13.0,<1.17",
+        "paramiko>=2.4.1"
+    ],
 )

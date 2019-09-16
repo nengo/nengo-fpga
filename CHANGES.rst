@@ -21,6 +21,10 @@ Release History
 0.2.1 (Unreleased)
 ------------------
 
+**Added**
+
+- Requirement for numpy<1.17.
+  (`#39 <https://github.com/nengo/nengo-fpga/pull/39>`__)
 
 0.2.0 (August 27, 2019)
 -----------------------
