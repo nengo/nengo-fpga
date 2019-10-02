@@ -1,0 +1,21 @@
+{% include "templates/LICENSE.rst.template" %}
+
+Licensed Code
+=============
+
+NengoFPGA imports or vendorizes several open source libraries.
+
+* `NumPy <https://www.numpy.org/>`_ - Used under
+  `BSD license <https://www.numpy.org/license.html>`__
+* `Sphinx <http://sphinx-doc.org/>`_ - Used under
+  `BSD license <https://bitbucket.org/birkenfeld/sphinx/src/be5bd373a1a47fb68d70523b6e980e654e070e9f/LICENSE?at=default>`__
+* `numpydoc <https://github.com/numpy/numpydoc>`_ - Used under
+  `BSD license <https://github.com/numpy/numpydoc/blob/master/LICENSE.txt>`__
+* `IPython <http://ipython.org/>`_ - Used under
+  `BSD license <https://github.com/ipython/ipython/blob/master/COPYING.rst>`__
+* `Paramiko <https://www.paramiko.org/>`_ - Used under
+  `LGPL license <https://github.com/paramiko/paramiko/blob/master/LICENSE>`__
+* `matplotlib <https://matplotlib.org/>`_ - Used under
+  `modified PSF license <https://matplotlib.org/users/license.html>`__
+* `Pillow <https://github.com/python-pillow/Pillow>`__ Used under
+  `Open Source PIL Software License <https://github.com/python-pillow/Pillow/blob/master/LICENSE>`__

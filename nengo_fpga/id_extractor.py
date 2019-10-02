@@ -1,13 +1,15 @@
+"""Top level script for reading device ID"""
+
 import socket
 import os
 import threading
-import paramiko
 import numpy as np
+import paramiko
 
 from nengo_fpga.fpga_config import fpga_config
 
 
-class IDExtractor(object):
+class IDExtractor:
     """ Class that connects to the FPGA and extracts the Device ID
 
     Parameters
@@ -20,6 +22,7 @@ class IDExtractor(object):
         The number of seconds the socket will wait to connect.
 
     """
+
     def __init__(self, fpga_name, max_attempts=5, timeout=5):
 
         self.config_found = fpga_config.has_section(fpga_name)
@@ -30,7 +33,7 @@ class IDExtractor(object):
         # Make SSHClient object
         self.ssh_client = paramiko.SSHClient()
         self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        self.ssh_info_str = ''
+        self.ssh_info_str = ""
         self.ssh_lock = False
 
         # Check if the desired FPGA name is defined in the configuration file
@@ -39,24 +42,27 @@ class IDExtractor(object):
             # If none is provided (i.e., the specified port number is 0),
             # choose a random tcp port number between 20000 and 65535.
             # We will use the udp port number from the config but use tcp.
-            self.tcp_port = int(fpga_config.get(fpga_name, 'udp_port'))
+            self.tcp_port = int(fpga_config.get(fpga_name, "udp_port"))
             if self.tcp_port == 0:
                 self.tcp_port = int(np.random.uniform(low=20000, high=65535))
 
             # Make the TCP socket for receiving Device ID.
             self.tcp_init = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.tcp_init.bind((fpga_config.get('host', 'ip'), self.tcp_port))
+            self.tcp_init.bind((fpga_config.get("host", "ip"), self.tcp_port))
             self.tcp_init.settimeout(self.timeout)
             self.tcp_init.listen(1)  # Ready to accept a connection
             self.tcp_recv = None  # Placeholder until socket is connected
 
         else:
             # FPGA name not found, throw a warning.
-            print("WARNING: Specified FPGA configuration '" + fpga_name +
-                  "' not found.", flush=True)
+            print(
+                "WARNING: Specified FPGA configuration '" + fpga_name + "' not found.",
+                flush=True,
+            )
             self.tcp_socket = None
 
     def cleanup(self):
+        """Shutdown socket and SSH connection"""
         self.tcp_init.close()
         self.ssh_client.close()
 
@@ -64,39 +70,41 @@ class IDExtractor(object):
             self.tcp_recv.close()
 
     def connect_thread_func(self):
+        """Start SSH in a separate thread to monitor status"""
+
         # Get the IP of the remote device from the fpga_config file
-        remote_ip = fpga_config.get(self.fpga_name, 'ip')
+        remote_ip = fpga_config.get(self.fpga_name, "ip")
 
         # Get the SSH options from the fpga_config file
-        ssh_port = fpga_config.get(self.fpga_name, 'ssh_port')
-        ssh_user = fpga_config.get(self.fpga_name, 'ssh_user')
+        ssh_port = fpga_config.get(self.fpga_name, "ssh_port")
+        ssh_user = fpga_config.get(self.fpga_name, "ssh_user")
 
-        if fpga_config.has_option(self.fpga_name, 'ssh_pwd'):
-            ssh_pwd = fpga_config.get(self.fpga_name, 'ssh_pwd')
+        if fpga_config.has_option(self.fpga_name, "ssh_pwd"):
+            ssh_pwd = fpga_config.get(self.fpga_name, "ssh_pwd")
         else:
             ssh_pwd = None
 
-        if fpga_config.has_option(self.fpga_name, 'ssh_key'):
-            ssh_key = os.path.expanduser(fpga_config.get(self.fpga_name,
-                                                         'ssh_key'))
+        if fpga_config.has_option(self.fpga_name, "ssh_key"):
+            ssh_key = os.path.expanduser(fpga_config.get(self.fpga_name, "ssh_key"))
         else:
             ssh_key = None
 
         # Connect to remote location over ssh
         if ssh_key is not None:
             # If an ssh key is provided, just use it
-            self.ssh_client.connect(remote_ip, port=ssh_port,
-                                    username=ssh_user, key_filename=ssh_key)
+            self.ssh_client.connect(
+                remote_ip, port=ssh_port, username=ssh_user, key_filename=ssh_key
+            )
         elif ssh_pwd is not None:
             # If an ssh password is provided, just use it
-            self.ssh_client.connect(remote_ip, port=ssh_port,
-                                    username=ssh_user, password=ssh_pwd)
+            self.ssh_client.connect(
+                remote_ip, port=ssh_port, username=ssh_user, password=ssh_pwd
+            )
         else:
             # If no password or key is specified, just use the default connect
             # (paramiko will then try to connect using the id_rsa file in the
             #  ~/.ssh/ folder)
-            self.ssh_client.connect(remote_ip, port=ssh_port,
-                                    username=ssh_user)
+            self.ssh_client.connect(remote_ip, port=ssh_port, username=ssh_user)
 
         # Invoke a shell in the ssh client
         ssh_channel = self.ssh_client.invoke_shell()
@@ -106,15 +114,16 @@ class IDExtractor(object):
         # - Note: Also assumes that the fpga has been configured to allow
         #         the ssh user to run sudo commands WITHOUT needing a password
         #         (see specific fpga hardware docs for details)
-        if ssh_user != 'root':
-            print('<%s> Script to be run with sudo. Sudoing.' %
-                  remote_ip, flush=True)
-            ssh_channel.send('sudo su\n')
+        if ssh_user != "root":
+            print("<%s> Script to be run with sudo. Sudoing." % remote_ip, flush=True)
+            ssh_channel.send("sudo su\n")
 
         # Send required ssh string
-        print("<%s> Sending cmd to fpga board: \n%s" %
-              (fpga_config.get(self.fpga_name, 'ip'),
-               self.ssh_string), flush=True)
+        print(
+            "<%s> Sending cmd to fpga board: \n%s"
+            % (fpga_config.get(self.fpga_name, "ip"), self.ssh_string),
+            flush=True,
+        )
         ssh_channel.send(self.ssh_string)
 
         # Variable for remote error handling
@@ -132,16 +141,16 @@ class IDExtractor(object):
                 break
 
             self.process_ssh_output(data)
-            info_str_list = self.ssh_info_str.split('\n')
+            info_str_list = self.ssh_info_str.split("\n")
             for info_str in info_str_list[:-1]:
-                if info_str.startswith('Killed'):
-                    print('<%s> ENCOUNTERED ERROR!' % remote_ip, flush=True)
+                if info_str.startswith("Killed"):
+                    print("<%s> ENCOUNTERED ERROR!" % remote_ip, flush=True)
                     got_error = 2
 
-                if info_str.startswith('Traceback'):
-                    print('<%s> ENCOUNTERED ERROR!' % remote_ip, flush=True)
+                if info_str.startswith("Traceback"):
+                    print("<%s> ENCOUNTERED ERROR!" % remote_ip, flush=True)
                     got_error = 1
-                elif got_error > 0 and info_str[0] != ' ':
+                elif got_error > 0 and info_str[0] != " ":
                     # Error string is no longer tabbed, so the actual error
                     # is bring printed. Collect and terminate (see below)
                     got_error = 2
@@ -151,7 +160,7 @@ class IDExtractor(object):
                     # messages until the termination condition (above)
                     error_strs.append(info_str)
                 else:
-                    print('<%s> %s' % (remote_ip, info_str), flush=True)
+                    print("<%s> %s" % (remote_ip, info_str), flush=True)
             self.ssh_info_str = info_str_list[-1]
 
             # The traceback usually contains 3 lines, so collect the first
@@ -159,24 +168,27 @@ class IDExtractor(object):
             if got_error == 2:
                 ssh_channel.close()
                 raise RuntimeError(
-                    'Received the following error on the remote side <%s>:\n%s'
-                    % (remote_ip, '\n'.join(error_strs)))
+                    "Received the following error on the remote side <%s>:\n%s"
+                    % (remote_ip, "\n".join(error_strs))
+                )
 
     def connect(self):
-        print("<%s> Open SSH connection" %
-              fpga_config.get(self.fpga_name, 'ip'), flush=True)
+        """Connect to device via SSH"""
+        print(
+            "<%s> Open SSH connection" % fpga_config.get(self.fpga_name, "ip"),
+            flush=True,
+        )
         # Start a new thread to open the ssh connection. Use a thread to
         # handle the opening of the connection because it can lag for certain
-        # devices, and we dont want it to impact the rest of the build process.
-        connect_thread = threading.Thread(target=self.connect_thread_func,
-                                          args=())
+        # devices, and we don't want it to impact the rest of the build process.
+        connect_thread = threading.Thread(target=self.connect_thread_func, args=())
         connect_thread.start()
 
     def process_ssh_output(self, data):
-        # Clean up the data stream coming back over ssh
-        str_data = data.decode('latin1').replace('\r\n', '\r')
-        str_data = str_data.replace('\r\r', '\r')
-        str_data = str_data.replace('\r', '\n')
+        """Clean up the data stream coming back over ssh"""
+        str_data = data.decode("latin1").replace("\r\n", "\r")
+        str_data = str_data.replace("\r\r", "\r")
+        str_data = str_data.replace("\r", "\n")
 
         # Process and dump the returned ssh data to logger. Data (strings)
         # returned over SSH are terminated by a newline, so, keep track of
@@ -186,19 +198,26 @@ class IDExtractor(object):
 
     @property
     def ssh_string(self):
-        # Generate the string to be sent over the ssh connection to run the
-        # remote side ssh script (with appropriate arguments)
+        """Command sent to FPGA device to begin execution
+
+        Generate the string to be sent over the ssh connection to run the
+        remote side ssh script (with appropriate arguments)
+        """
         if self.config_found:
-            ssh_str = \
-                ('python ' + fpga_config.get(self.fpga_name, 'id_script') +
-                 ' --host_ip="%s"' % fpga_config.get('host', 'ip') +
-                 ' --tcp_port=%i' % self.tcp_port +
-                 '\n')
+            ssh_str = (
+                "python "
+                + fpga_config.get(self.fpga_name, "id_script")
+                + ' --host_ip="%s"' % fpga_config.get("host", "ip")
+                + " --tcp_port=%i" % self.tcp_port
+                + "\n"
+            )
         else:
-            ssh_str = ''
+            ssh_str = ""
         return ssh_str
 
     def recv_id(self):
+        """Read device ID from device"""
+
         # Try to connect to FPGA socket a few times
         connect_attempts = 0
         while True:
@@ -208,21 +227,24 @@ class IDExtractor(object):
             except socket.timeout as e:
                 connect_attempts += 1
                 if connect_attempts >= self.max_attempts:
-                    e.args = ("ERROR: Could not connect to %s"
-                              ", please ensure you have the correct"
-                              " FPGA configuration or increase the"
-                              " number of connection attempts." %
-                              self.fpga_name,)
+                    e.args = (
+                        "ERROR: Could not connect to %s"
+                        ", please ensure you have the correct"
+                        " FPGA configuration or increase the"
+                        " number of connection attempts." % self.fpga_name,
+                    )
                     self.cleanup()
                     raise
                 else:
-                    print("WARNING: Could not connect to %s for %0.1fs,"
-                          " trying again..." % (self.fpga_name, self.timeout),
-                          flush=True)
+                    print(
+                        "WARNING: Could not connect to %s for %0.1fs,"
+                        " trying again..." % (self.fpga_name, self.timeout),
+                        flush=True,
+                    )
 
         # Read ID once socket connected successfully
         self.id_bytes = self.tcp_recv.recv(8)
-        self.id_int = int.from_bytes(self.id_bytes, 'big')
+        self.id_int = int.from_bytes(self.id_bytes, "big")
 
 
 if __name__ == "__main__":
@@ -230,13 +252,16 @@ if __name__ == "__main__":
     import sys
 
     parser = argparse.ArgumentParser(
-        description='Generic script for running the ID Extractor on the ' +
-        'FPGA board.')
+        description="Generic script for running the ID Extractor on the "
+        + "FPGA board."
+    )
 
     # FPGA board name
     parser.add_argument(
-        'fpga_name', type=str,
-        help='Name of the FPGA board as specified in the fpga_config file')
+        "fpga_name",
+        type=str,
+        help="Name of the FPGA board as specified in the fpga_config file",
+    )
 
     # Print full help text, otherwise error message isn't very useful
     if len(sys.argv) != 2:
@@ -245,7 +270,7 @@ if __name__ == "__main__":
 
     # Parse the arguments
     args = parser.parse_args()
-    filename = 'id_' + args.fpga_name + '.txt'
+    filename = "id_" + args.fpga_name + ".txt"
 
     # Connect to FPGA, run script to get ID, write ID to file
     fpga = IDExtractor(args.fpga_name)
@@ -254,7 +279,7 @@ if __name__ == "__main__":
 
     id_str = "Found board ID: 0x%0.16X" % fpga.id_int
 
-    with open(filename, 'w') as file:
+    with open(filename, "w") as file:
         file.write(id_str)
     fpga.cleanup()
     print(id_str)

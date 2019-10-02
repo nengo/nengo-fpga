@@ -1,5 +1,5 @@
-import numpy as np
 import argparse
+import numpy as np
 
 import nengo
 from nengo_fpga.networks import FpgaPesEnsembleNetwork
@@ -22,17 +22,22 @@ from nengo_fpga import Simulator
 
 # Set the nengo logging level to 'info' to display all of the information
 # coming back over the ssh connection.
-nengo.utils.logging.log('info')
+nengo.utils.logging.log("info")
 
 parser = argparse.ArgumentParser(
-    description='A simple communication channel example showing how to'
-                ' script with NengoFPGA.')
-parser.add_argument('board', type=str,
-                    help="The name of the FPGA device as it appears in"
-                         " fpga_config.")
-parser.add_argument('--time', '-t', type=float, default=2,
-                    help="The time in seconds over which to run the "
-                         "simulator.")
+    description="A simple communication channel example showing how to"
+    " script with NengoFPGA."
+)
+parser.add_argument(
+    "board", type=str, help="The name of the FPGA device as it appears in fpga_config."
+)
+parser.add_argument(
+    "--time",
+    "-t",
+    type=float,
+    default=2,
+    help="The time in seconds over which to run the simulator.",
+)
 
 args = parser.parse_args()
 
@@ -43,12 +48,12 @@ def input_func(t):
 
 with nengo.Network() as model:
     # Reference signal
-    input_node = nengo.Node(input_func, label='input signal')
+    input_node = nengo.Node(input_func, label="input signal")
 
     # FPGA neural ensemble
     pes_ens = FpgaPesEnsembleNetwork(
-        args.board, n_neurons=100, dimensions=1, learning_rate=0,
-        label='ensemble')
+        args.board, n_neurons=100, dimensions=1, learning_rate=0, label="ensemble"
+    )
 
     nengo.Connection(input_node, pes_ens.input)
 

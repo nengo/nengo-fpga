@@ -1,9 +1,11 @@
+# pylint: disable=redefined-outer-name
+
 import numpy as np
+import nengo
 
 # Requires python image library: pip install pillow
 from PIL import Image
 
-import nengo
 from nengo_extras.data import load_mnist
 from nengo_extras.vision import Gabor, Mask
 from nengo_extras.gui import image_display_function
@@ -16,7 +18,7 @@ def resize_img(img, im_size, im_size_new):
     # by the FPGA (the FPGA currently has a limitation on the number of
     # dimensions and neurons that can be built into the network)
     # Note: Requires the python PIL (pillow) library to work
-    img = Image.fromarray(img.reshape((im_size, im_size)) * 256, 'F')
+    img = Image.fromarray(img.reshape((im_size, im_size)) * 256, "F")
     img = img.resize((im_size_new, im_size_new), Image.ANTIALIAS)
     return np.array(img.getdata(), np.float32) / 256.0
 
@@ -31,14 +33,15 @@ def one_hot(labels, c=None):
     y[np.arange(n), labels] = 1
     return y
 
+
 # ---------------- BOARD SELECT ----------------------- #
 # Change this to your desired device name
-board = 'de1'
+board = "de1"
 # ---------------- BOARD SELECT ----------------------- #
 
 # Set the nengo logging level to 'info' to display all of the information
 # coming back over the ssh connection.
-nengo.utils.logging.log('info')
+nengo.utils.logging.log("info")
 
 # Set the rng state (using a fixed seed that works)
 rng = np.random.RandomState(9)
@@ -104,15 +107,20 @@ presentation_time = 0.25
 with nengo.Network(seed=3) as model:
     # Visual input (the MNIST images) to the network
     input_node = nengo.Node(
-        nengo.processes.PresentInput(X_test, presentation_time),
-        label='input')
+        nengo.processes.PresentInput(X_test, presentation_time), label="input"
+    )
 
     # Ensemble to run on the FPGA. This ensemble is non-adaptive and just
     # uses the encoders and decoders to perform the image classification
     ens = FpgaPesEnsembleNetwork(
-        board, n_neurons=n_hid, dimensions=n_vis, learning_rate=0,
-        function=conn_function, eval_points=conn_eval_points,
-        label='output class')
+        board,
+        n_neurons=n_hid,
+        dimensions=n_vis,
+        learning_rate=0,
+        function=conn_function,
+        eval_points=conn_eval_points,
+        label="output class",
+    )
 
     # Set custom ensemble parameters for the FPGA Ensemble Network
     ens.ensemble.neuron_type = ens_neuron_type
@@ -125,7 +133,7 @@ with nengo.Network(seed=3) as model:
     ens.connection.solver = conn_solver
 
     # Output display node
-    output_node = nengo.Node(size_in=n_out, label='output class')
+    output_node = nengo.Node(size_in=n_out, label="output class")
 
     # Projections to and from the fpga ensemble
     nengo.Connection(input_node, ens.input, synapse=None)
@@ -138,8 +146,18 @@ with nengo.Network(seed=3) as model:
     nengo.Connection(input_node, display_node, synapse=None)
 
     # Output SPA display (for nengo_gui)
-    vocab_names = ['ZERO', 'ONE', 'TWO', 'THREE', 'FOUR',
-                   'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE']
+    vocab_names = [
+        "ZERO",
+        "ONE",
+        "TWO",
+        "THREE",
+        "FOUR",
+        "FIVE",
+        "SIX",
+        "SEVEN",
+        "EIGHT",
+        "NINE",
+    ]
     vocab_vectors = np.eye(len(vocab_names))
 
     vocab = nengo.spa.Vocabulary(len(vocab_names))
@@ -149,6 +167,5 @@ with nengo.Network(seed=3) as model:
     config = nengo.Config(nengo.Ensemble)
     config[nengo.Ensemble].neuron_type = nengo.Direct()
     with config:
-        output_spa = nengo.spa.State(len(vocab_names), subdimensions=n_out,
-                                     vocab=vocab)
+        output_spa = nengo.spa.State(len(vocab_names), subdimensions=n_out, vocab=vocab)
     nengo.Connection(output_node, output_spa.input)

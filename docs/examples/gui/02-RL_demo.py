@@ -1,3 +1,5 @@
+# pylint: disable=redefined-outer-name,dangerous-default-value,undefined-variable
+
 # Reinforcement Learning
 
 # Here we have a simple agent in a simple world.  It has three actions
@@ -24,69 +26,75 @@
 import time
 import numpy as np
 
+import nengo
+from nengo_fpga.networks import FpgaPesEnsembleNetwork
+
 from grid import Cell as GridCell
 from grid import World as GridWorld
 from grid import ContinuousAgent, GridNode
 
-import nengo
-from nengo_fpga.networks import FpgaPesEnsembleNetwork
 # Note: Requires the "keyboard_state" branch of nengo_gui for full
 #       interactive functionality
 
 
 # Set the nengo logging level to 'info' to display all of the information
 # coming back over the ssh connection.
-nengo.utils.logging.log('info')
+nengo.utils.logging.log("info")
 
 # ---------------- BOARD SELECT ----------------------- #
 # Change this to your desired device name
-board = 'de1'
+board = "de1"
 # ---------------- BOARD SELECT ----------------------- #
 
 
 # ----------- WORLD CONFIGURATION ---------------------------------------------
 class Cell(GridCell):
     def color(self):
-        return 'black' if self.wall else None
+        return "black" if self.wall else None
 
     def load(self, char):
-        if char == '#':
+        if char == "#":
             self.wall = True
         else:
             self.wall = False
 
 
-class WorldConfig(object):
+class WorldConfig:
     curr_ind = -1
-    world_maps = ["""
+    world_maps = [
+        """
 #########
 #       #
 #       #
 #   ##  #
 #   ##  #
 #       #
-#########""", """
+#########""",
+        """
 #########
 #       #
 #       #
 #   ##  #
 #   ##  #
 #   ##  #
-#########""", """
+#########""",
+        """
 #########
 #       #
 #  ###  #
 #       #
 #  ###  #
 #       #
-#########""", """
+#########""",
+        """
 #########
 #       #
 #   #####
 #       #
 #####   #
 #       #
-#########"""]
+#########""",
+    ]
     init_pos = [(1, 3, 2), (1, 3, 2), (1, 1, 1), (1, 1, 1)]
 
     world = None
@@ -99,22 +107,23 @@ class WorldConfig(object):
         return self.world_maps[self.curr_ind]
 
     def set_ind(self, new_ind):
-        if new_ind >= 0 and new_ind < len(self.world_maps):
+        if 0 <= new_ind < len(self.world_maps):
             self.curr_ind = new_ind
             lines = self.get_map().splitlines()
 
             if (len(lines[0])) == 0:
                 del lines[0]
             lines = [x.rstrip() for x in lines]
-            for j in range(len(lines)):
-                for i in range(len(lines[0])):
+            for j, _ in enumerate(lines):
+                for i, _ in enumerate(lines[0]):
                     self.world.get_cell(i, j).load(lines[j][i])
 
     def reset_pos(self):
-            self.agent.x = self.get_init_pos()[0]
-            self.agent.y = self.get_init_pos()[1]
-            self.agent.dir = self.get_init_pos()[2]
-            self.agent.cell = self.world.get_cell(self.agent.x, self.agent.y)
+        self.agent.x = self.get_init_pos()[0]
+        self.agent.y = self.get_init_pos()[1]
+        self.agent.dir = self.get_init_pos()[2]
+        self.agent.cell = self.world.get_cell(self.agent.x, self.agent.y)
+
 
 world_cfg = WorldConfig()
 world = GridWorld(Cell, map=world_cfg.get_map(), directions=4)
@@ -122,9 +131,12 @@ agent = ContinuousAgent()
 world_cfg.world = world
 world_cfg.agent = agent
 world_cfg.set_ind(0)
-world_cfg.world.add(agent, x=world_cfg.get_init_pos()[0],
-                    y=world_cfg.get_init_pos()[1],
-                    dir=world_cfg.get_init_pos()[2])
+world_cfg.world.add(
+    agent,
+    x=world_cfg.get_init_pos()[0],
+    y=world_cfg.get_init_pos()[1],
+    dir=world_cfg.get_init_pos()[2],
+)
 
 # ----------- LEARNING & MODEL PARAMETERS -------------------------------------
 learn_rate = 1e-4
@@ -140,7 +152,7 @@ seed = int(time.time())
 print("USING SEED: {0}".format(seed))
 
 # ----------- MODEL PROPER ----------------------------------------------------
-if '__page__' in locals():
+if "__page__" in locals():
     # Additional options for keyboard-state branch of nengo_gui
     # Allows the user to control the status of the learning, and to change the
     # map being used by the agent.
@@ -164,21 +176,21 @@ with model:
         world_cfg.agent.turn(rotation * dt * max_rotate)
         success = world_cfg.agent.go_forward(speed * dt * max_speed)
         if not success:
-            world_cfg.agent.color = 'red'
+            world_cfg.agent.color = "red"
             return 0
         else:
-            world_cfg.agent.color = 'blue'
-            return (turn_bias + speed)
+            world_cfg.agent.color = "blue"
+            return turn_bias + speed
 
     movement = nengo.Ensemble(n_neurons=100, dimensions=2, radius=1.4)
-    movement_node = nengo.Node(move, size_in=2, label='reward')
+    movement_node = nengo.Node(move, size_in=2, label="reward")
     nengo.Connection(movement, movement_node)
 
     # Generate the context (radar distance to walls front, left, right)
     def detect(t):
-        angles = (np.linspace(-0.5, 0.5, radar_dim) +
-                  agent.dir) % world.directions
+        angles = (np.linspace(-0.5, 0.5, radar_dim) + agent.dir) % world.directions
         return [agent.detect(d, max_distance=4)[0] for d in angles]
+
     stim_radar = nengo.Node(detect)
 
     # Create the action selection networks
@@ -203,12 +215,10 @@ with model:
         actions[actions != max_action] = 0
         actions[actions == max_action] = 1
 
-        return (
-            activate * (
-                np.multiply(actions,
-                            (utils - r) * (1 - r) ** 5) +
-                np.multiply((1 - actions),
-                            (utils - 1) * (1 - r) ** 5)))
+        return activate * (
+            np.multiply(actions, (utils - r) * (1 - r) ** 5)
+            + np.multiply((1 - actions), (utils - 1) * (1 - r) ** 5)
+        )
 
     errors = nengo.Node(error_func, size_in=8, size_out=3)
     nengo.Connection(thal.output, errors[:3])
@@ -217,16 +227,21 @@ with model:
 
     # the learning is done on the board
     adapt_ens = FpgaPesEnsembleNetwork(
-        board, n_neurons=100 * radar_dim, dimensions=radar_dim,
-        learning_rate=learn_rate, function=lambda x: init_transform,
-        seed=1524081122, label='pes ensemble')
+        board,
+        n_neurons=100 * radar_dim,
+        dimensions=radar_dim,
+        learning_rate=learn_rate,
+        function=lambda x: init_transform,
+        seed=1524081122,
+        label="pes ensemble",
+    )
     adapt_ens.ensemble.radius = 4
 
     nengo.Connection(stim_radar, adapt_ens.input, synapse=learn_synapse)
     nengo.Connection(errors, adapt_ens.error)
     nengo.Connection(adapt_ens.output, bg.input)
 
-    if '__page__' in locals():
+    if "__page__" in locals():
         # Additional options for keyboard-state branch of nengo_gui
 
         # Node to control and display current learning status
@@ -237,13 +252,13 @@ with model:
             # 2: continuous learning
 
             init_agent_pos = False
-            if 'q' in __page__.keys_pressed:
+            if "q" in __page__.keys_pressed:
                 _is_learning[0] = 2
                 init_agent_pos = True
-            elif 'e' in __page__.keys_pressed:
+            elif "e" in __page__.keys_pressed:
                 _is_learning[0] = -1
                 init_agent_pos = True
-            elif 'w' in __page__.keys_pressed:
+            elif "w" in __page__.keys_pressed:
                 init_agent_pos = True
             if len(__page__.keys_pressed) > 0:
                 for k in __page__.keys_pressed:
@@ -253,15 +268,18 @@ with model:
                             world_cfg.set_ind(new_map_ind)
                             init_agent_pos = True
 
-            learn_on = (((t <= learn_timeout) or (_is_learning[0] == 2)) and
-                        _is_learning[0] > 0)
-            learn_activate_func._nengo_html_ = '''
+            learn_on = (
+                (t <= learn_timeout) or (_is_learning[0] == 2)
+            ) and _is_learning[0] > 0
+            learn_activate_func._nengo_html_ = """
             <svg width="100%" height="100%" viewbox="0 0 200 75">
                 <text x="50%" y="50%" fill="{0}" text-anchor="middle"
                  alignment-baseline="middle" font-size="50">{1}</text>
             </svg>
-            '''.format("red" if learn_on else "grey",
-                       "Explore: ON" if learn_on else "Explore: Off")
+            """.format(
+                "red" if learn_on else "grey",
+                "Explore: ON" if learn_on else "Explore: Off",
+            )
 
             if not learn_on and _is_learning[0] == 1:
                 init_agent_pos = True
@@ -271,16 +289,17 @@ with model:
                 world_cfg.reset_pos()
 
             return int(learn_on)
+
     else:
         # Keyboard state branch not detected. Default to continuous learning
         def learn_activate_func(t):
-            learn_activate_func._nengo_html_ = '''
+            learn_activate_func._nengo_html_ = """
             <svg width="100%" height="100%" viewbox="0 0 200 75">
                 <text x="50%" y="50%" fill="red" text-anchor="middle"
                  alignment-baseline="middle" font-size="50">
                  Explore: ON</text>
             </svg>
-            '''
+            """
 
             # Return 1, to turn learning on permanently
             return 1

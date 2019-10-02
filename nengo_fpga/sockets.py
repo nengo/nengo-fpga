@@ -1,3 +1,5 @@
+"""Wrapper for generic UDP sockets to interface with NengoFPGA devices"""
+
 from __future__ import absolute_import
 
 import logging
@@ -28,10 +30,10 @@ logger = logging.getLogger(__name__)
 
 
 class ConnectionTimeout(RuntimeError):
-    pass
+    """Error class to handle recv timeouts"""
 
 
-class _UDPSocket(object):
+class _UDPSocket:
     def __init__(self, addr, dims, byte_order, timeout=None):
         self.addr = addr
         self.dims = dims
@@ -40,8 +42,9 @@ class _UDPSocket(object):
         elif byte_order == "big":
             byte_order = ">"
         if byte_order not in "<>=":
-            raise ValidationError("Must be one of '<', '>', '=', 'little', "
-                                  "'big'.", attr="byte_order")
+            raise ValidationError(
+                "Must be one of '<', '>', '=', 'little', 'big'.", attr="byte_order"
+            )
         self.byte_order = byte_order
         if np.isscalar(timeout):
             self.timeout = (timeout, timeout)
@@ -58,19 +61,23 @@ class _UDPSocket(object):
 
     @property
     def t(self):
+        """Current simulation time"""
         return self._buffer[0]
 
     @property
     def x(self):
+        """Current data packet"""
         return self._buffer[1:]
 
     @property
     def closed(self):
+        """Status flag"""
         return self._socket is None
 
     def open(self):
+        """Create a new socket"""
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        if sys.platform.startswith('bsd') or sys.platform.startswith('darwin'):
+        if sys.platform.startswith("bsd") or sys.platform.startswith("darwin"):
             self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
         else:
             # Linux >= 3.9 has SO_REUSEPORT, but does load balancing for it.
@@ -84,19 +91,23 @@ class _UDPSocket(object):
             self.current_timeout = None
 
     def bind(self):
+        """Bind socket to given address"""
         self._socket.bind(self.addr)
 
     def recv(self, timeout):
+        """Read data from socket"""
         logger.debug("Waiting for packet with timeout %fs.", timeout)
         self._socket.settimeout(timeout)
         self._socket.recv_into(self._buffer.data)
         logger.debug("Received packet for t=%fs.", self.t)
 
     def recv_with_adaptive_timeout(self):
+        """Socket recv wrapper with more tolerant timeout handling"""
         if self.current_timeout is not None:
             logger.debug(
-                "Waiting for packet with adaptive timeout "
-                "(current value %fs.)", self.current_timeout)
+                "Waiting for packet with adaptive timeout (current value %fs.)",
+                self.current_timeout,
+            )
         else:
             logger.debug("Waiting for packet (blocking).")
         self._socket.settimeout(self.current_timeout)
@@ -104,7 +115,8 @@ class _UDPSocket(object):
             self._socket.recv_into(self._buffer.data)
             if self.current_timeout is not None:
                 self.current_timeout = max(
-                    min(self.timeout), 0.9 * self.current_timeout)
+                    min(self.timeout), 0.9 * self.current_timeout
+                )
         except socket.timeout:
             # TODO is a slow increase in timeout better than a complete reset?
             if self.current_timeout is not None:
@@ -112,18 +124,20 @@ class _UDPSocket(object):
             raise
 
     def send(self, t, x):
+        """Send data over socket"""
         self._buffer[0] = t
         self._buffer[1:] = x
         self._socket.sendto(self._buffer.tobytes(), self.addr)
         logger.debug("Send packet for t=%fs.", self.t)
 
     def close(self):
+        """Shutdown socket"""
         if not self.closed:
             self._socket.close()
             self._socket = None
 
 
-class SocketStep(object):
+class SocketStep:
     r"""Handles the step for socket processes.
 
     One critical thing in this is to align local and remote timesteps if the
@@ -200,9 +214,16 @@ class SocketStep(object):
     equation a packet should be send when :math:`t' + dt' <= t + dt/2`.
     """
 
-    def __init__(self, dt, send=None, recv=None,
-                 remote_dt=None, connection_timeout=None,
-                 loss_limit=None, ignore_timestamp=False):
+    def __init__(
+        self,
+        dt,
+        send=None,
+        recv=None,
+        remote_dt=None,
+        connection_timeout=None,
+        loss_limit=None,
+        ignore_timestamp=False,
+    ):
         self.send_socket = send
         self.recv_socket = recv
         self.remote_dt = remote_dt
@@ -219,8 +240,7 @@ class SocketStep(object):
         self.n_lost = 0
 
         # State used by the step function
-        self.value = np.zeros(0 if self.recv_socket is None
-                              else self.recv_socket.dims)
+        self.value = np.zeros(0 if self.recv_socket is None else self.recv_socket.dims)
 
     def __call__(self, t, x=None):
         """The step function run on each timestep.
@@ -230,7 +250,7 @@ class SocketStep(object):
         is sent when the current local timestep is closer to the remote
         time step than the next local timestep.
         """
-        if t == 0.:  # Nengo calling this function to figure out output size
+        if t == 0.0:  # Nengo calling this function to figure out output size
             return self.value
 
         # Send must happen before receive to avoid deadlock situations, i.e.
@@ -241,7 +261,8 @@ class SocketStep(object):
             assert x is not None, "A sender must receive input"
             self.send(t, x)
         if self.recv_socket is not None and (
-                self.loss_limit is None or self.n_lost <= self.loss_limit):
+            self.loss_limit is None or self.n_lost <= self.loss_limit
+        ):
             try:
                 self.recv(t)
                 self.n_lost = 0
@@ -254,15 +275,16 @@ class SocketStep(object):
         self.close()
 
     def close(self):
+        """Shutdown both send/recv sockets"""
         if self.send_socket is not None:
             self.send_socket.close()
         if self.recv_socket is not None:
             self.recv_socket.close()
 
     def recv(self, t):
+        """Receive ensemble data from socket"""
         if self.recv_socket.t < 0:
-            raise RuntimeError(
-                "UDP Socket connection terminated by remote side.")
+            raise RuntimeError("UDP Socket connection terminated by remote side.")
 
         if self.ignore_timestamp:
             self.recv_socket.recv_with_adaptive_timeout()
@@ -275,17 +297,17 @@ class SocketStep(object):
                 self.recv_socket.recv(self.connection_timeout)
             except socket.timeout:
                 raise ConnectionTimeout(
-                    "Did not receive initial packet within connection "
-                    "timeout.")
+                    "Did not receive initial packet within connection timeout."
+                )
             self._update_value()
 
         # Wait for packet that is not timestamped in the past
         # (also skips receiving if we do not expect a new remote package yet)
-        while self.recv_socket.t < t - self.remote_dt / 2.:
+        while self.recv_socket.t < t - self.remote_dt / 2.0:
             self.recv_socket.recv_with_adaptive_timeout()
 
         # Use value if not in the future
-        if self.recv_socket.t < t + self.remote_dt / 2.:
+        if self.recv_socket.t < t + self.remote_dt / 2.0:
             self._update_value()
 
     def _update_value(self):
@@ -294,11 +316,14 @@ class SocketStep(object):
         self.value = np.array(self.recv_socket.x)
 
     def send(self, t, x):
+        """Send data back to device over socket"""
+
         # Calculate if it is time to send the next packet.
         # Ideal time to send is the last sent time + remote_dt, and we
         # want to find out if current or next local time step is closest.
-        if (np.isnan(self.send_socket.t) or
-                (t + self.dt / 2.) >= (self.send_socket.t + self.remote_dt)):
+        if np.isnan(self.send_socket.t) or (t + self.dt / 2.0) >= (
+            self.send_socket.t + self.remote_dt
+        ):
             self.send_socket.send(t, x)
 
 
@@ -332,7 +357,7 @@ class UDPReceiveSocket(nengo.Process):
         Initial timeout when waiting to receive the initial package
         establishing the connection.
     recv_timeout : 2-tuple or float or None, optional (Default: 0.1)
-        Timout for socket receive operations in each timestep. If *None*, there
+        Timeout for socket receive operations in each timestep. If *None*, there
         is no timeout (block until package is received). A float denotes a
         fixed timeout. A 2-tuple gives a minimum and maximum timeout and the
         timeout will be adjusted adaptively between these two values.
@@ -355,9 +380,17 @@ class UDPReceiveSocket(nengo.Process):
 
     Other Nengo model elements can then be connected to the node.
     """
-    def __init__(self, listen_addr, remote_dt=None, ignore_timestamp=False,
-                 connection_timeout=300., recv_timeout=0.1, loss_limit=0,
-                 byte_order='='):
+
+    def __init__(
+        self,
+        listen_addr,
+        remote_dt=None,
+        ignore_timestamp=False,
+        connection_timeout=300.0,
+        recv_timeout=0.1,
+        loss_limit=0,
+        byte_order="=",
+    ):
         super(UDPReceiveSocket, self).__init__(default_size_in=0)
         self.listen_addr = listen_addr
         self.remote_dt = remote_dt
@@ -368,18 +401,23 @@ class UDPReceiveSocket(nengo.Process):
         self.recv = None
 
     def make_step(self, shape_in, shape_out, dt, rng):
+        """Socket integration into Nengo simulator"""
         assert len(shape_out) == 1
         self.recv = _UDPSocket(
-            self.listen_addr, shape_out[0], self.byte_order,
-            timeout=self.recv_timeout)
+            self.listen_addr, shape_out[0], self.byte_order, timeout=self.recv_timeout
+        )
         self.recv.open()
         self.recv.bind()
         return SocketStep(
-            dt=dt, recv=self.recv, remote_dt=self.remote_dt,
+            dt=dt,
+            recv=self.recv,
+            remote_dt=self.remote_dt,
             connection_timeout=self.connection_timeout,
-            loss_limit=self.loss_limit)
+            loss_limit=self.loss_limit,
+        )
 
     def close(self):
+        """Shutdown recv socket"""
         if self.recv is not None:
             self.recv.close()
             self.recv = None
@@ -419,6 +457,7 @@ class UDPSendSocket(nengo.Process):
 
     Other Nengo model elements can then be connected to the node.
     """
+
     def __init__(self, remote_addr, remote_dt=None, byte_order="="):
         super(UDPSendSocket, self).__init__(default_size_out=0)
         self.remote_addr = remote_addr
@@ -427,12 +466,14 @@ class UDPSendSocket(nengo.Process):
         self.send = None
 
     def make_step(self, shape_in, shape_out, dt, rng):
+        """Socket integration into Nengo simulator"""
         assert len(shape_in) == 1
         self.send = _UDPSocket(self.remote_addr, shape_in[0], self.byte_order)
         self.send.open()
         return SocketStep(dt=dt, send=self.send, remote_dt=self.remote_dt)
 
     def close(self):
+        """Shutdown send socket"""
         if self.send is not None:
             self.send.close()
             self.send = None
@@ -470,7 +511,7 @@ class UDPSendReceiveSocket(nengo.Process):
         Initial timeout when waiting to receive the initial package
         establishing the connection.
     recv_timeout : 2-tuple or float or None, optional (Default: 0.1)
-        Timout for socket receive operations in each timestep. If *None*, there
+        Timeout for socket receive operations in each timestep. If *None*, there
         is no timeout (block until package is received). A float denotes a
         fixed timeout. A 2-tuple gives a minimum and maximum timeout and the
         timeout will be adjusted adaptively between these two values.
@@ -510,10 +551,18 @@ class UDPSendReceiveSocket(nengo.Process):
 
     The nodes can then be connected to other Nengo model elements.
     """
+
     def __init__(
-            self, listen_addr, remote_addr, remote_dt=None,
-            ignore_timestamp=False, connection_timeout=300.,
-            recv_timeout=0.1, loss_limit=None, byte_order='='):
+        self,
+        listen_addr,
+        remote_addr,
+        remote_dt=None,
+        ignore_timestamp=False,
+        connection_timeout=300.0,
+        recv_timeout=0.1,
+        loss_limit=None,
+        byte_order="=",
+    ):
         super(UDPSendReceiveSocket, self).__init__()
         self.listen_addr = listen_addr
         self.remote_addr = remote_addr
@@ -527,24 +576,28 @@ class UDPSendReceiveSocket(nengo.Process):
         self.send = None
 
     def make_step(self, shape_in, shape_out, dt, rng):
+        """Socket integration into Nengo simulator"""
         assert len(shape_in) == 1
         assert len(shape_out) == 1
         self.recv = _UDPSocket(
-            self.listen_addr, shape_out[0], self.byte_order,
-            timeout=self.recv_timeout)
+            self.listen_addr, shape_out[0], self.byte_order, timeout=self.recv_timeout
+        )
         self.recv.open()
         self.recv.bind()
         self.send = _UDPSocket(self.remote_addr, shape_in[0], self.byte_order)
         self.send.open()
         return SocketStep(
             dt=dt,
-            send=self.send, recv=self.recv,
+            send=self.send,
+            recv=self.recv,
             ignore_timestamp=self.ignore_timestamp,
             remote_dt=self.remote_dt,
             connection_timeout=self.connection_timeout,
-            loss_limit=self.loss_limit)
+            loss_limit=self.loss_limit,
+        )
 
     def close(self):
+        """Shutdown both send/recv sockets"""
         if self.recv is not None:
             self.recv.close()
             self.recv = None

@@ -25,3 +25,4 @@ htmlcov
 mnist.pkl.gz
 id_*.txt
 docs/.doctrees
+.ci/*.sh

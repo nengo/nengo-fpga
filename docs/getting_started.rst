@@ -15,7 +15,7 @@ Things You Need
 Installation Quick Reference Guide
 ==================================
 
-.. Do we have a troubleshooting piece here incase something doesn't work?
+.. Do we have a troubleshooting piece here in case something doesn't work?
 
 .. rst-class:: compact
 

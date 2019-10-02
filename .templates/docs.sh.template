@@ -1,0 +1,101 @@
+{% extends "templates/docs.sh.template" %}
+# Based off NengoDL gpu script. We want to build docs on a machine with FPGAs
+# See https://oncletom.io/2016/travis-ssh-deploy/ for instructions on how the
+# remote server is set up for this script to connect to
+
+{% block install %}
+    # Decrypt private keys in tarball (can't decrypt multiple files currently)
+    # See https://docs.travis-ci.com/user/encrypting-files/
+    exe openssl aes-256-cbc \
+        -K "${encrypted_e86b3ea1b4ca_key:?}" \
+        -iv "${encrypted_e86b3ea1b4ca_iv:?}" \
+        -in .ci/rsa_keys.tar.enc \
+        -out ~/.ssh/rsa_keys.tar -d
+    exe tar -xvf ~/.ssh/rsa_keys.tar -C ~/.ssh
+    exe chmod 600 ~/.ssh/travis-abrgpu_rsa
+    exe chmod 600 ~/.ssh/travis-abrhost_rsa
+
+    # Setup SSH config for abrgpu and abrhost (stored in travis-ci settings)
+    echo -e "$SSH_INFO" >> ~/.ssh/config
+    ssh -o StrictHostKeyChecking=no fpga-ci "echo 'Connected to abrhost'"
+
+    # Setup env on remote server side
+    exe ssh fpga-ci << EOF
+        export STATUS=0  # Status flag for remote
+        $(typeset -f exe)  # Send definition of exe function
+        conda create -y -n travis-ci-"$TRAVIS_JOB_NUMBER" python="$TRAVIS_PYTHON_VERSION"
+        conda activate travis-ci-"$TRAVIS_JOB_NUMBER"
+        exe git clone -b $BRANCH_NAME https://github.com/{{ repo_name }}.git nengo-fpga-"$TRAVIS_JOB_NUMBER"
+
+        # The docs_dir is set in the base and has "../" prepended,
+        # so we enter another dir first
+        cd nengo-fpga-"$TRAVIS_JOB_NUMBER"
+        {{ super() | indent(4) }}
+        exit "\$STATUS"
+EOF
+
+{% endblock %}
+
+{% block script %}
+    # shellcheck disable=SC2034
+    exe ssh fpga-ci << EOF
+        export STATUS=0  # Status flag for remote
+        $(typeset -f exe)  # Send definition of exe function
+        conda activate travis-ci-"$TRAVIS_JOB_NUMBER"
+        cd nengo-fpga-"$TRAVIS_JOB_NUMBER"
+
+        FPGA_CONFIG="\$HOME/fpga_config"
+
+        # A valid fpga_config should be in the $HOME dir of the remote machine
+        if [ ! -f "\$FPGA_CONFIG" ]; then
+          echo "ERROR: There must be a valid fpga_config file in \$HOME"
+          exit 1
+        fi
+
+        cp -f "\$FPGA_CONFIG" .  # Grab config so the system can use the local FPGAs
+        {{ super() | indent(4) }}
+        exit "\$STATUS"
+EOF
+{% endblock %}
+
+{% block after_success %}
+    # shellcheck disable=SC2034
+    exe ssh fpga-ci << EOF
+        export STATUS=0  # Status flag for remote
+        $(typeset -f exe)  # Send definition of exe function
+        # The docs_dir is set in the base and has "../" prepended,
+        # so we enter another dir first
+        cd nengo-fpga-"$TRAVIS_JOB_NUMBER"
+
+        # Taken from docs.sh template after_script block (2019-10-07)
+        cd {{ docs_dir }} || exit
+        git config --global user.email "travis@travis-ci.org"
+        git config --global user.name "TravisCI"
+        git add --all
+
+        if [[ "$TRAVIS_BRANCH" == "$TRAVIS_TAG" ]]; then
+            exe git commit -m "Documentation for release $TRAVIS_TAG"
+            exe git push -q "https://$GH_TOKEN@github.com/{{ repo_name }}.git" gh-pages-release
+        elif [[ "$BRANCH_NAME" == "master" ]]; then
+            exe git commit -m "Last update at $(date '+%Y-%m-%d %T')"
+            exe git push -fq "https://$GH_TOKEN@github.com/{{ repo_name }}.git" gh-pages-release:gh-pages
+        elif [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
+            exe git commit -m "Documentation for branch $TRAVIS_BRANCH"
+            exe git push -fq "https://$GH_TOKEN@github.com/{{ repo_name }}.git" gh-pages-release:gh-pages-test
+        fi
+        exit "\$STATUS"
+EOF
+{% endblock %}
+
+{% block after_script %}
+    # Cleanup since we are on a physical machine (abrhost)
+    exe ssh fpga-ci << EOF
+        # The docs_dir is set in the base and has "../" prepended,
+        # so we enter another dir first
+        cd nengo-fpga-"$TRAVIS_JOB_NUMBER"
+        rm -rf {{ docs_dir }}
+        cd ..
+        rm -rf nengo-fpga-"$TRAVIS_JOB_NUMBER"
+        conda env remove -y -n travis-ci-"$TRAVIS_JOB_NUMBER"
+EOF
+{% endblock %}

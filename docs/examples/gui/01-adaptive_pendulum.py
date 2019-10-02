@@ -1,3 +1,5 @@
+# pylint: disable=possibly-unused-variable
+
 import numpy as np
 
 import nengo
@@ -6,18 +8,28 @@ from nengo_fpga.networks import FpgaPesEnsembleNetwork
 
 # Set the nengo logging level to 'info' to display all of the information
 # coming back over the ssh connection.
-nengo.utils.logging.log('info')
+nengo.utils.logging.log("info")
 
 # ---------------- BOARD SELECT ----------------------- #
 # Change this to your desired device name
-board = 'de1'
+board = "de1"
 # ---------------- BOARD SELECT ----------------------- #
 
 
 # Pendulum object. Handles the logic and simulation of the pendulum.
-class Pendulum(object):
-    def __init__(self, mass=1.0, length=1.0, dt=0.001, g=10.0, seed=None,
-                 max_torque=2, max_speed=8, limit=2.0, bounds=None):
+class Pendulum:
+    def __init__(
+        self,
+        mass=1.0,
+        length=1.0,
+        dt=0.001,
+        g=10.0,
+        seed=None,
+        max_torque=2,
+        max_speed=8,
+        limit=2.0,
+        bounds=None,
+    ):
         self.mass = mass
         self.length = length
         self.dt = dt
@@ -38,9 +50,10 @@ class Pendulum(object):
         u = np.clip(u, -1, 1) * self.max_torque
 
         mass = self.mass + self.extra_mass
-        self.dtheta += (-3 * self.g / (2 * self.length) *
-                        np.sin(self.theta + np.pi) +
-                        3. / (mass * self.length ** 2) * u) * self.dt
+        self.dtheta += (
+            -3 * self.g / (2 * self.length) * np.sin(self.theta + np.pi)
+            + 3.0 / (mass * self.length ** 2) * u
+        ) * self.dt
         self.theta += self.dtheta * self.dt
         self.dtheta = np.clip(self.dtheta, -self.max_speed, self.max_speed)
 
@@ -59,12 +72,14 @@ class Pendulum(object):
         y2 = y1 - len0 * np.cos(self.theta)
         x3 = x1 + len0 * np.sin(desired)
         y3 = y1 - len0 * np.cos(desired)
-        return '''
+        return """
         <svg width="100%" height="100%" viewbox="0 0 100 100">
             <line x1="{x1}" y1="{y1}" x2="{x3}" y2="{y3}" style="stroke:blue"/>
             <line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" style="stroke:black"/>
         </svg>
-        '''.format(**locals())
+        """.format(
+            **locals()
+        )
 
 
 class PendulumNetwork(nengo.Network):
@@ -73,30 +88,29 @@ class PendulumNetwork(nengo.Network):
         self.env = Pendulum(**kwargs)
 
         with self:
+
             def func(t, x):
                 self.env.set_extra_mass(x[2])
                 self.env.step(x[0])
                 func._nengo_html_ = self.env.generate_html(desired=x[1])
                 return (self.env.theta, self.env.dtheta)
-            self.pendulum = nengo.Node(func, size_in=3, label='Pendulum Obj')
 
-            self.q_target = nengo.Node(None, size_in=1, label='Target Pos')
+            self.pendulum = nengo.Node(func, size_in=3, label="Pendulum Obj")
+
+            self.q_target = nengo.Node(None, size_in=1, label="Target Pos")
             nengo.Connection(self.q_target, self.pendulum[1], synapse=None)
 
-            self.u = nengo.Node(None, size_in=1, label='Control Signal')
+            self.u = nengo.Node(None, size_in=1, label="Control Signal")
             nengo.Connection(self.u, self.pendulum[0], synapse=0)
-            self.u_extra = nengo.Node(None, size_in=1,
-                                      label='Adaptive Control Signal')
+            self.u_extra = nengo.Node(None, size_in=1, label="Adaptive Control Signal")
             nengo.Connection(self.u_extra, self.pendulum[0], synapse=0)
 
-            self.q = nengo.Node(None, size_in=1,
-                                label='Pendulum Pos (q)')
-            self.dq = nengo.Node(None, size_in=1,
-                                 label='Pendulum Pos Deriv (dq)')
+            self.q = nengo.Node(None, size_in=1, label="Pendulum Pos (q)")
+            self.dq = nengo.Node(None, size_in=1, label="Pendulum Pos Deriv (dq)")
             nengo.Connection(self.pendulum[0], self.q, synapse=None)
             nengo.Connection(self.pendulum[1], self.dq, synapse=None)
 
-            self.extra_mass = nengo.Node(None, size_in=1, label='Extra Mass')
+            self.extra_mass = nengo.Node(None, size_in=1, label="Extra Mass")
             nengo.Connection(self.extra_mass, self.pendulum[2], synapse=None)
 
 
@@ -105,7 +119,7 @@ with nengo.Network(seed=3) as model:
     env = PendulumNetwork(mass=4, max_torque=100, seed=1)
 
     # The target angle for the pendulum (q)
-    q_target = nengo.Node(np.sin, label='Target Pendulum Angle')
+    q_target = nengo.Node(np.sin, label="Target Pendulum Angle")
     nengo.Connection(q_target, env.q_target, synapse=None)
 
     # The derivative of the target angle signal (dq)
@@ -134,8 +148,13 @@ with nengo.Network(seed=3) as model:
     # PES Ensemble to compute the adaptive control signal to compensate for
     # unknown variables introduced into the environment.
     adapt_ens = FpgaPesEnsembleNetwork(
-        board, n_neurons=1000, dimensions=1, learning_rate=1e-5,
-        function=lambda x: [0], label='pes ensemble')
+        board,
+        n_neurons=1000,
+        dimensions=1,
+        learning_rate=1e-5,
+        function=lambda x: [0],
+        label="pes ensemble",
+    )
 
     # Compute the adaptive control signal. The adaptive control signal is
     # computed as a mapping between the current angle of the pendulum, and
@@ -147,5 +166,5 @@ with nengo.Network(seed=3) as model:
 
     # Extra mass to add to the pendulum. To demonstrate the adaptive
     # controller.
-    extra_mass = nengo.Node(None, size_in=1, label='Extra Mass')
+    extra_mass = nengo.Node(None, size_in=1, label="Extra Mass")
     nengo.Connection(extra_mass, env.extra_mass, synapse=None)

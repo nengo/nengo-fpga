@@ -21,6 +21,11 @@ Release History
 0.2.2 (Unreleased)
 ------------------
 
+**Added**
+
+- Setup Nengo Bones and remote CI.
+  (`#41 <https://github.com/nengo/nengo-fpga/pull/41>`__)
+
 
 0.2.1 (September 17, 2019)
 --------------------------

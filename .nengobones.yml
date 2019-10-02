@@ -1,0 +1,65 @@
+project_name: NengoFPGA
+pkg_name: nengo_fpga
+repo_name: nengo/nengo-fpga
+
+description: FPGA backend for Nengo
+copyright_start: 2018
+
+license_rst: {}
+
+contributing_rst: {}
+
+contributors_rst: {}
+
+setup_cfg:
+  flake8:
+    ignore:
+      - C901
+      - F821
+  pylint:
+    ignore:
+      - grid.py
+
+setup_py:
+  package_data:
+    nengo_fpga:
+      - fpga_config
+  entry_points:
+    nengo.backends:
+      - fpga = nengo_fpga:Simulator
+  install_req:
+    - nengo>=2.8.0
+    - numpy>=1.13.0,<1.17
+    - paramiko>=2.4.1
+  docs_req:
+    - sphinx>=1.8
+    - jupyter
+    - matplotlib>=1.4
+    - nbsphinx
+    - numpydoc>=0.6
+    - nengo_sphinx_theme>=0.12.0
+
+docs_conf_py:
+  nengo_logo: nengo-fpga-full-light.svg
+  nengo_logo_color: "#541a8b"
+
+travis_yml:
+  python: 3.6
+  jobs:
+    - stage: basic
+      script: static
+    - stage: advanced
+      script: docs
+
+ci_scripts:
+  - template: static
+  - template: docs
+    pip_install:
+      - numpy>=1.13.0,<1.17
+      - matplotlib
+
+codecov_yml: {}
+
+pre_commit_config_yaml: {}
+
+pyproject_toml: {}
