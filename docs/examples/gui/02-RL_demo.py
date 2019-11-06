@@ -22,6 +22,7 @@
 # to do actions that will lead to *future* rewards.
 
 import time
+import logging
 import numpy as np
 
 import nengo
@@ -37,7 +38,7 @@ from grid import ContinuousAgent, GridNode
 
 # Set the nengo logging level to 'info' to display all of the information
 # coming back over the ssh connection.
-nengo.utils.logging.log("info")
+logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.INFO)
 
 # ---------------- BOARD SELECT ----------------------- #
 # Change this to your desired device name

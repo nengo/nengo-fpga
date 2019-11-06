@@ -1,3 +1,4 @@
+import logging
 import numpy as np
 import nengo
 
@@ -39,7 +40,7 @@ board = "de1"
 
 # Set the nengo logging level to 'info' to display all of the information
 # coming back over the ssh connection.
-nengo.utils.logging.log("info")
+logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.INFO)
 
 # Set the rng state (using a fixed seed that works)
 rng = np.random.RandomState(9)

@@ -4,7 +4,7 @@
 
 import logging
 
-from nengo.utils.compat import configparser
+import configparser
 import nengo_fpga.utils.paths
 
 logger = logging.getLogger(__name__)

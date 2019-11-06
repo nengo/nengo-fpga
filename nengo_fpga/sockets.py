@@ -400,7 +400,7 @@ class UDPReceiveSocket(nengo.Process):
         self.byte_order = byte_order
         self.recv = None
 
-    def make_step(self, shape_in, shape_out, dt, rng):
+    def make_step(self, shape_in, shape_out, dt, rng, _):
         """Socket integration into Nengo simulator"""
         assert len(shape_out) == 1
         self.recv = _UDPSocket(
@@ -465,7 +465,7 @@ class UDPSendSocket(nengo.Process):
         self.byte_order = byte_order
         self.send = None
 
-    def make_step(self, shape_in, shape_out, dt, rng):
+    def make_step(self, shape_in, shape_out, dt, rng, _):
         """Socket integration into Nengo simulator"""
         assert len(shape_in) == 1
         self.send = _UDPSocket(self.remote_addr, shape_in[0], self.byte_order)
@@ -575,7 +575,7 @@ class UDPSendReceiveSocket(nengo.Process):
         self.recv = None
         self.send = None
 
-    def make_step(self, shape_in, shape_out, dt, rng):
+    def make_step(self, shape_in, shape_out, dt, rng, _):
         """Socket integration into Nengo simulator"""
         assert len(shape_in) == 1
         assert len(shape_out) == 1

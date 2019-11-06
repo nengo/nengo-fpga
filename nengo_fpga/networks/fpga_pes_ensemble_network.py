@@ -148,7 +148,7 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         self.get_output_dim(function, dimensions)
 
         # Process feedback connection
-        if nengo.utils.compat.is_array_like(feedback):
+        if nengo.utils.numpy.is_array_like(feedback):
             self.rec_transform = feedback
         elif feedback is not None:
             raise nengo.exceptions.ValidationError(
@@ -247,7 +247,7 @@ class FpgaPesEnsembleNetwork(nengo.Network):
             self.output_dimensions = dimensions
         elif callable(function):
             self.output_dimensions = len(function(np.zeros(dimensions)))
-        elif nengo.utils.compat.is_array_like(function):
+        elif nengo.utils.numpy.is_array_like(function):
             self.output_dimensions = function.shape[1]
         else:
             raise nengo.exceptions.ValidationError(

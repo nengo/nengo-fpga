@@ -21,7 +21,7 @@ setup_py:
     nengo.backends:
       - fpga = nengo_fpga:Simulator
   install_req:
-    - nengo>=2.8.0
+    - nengo>=3.0.0
     - numpy>=1.13.0,<1.17
     - paramiko>=2.4.1
   docs_req:

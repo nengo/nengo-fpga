@@ -42,8 +42,8 @@ If a recurrent connection exists, we can similarly modify that connection:
 
 .. seealso::
    Check out the Nengo documentation for a full list of `ensemble parameters
-   <https://www.nengo.ai/nengo/frontend_api.html#nengo.Ensemble>`_ and
-   `connection parameter <https://www.nengo.ai/nengo/frontend_api.html#nengo.Connection>`_.
+   <https://www.nengo.ai/nengo/frontend-api.html#nengo.Ensemble>`_ and
+   `connection parameter <https://www.nengo.ai/nengo/frontend-api.html#nengo.Connection>`_.
 
 
 Supported Neuron Types
@@ -51,8 +51,8 @@ Supported Neuron Types
 
 Currently NengoFPGA supports the following neuron types:
 
-- `nengo.RecitifiedLinear <https://www.nengo.ai/nengo/frontend_api.html#nengo.RectifiedLinear>`_
-- `nengo.SpikingRectifiedLinear <https://www.nengo.ai/nengo/frontend_api.html#nengo.SpikingRectifiedLinear>`_
+- `nengo.RecitifiedLinear <https://www.nengo.ai/nengo/frontend-api.html#nengo.RectifiedLinear>`_
+- `nengo.SpikingRectifiedLinear <https://www.nengo.ai/nengo/frontend-api.html#nengo.SpikingRectifiedLinear>`_
 
 
 Objects and Functions

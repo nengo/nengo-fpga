@@ -30,7 +30,7 @@ root = os.path.dirname(os.path.realpath(__file__))
 version = runpy.run_path(os.path.join(root, "nengo_fpga", "version.py"))["version"]
 
 install_req = [
-    "nengo>=2.8.0",
+    "nengo>=3.0.0",
     "numpy>=1.13.0,<1.17",
     "paramiko>=2.4.1",
 ]

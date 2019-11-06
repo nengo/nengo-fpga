@@ -1,4 +1,5 @@
 import argparse
+import logging
 import numpy as np
 
 import nengo
@@ -22,7 +23,7 @@ from nengo_fpga import Simulator
 
 # Set the nengo logging level to 'info' to display all of the information
 # coming back over the ssh connection.
-nengo.utils.logging.log("info")
+logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.INFO)
 
 parser = argparse.ArgumentParser(
     description="A simple communication channel example showing how to"
