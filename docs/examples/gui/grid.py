@@ -1,13 +1,12 @@
 import math
 import random
-import sys
 
 import nengo
 
 neighbour_synonyms = ("neighbours", "neighbors", "neighbour", "neighbor")
 
 
-class Cell(object):
+class Cell:
     wall = False
 
     def __getattr__(self, key):
@@ -23,7 +22,7 @@ class Cell(object):
         raise AttributeError(key)
 
 
-class Agent(object):
+class Agent:
     world = None
     cell = None
 
@@ -90,7 +89,7 @@ class Agent(object):
         if self.world is None:
             raise CellularException("Agent has not been put in a World")
         if self.cell == target:
-            return
+            return False
 
         best = None
         bestDist = -1
@@ -113,11 +112,13 @@ class Agent(object):
             self.dir = bestDir
             return True
 
+        return False
+
     def update(self):
         pass
 
 
-class World(object):
+class World:
     def __init__(
         self, cell=None, width=None, height=None, directions=8, filename=None, map=None
     ):
@@ -127,7 +128,8 @@ class World(object):
         self.directions = directions
         if filename or map:
             if filename:
-                data = file(filename).readlines()
+                with open(filename) as f:
+                    data = f.readlines()
             else:
                 data = map.splitlines()
                 if len(data[0]) == 0:
@@ -181,12 +183,12 @@ class World(object):
                 cell.randomize()
 
     def save(self, f=None):
-        if not hasattr(self.Cell, "save"):
-            return
-        if isinstance(f, type("")):
-            f = file(f, "w")
-
         total = ""
+        if not hasattr(self.Cell, "save"):
+            return total
+        if isinstance(f, type("")):
+            f = open(f, "w")
+
         for j in range(self.height):
             line = ""
             for i in range(self.width):
@@ -195,16 +197,16 @@ class World(object):
         if f is not None:
             f.write(total)
             f.close()
-        else:
-            return total
+
+        return total
 
     def load(self, filename=None, map=None):
         if not hasattr(self.Cell, "load"):
             return
         if filename:
             if isinstance(filename, type("")):
-                filename = file(filename)
-            lines = filename.readlines()
+                with open(filename) as f:
+                    lines = f.readlines()
         else:
             lines = map.splitlines()
             if len(lines[0]) == 0:

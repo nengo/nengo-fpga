@@ -1,5 +1,3 @@
-# pylint: disable=redefined-outer-name
-
 import numpy as np
 import nengo
 
@@ -13,13 +11,13 @@ from nengo_fpga.networks import FpgaPesEnsembleNetwork
 
 
 # ------ MISC HELPER FUNCTIONS -----
-def resize_img(img, im_size, im_size_new):
+def resize_img(img, _im_size, _im_size_new):
     # Resizes the MNIST images to a smaller size so that they can be processed
     # by the FPGA (the FPGA currently has a limitation on the number of
     # dimensions and neurons that can be built into the network)
     # Note: Requires the python PIL (pillow) library to work
-    img = Image.fromarray(img.reshape((im_size, im_size)) * 256, "F")
-    img = img.resize((im_size_new, im_size_new), Image.ANTIALIAS)
+    img = Image.fromarray(img.reshape((_im_size, _im_size)) * 256, "F")
+    img = img.resize((_im_size_new, _im_size_new), Image.ANTIALIAS)
     return np.array(img.getdata(), np.float32) / 256.0
 
 

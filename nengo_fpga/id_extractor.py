@@ -69,15 +69,11 @@ class IDExtractor:
         if self.tcp_recv is not None:
             self.tcp_recv.close()
 
-    def connect_thread_func(self):
-        """Start SSH in a separate thread to monitor status"""
-
-        # Get the IP of the remote device from the fpga_config file
-        remote_ip = fpga_config.get(self.fpga_name, "ip")
+    def connect_ssh_client(self, ssh_user, remote_ip):
+        """ Helper function to parse config and setup ssh client"""
 
         # Get the SSH options from the fpga_config file
         ssh_port = fpga_config.get(self.fpga_name, "ssh_port")
-        ssh_user = fpga_config.get(self.fpga_name, "ssh_user")
 
         if fpga_config.has_option(self.fpga_name, "ssh_pwd"):
             ssh_pwd = fpga_config.get(self.fpga_name, "ssh_pwd")
@@ -105,6 +101,17 @@ class IDExtractor:
             # (paramiko will then try to connect using the id_rsa file in the
             #  ~/.ssh/ folder)
             self.ssh_client.connect(remote_ip, port=ssh_port, username=ssh_user)
+
+    def connect_thread_func(self):
+        """Start SSH in a separate thread to monitor status"""
+
+        # # Get the IP of the remote device from the fpga_config file
+        remote_ip = fpga_config.get(self.fpga_name, "ip")
+
+        # # Get the SSH options from the fpga_config file
+        ssh_user = fpga_config.get(self.fpga_name, "ssh_user")
+
+        self.connect_ssh_client(ssh_user, remote_ip)
 
         # Invoke a shell in the ssh client
         ssh_channel = self.ssh_client.invoke_shell()

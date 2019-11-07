@@ -11,14 +11,7 @@ contributing_rst: {}
 
 contributors_rst: {}
 
-setup_cfg:
-  flake8:
-    ignore:
-      - C901
-      - F821
-  pylint:
-    ignore:
-      - grid.py
+setup_cfg: {}
 
 setup_py:
   package_data:

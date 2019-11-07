@@ -1,5 +1,3 @@
-# pylint: disable=dangerous-default-value,logging-not-lazy
-
 """FPGA network containing:
 
 - One ensemble
@@ -121,7 +119,7 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         function=nengo.Default,
         transform=nengo.Default,
         eval_points=nengo.Default,
-        socket_args={},
+        socket_args=None,
         feedback=None,
         label=None,
         seed=None,
@@ -147,16 +145,7 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         # Process dimensions, function, transform arguments
         self.input_dimensions = dimensions
 
-        if function is nengo.Default:
-            self.output_dimensions = dimensions
-        elif callable(function):
-            self.output_dimensions = len(function(np.zeros(dimensions)))
-        elif nengo.utils.compat.is_array_like(function):
-            self.output_dimensions = function.shape[1]
-        else:
-            raise nengo.exceptions.ValidationError(
-                "Must be callable or array-like", "function", self
-            )
+        self.get_output_dim(function, dimensions)
 
         # Process feedback connection
         if nengo.utils.compat.is_array_like(feedback):
@@ -190,6 +179,9 @@ class FpgaPesEnsembleNetwork(nengo.Network):
                 self.udp_port = int(np.random.uniform(low=20000, high=65535))
 
             # Set default udp socket arguments
+            if socket_args is None:  # Fix for W0102: dangerous-default-value
+                socket_args = {}
+
             socket_kwargs = dict(socket_args)
             socket_kwargs.setdefault("recv_timeout", 0.1)
 
@@ -201,9 +193,7 @@ class FpgaPesEnsembleNetwork(nengo.Network):
             )
         else:
             # FPGA name not found, throw a warning.
-            logger.warning(
-                "Specified FPGA configuration '" + fpga_name + "' not found."
-            )
+            logger.warning("Specified FPGA configuration '%s' not found.", fpga_name)
             print(
                 "WARNING: Specified FPGA configuration '" + fpga_name + "' not found."
             )
@@ -251,6 +241,19 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         for k, v in self.objects.items():
             self.objects[k] = tuple(v)
 
+    def get_output_dim(self, function, dimensions):
+        """ Simplify init function by moving output shape calculation here"""
+        if function is nengo.Default:
+            self.output_dimensions = dimensions
+        elif callable(function):
+            self.output_dimensions = len(function(np.zeros(dimensions)))
+        elif nengo.utils.compat.is_array_like(function):
+            self.output_dimensions = function.shape[1]
+        else:
+            raise nengo.exceptions.ValidationError(
+                "Must be callable or array-like", "function", self
+            )
+
     @property
     def local_data_filepath(self):
         """Full path to ensemble parameter value data file on the local system.
@@ -269,14 +272,12 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         # Close the UDP socket if it is open
         if self.udp_socket is not None:
             logger.info(
-                "<%s> UDP Connection closed" % fpga_config.get(self.fpga_name, "ip")
+                "<%s> UDP Connection closed", fpga_config.get(self.fpga_name, "ip")
             )
             self.udp_socket.close()
 
         # Close the SSH connection
-        logger.info(
-            "<%s> SSH connection closed" % fpga_config.get(self.fpga_name, "ip")
-        )
+        logger.info("<%s> SSH connection closed", fpga_config.get(self.fpga_name, "ip"))
         self.ssh_client.close()
 
     def cleanup(self):
@@ -290,19 +291,11 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         if os.path.isfile(self.local_data_filepath):
             os.remove(self.local_data_filepath)
 
-    def connect_thread_func(self):
-        """Start SSH in a separate thread if applicable"""
-
-        # Function does nothing if FPGA configuration not found in config file
-        if not self.config_found:
-            return
-
-        # Get the IP of the remote device from the fpga_config file
-        remote_ip = fpga_config.get(self.fpga_name, "ip")
+    def connect_ssh_client(self, ssh_user, remote_ip):
+        """ Helper function to parse config and setup ssh client"""
 
         # Get the SSH options from the fpga_config file
         ssh_port = fpga_config.get(self.fpga_name, "ssh_port")
-        ssh_user = fpga_config.get(self.fpga_name, "ssh_user")
 
         if fpga_config.has_option(self.fpga_name, "ssh_pwd"):
             ssh_pwd = fpga_config.get(self.fpga_name, "ssh_pwd")
@@ -331,6 +324,21 @@ class FpgaPesEnsembleNetwork(nengo.Network):
             #  ~/.ssh/ folder)
             self.ssh_client.connect(remote_ip, port=ssh_port, username=ssh_user)
 
+    def connect_thread_func(self):
+        """Start SSH in a separate thread if applicable"""
+
+        # Function does nothing if FPGA configuration not found in config file
+        if not self.config_found:
+            return
+
+        # Get the IP of the remote device from the fpga_config file
+        remote_ip = fpga_config.get(self.fpga_name, "ip")
+
+        # Get the SSH options from the fpga_config file
+        ssh_user = fpga_config.get(self.fpga_name, "ssh_user")
+
+        self.connect_ssh_client(ssh_user, remote_ip)
+
         # Send argument file over
         remote_data_filepath = "%s/%s" % (
             fpga_config.get(self.fpga_name, "remote_tmp"),
@@ -339,8 +347,9 @@ class FpgaPesEnsembleNetwork(nengo.Network):
 
         if os.path.exists(self.local_data_filepath):
             logger.info(
-                "<%s> Sending argument data (%s) to fpga board"
-                % (fpga_config.get(self.fpga_name, "ip"), self.arg_data_file)
+                "<%s> Sending argument data (%s) to fpga board",
+                fpga_config.get(self.fpga_name, "ip"),
+                self.arg_data_file,
             )
 
             # Send the argument data over to the fpga board
@@ -363,13 +372,14 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         #         the ssh user to run sudo commands WITHOUT needing a password
         #         (see specific fpga hardware docs for details)
         if ssh_user != "root":
-            logger.info("<%s> Script to be run with sudo. Sudoing." % remote_ip)
+            logger.info("<%s> Script to be run with sudo. Sudoing.", remote_ip)
             ssh_channel.send("sudo su\n")
 
         # Send required ssh string
         logger.info(
-            "<%s> Sending cmd to fpga board: \n%s"
-            % (fpga_config.get(self.fpga_name, "ip"), self.ssh_string)
+            "<%s> Sending cmd to fpga board: \n%s",
+            fpga_config.get(self.fpga_name, "ip"),
+            self.ssh_string,
         )
         ssh_channel.send(self.ssh_string)
 
@@ -390,24 +400,9 @@ class FpgaPesEnsembleNetwork(nengo.Network):
             self.process_ssh_output(data)
             info_str_list = self.ssh_info_str.split("\n")
             for info_str in info_str_list[:-1]:
-                if info_str.startswith("Killed"):
-                    logger.error("<%s> ENCOUNTERED ERROR!" % remote_ip)
-                    got_error = 2
-
-                if info_str.startswith("Traceback"):
-                    logger.error("<%s> ENCOUNTERED ERROR!" % remote_ip)
-                    got_error = 1
-                elif got_error > 0 and info_str[0] != " ":
-                    # Error string is no longer tabbed, so the actual error
-                    # is bring printed. Collect and terminate (see below)
-                    got_error = 2
-
-                if got_error > 0:
-                    # Once an error is encountered, keep collecting error
-                    # messages until the termination condition (above)
-                    error_strs.append(info_str)
-                else:
-                    logger.info("<%s> %s", remote_ip, info_str)
+                got_error, error_strs = self.check_ssh_str(
+                    info_str, error_strs, got_error, remote_ip
+                )
             self.ssh_info_str = info_str_list[-1]
 
             # The traceback usually contains 3 lines, so collect the first
@@ -426,7 +421,7 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         if not self.config_found:
             return
 
-        logger.info("<%s> Open SSH connection" % fpga_config.get(self.fpga_name, "ip"))
+        logger.info("<%s> Open SSH connection", fpga_config.get(self.fpga_name, "ip"))
         # Start a new thread to open the ssh connection. Use a thread to
         # handle the opening of the connection because it can lag for certain
         # devices, and we don't want it to impact the rest of the build process.
@@ -445,6 +440,30 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         # received.
         self.ssh_info_str += str_data
 
+    def check_ssh_str(self, info_str, error_strs, got_error, remote_ip):
+        """Process info from ssh and check for errors"""
+
+        if info_str.startswith("Killed"):
+            logger.error("<%s> ENCOUNTERED ERROR!", remote_ip)
+            got_error = 2
+
+        if info_str.startswith("Traceback"):
+            logger.error("<%s> ENCOUNTERED ERROR!", remote_ip)
+            got_error = 1
+        elif got_error > 0 and info_str[0] != " ":
+            # Error string is no longer tabbed, so the actual error
+            # is bring printed. Collect and terminate (see below)
+            got_error = 2
+
+        if got_error > 0:
+            # Once an error is encountered, keep collecting error
+            # messages until the termination condition (above)
+            error_strs.append(info_str)
+        else:
+            logger.info("<%s> %s", remote_ip, info_str)
+
+        return got_error, error_strs
+
     def reset(self):
         """Reconnect to FPGA if applicable"""
 
@@ -455,7 +474,7 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         # Otherwise, close and reopen the SSH connection to the board
         # Closing the SSH connection will terminate the board-side script
         logger.info(
-            "<%s> Resetting SSH connection:" % fpga_config.get(self.fpga_name, "ip")
+            "<%s> Resetting SSH connection:", fpga_config.get(self.fpga_name, "ip")
         )
         # Close and reopen ssh connections
         self.close()
@@ -485,6 +504,54 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         return ssh_str
 
 
+def validate_net(network):
+    """Helper function to simplify builder function.
+
+    Validates network params:
+        - Neuron type
+        - Learning connection
+        - Feedback connection
+
+    returns [neuron_type (str),
+             learning_rate (float),
+            ]
+
+    """
+
+    # Check neuron type
+    if type(network.ensemble.neuron_type) not in network.neuron_str_map:
+        raise nengo.exceptions.BuildError(
+            "Neuron type '%s' is not supported." % type(network.ensemble.neuron_type)
+        )
+
+    # Check learning
+    if network.connection.learning_rule_type is None:
+        l_rate = 0
+    elif isinstance(network.connection.learning_rule_type, nengo.PES):
+        l_rate = network.connection.learning_rule_type.learning_rate
+    else:
+        raise nengo.exceptions.BuildError(
+            "Learning rule '%s' is not supported."
+            % type(network.connection.learning_rule_type)
+        )
+
+    # Check Feedback (params not set here)
+    if network.feedback is not None:
+        # Validation
+        if network.feedback.learning_rule_type is not None:
+            raise nengo.exceptions.BuildError(
+                "The FPGA feedback connection does not support learning."
+            )
+
+        if not isinstance(network.feedback.synapse, nengo.Lowpass):
+            raise nengo.exceptions.BuildError(
+                "The FPGA feedback connection only supports the "
+                "`nengo.Lowpass` synapse."
+            )
+
+    return [network.neuron_str_map[type(network.ensemble.neuron_type)], l_rate]
+
+
 @nengo.builder.Builder.register(FpgaPesEnsembleNetwork)
 def build_FpgaPesEnsembleNetwork(model, network):
     """Builder to integrate FPGA network into Nengo
@@ -494,9 +561,7 @@ def build_FpgaPesEnsembleNetwork(model, network):
 
     # Check if nengo_fpga.Simulator is being used to build this network
     if not network.using_fpga_sim:
-        warn_str = (
-            "FpgaPesEnsembleNetwork not being built with nengo_fpga" + " simulator."
-        )
+        warn_str = "FpgaPesEnsembleNetwork not being built with nengo_fpga simulator."
         logger.warning(warn_str)
         print("WARNING: " + warn_str)
 
@@ -531,16 +596,6 @@ def build_FpgaPesEnsembleNetwork(model, network):
         ens_args["output_dimensions"] = network.output_dimensions
         ens_args["n_neurons"] = network.ensemble.n_neurons
         ens_args["bias"] = param_model.params[network.ensemble].bias
-        if type(network.ensemble.neuron_type) in network.neuron_str_map:
-            ens_args["neuron_type"] = network.neuron_str_map[
-                type(network.ensemble.neuron_type)
-            ]
-        else:
-            raise nengo.exceptions.BuildError(
-                "Neuron type '%s' is not supported."
-                % type(network.ensemble.neuron_type)
-            )
-
         ens_args["scaled_encoders"] = param_model.params[
             network.ensemble
         ].scaled_encoders
@@ -549,35 +604,14 @@ def build_FpgaPesEnsembleNetwork(model, network):
         conn_args = {}
         conn_args["weights"] = param_model.params[network.connection].weights
 
-        if network.connection.learning_rule_type is None:
-            conn_args["learning_rate"] = 0
-        elif isinstance(network.connection.learning_rule_type, nengo.PES):
-            conn_args[
-                "learning_rate"
-            ] = network.connection.learning_rule_type.learning_rate
-        else:
-            raise nengo.exceptions.BuildError(
-                "Learning rule '%s' is not supported."
-                % type(network.connection.learning_rule_type)
-            )
+        # Validate neuron_type, learning_rule, and feedback connection
+        ens_args["neuron_type"], conn_args["learning_rate"] = validate_net(network)
 
         # Collect the feedback connection argument values
         recur_args = {}
         recur_args["weights"] = 0  # Necessary as flag even if not used
 
         if network.feedback is not None:
-            # Validation
-            if network.feedback.learning_rule_type is not None:
-                raise nengo.exceptions.BuildError(
-                    "The FPGA feedback connection does not support learning."
-                )
-
-            if not isinstance(network.feedback.synapse, nengo.Lowpass):
-                raise nengo.exceptions.BuildError(
-                    "The FPGA feedback connection only supports the "
-                    "`nengo.Lowpass` synapse."
-                )
-
             # Grab relevant attributes
             recur_args["weights"] = param_model.params[network.feedback].weights
             recur_args["tau"] = network.feedback.synapse.tau

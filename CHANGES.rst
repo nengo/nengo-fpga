@@ -26,6 +26,11 @@ Release History
 - Setup Nengo Bones and remote CI.
   (`#41 <https://github.com/nengo/nengo-fpga/pull/41>`__)
 
+**Fixed**
+
+- Fixed code to remove all linter errors.
+  (`#45 <https://github.com/nengo/nengo-fpga/pull/45>`__)
+
 
 0.2.1 (September 17, 2019)
 --------------------------

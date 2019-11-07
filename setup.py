@@ -29,7 +29,11 @@ def read(*filenames, **kwargs):
 root = os.path.dirname(os.path.realpath(__file__))
 version = runpy.run_path(os.path.join(root, "nengo_fpga", "version.py"))["version"]
 
-install_req = ["nengo>=2.8.0", "numpy>=1.13.0,<1.17", "paramiko>=2.4.1"]
+install_req = [
+    "nengo>=2.8.0",
+    "numpy>=1.13.0,<1.17",
+    "paramiko>=2.4.1",
+]
 docs_req = [
     "sphinx>=1.8",
     "jupyter",
@@ -61,6 +65,6 @@ setup(
         "tests": tests_req,
     },
     python_requires=">=3.5",
-    package_data={"nengo_fpga": ["fpga_config"]},
-    entry_points={"nengo.backends": ["fpga = nengo_fpga:Simulator"]},
+    package_data={"nengo_fpga": ["fpga_config",],},
+    entry_points={"nengo.backends": ["fpga = nengo_fpga:Simulator",],},
 )

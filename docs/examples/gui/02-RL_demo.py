@@ -1,5 +1,3 @@
-# pylint: disable=redefined-outer-name,dangerous-default-value,undefined-variable
-
 # Reinforcement Learning
 
 # Here we have a simple agent in a simple world.  It has three actions
@@ -156,8 +154,8 @@ if "__page__" in locals():
     # Additional options for keyboard-state branch of nengo_gui
     # Allows the user to control the status of the learning, and to change the
     # map being used by the agent.
-    print("Press 'q' to enable permanent exploration.")
-    print("Press 'e' to turn off exploration and reset agent position.")
+    print("Press 'q' to enable exploration and reset agent position.")
+    print("Press 'e' to disable exploration and reset agent position.")
     print("Press 'w' to reset agent position.")
     print("Press 1-{0} to change maps.".format(len(world_cfg.world_maps)))
 
@@ -168,18 +166,18 @@ with model:
 
     # Handle the movement of the agent, and generate the movement
     # "goodness" grade
-    def move(t, x, world_cfg=world_cfg):
+    def move(t, x, my_world=world_cfg):
         speed, rotation = x
         dt = 0.001
         max_speed = 10.0  # 10.0
         max_rotate = 10.0  # 10.0
-        world_cfg.agent.turn(rotation * dt * max_rotate)
-        success = world_cfg.agent.go_forward(speed * dt * max_speed)
+        my_world.agent.turn(rotation * dt * max_rotate)
+        success = my_world.agent.go_forward(speed * dt * max_speed)
         if not success:
-            world_cfg.agent.color = "red"
+            my_world.agent.color = "red"
             return 0
         else:
-            world_cfg.agent.color = "blue"
+            my_world.agent.color = "blue"
             return turn_bias + speed
 
     movement = nengo.Ensemble(n_neurons=100, dimensions=2, radius=1.4)
@@ -241,68 +239,75 @@ with model:
     nengo.Connection(errors, adapt_ens.error)
     nengo.Connection(adapt_ens.output, bg.input)
 
-    if "__page__" in locals():
-        # Additional options for keyboard-state branch of nengo_gui
+    class LearnActive:
+        """Class to store persistent learning state"""
 
-        # Node to control and display current learning status
-        def learn_activate_func(t, world_cfg=world_cfg, _is_learning=[1]):
+        def __init__(self, my_world, page_data=None):
+            self.my_world = my_world
+            self.page = page_data
+
+            self._is_learning = 1
             # _is_learning values:
             # < 0: no learning
             # 1: learning, will stop at learn_timeout
             # 2: continuous learning
 
-            init_agent_pos = False
-            if "q" in __page__.keys_pressed:
-                _is_learning[0] = 2
-                init_agent_pos = True
-            elif "e" in __page__.keys_pressed:
-                _is_learning[0] = -1
-                init_agent_pos = True
-            elif "w" in __page__.keys_pressed:
-                init_agent_pos = True
-            if len(__page__.keys_pressed) > 0:
-                for k in __page__.keys_pressed:
+        def __call__(self, t):
+            if self.page is not None:
+
+                init_agent_pos = False
+                # Create a dictionary isntead of if/else
+                # "<key press>": (<learning>, <init_agent_pos>)
+                keyboard_dict = {
+                    "q": (2, True),
+                    "e": (-1, True),
+                    "w": (self._is_learning, True),
+                }
+
+                for k in self.page.keys_pressed:
                     if k.isdigit():
                         new_map_ind = int(k) - 1
-                        if new_map_ind != world_cfg.curr_ind:
-                            world_cfg.set_ind(new_map_ind)
+                        if new_map_ind != self.my_world.curr_ind:
+                            self.my_world.set_ind(new_map_ind)
                             init_agent_pos = True
+                    elif k in list(keyboard_dict.keys()):
+                        self._is_learning, init_agent_pos = keyboard_dict[k]
 
-            learn_on = (
-                (t <= learn_timeout) or (_is_learning[0] == 2)
-            ) and _is_learning[0] > 0
-            learn_activate_func._nengo_html_ = """
-            <svg width="100%" height="100%" viewbox="0 0 200 75">
-                <text x="50%" y="50%" fill="{0}" text-anchor="middle"
-                 alignment-baseline="middle" font-size="50">{1}</text>
-            </svg>
-            """.format(
-                "red" if learn_on else "grey",
-                "Explore: ON" if learn_on else "Explore: Off",
-            )
+                learning = (
+                    (t <= learn_timeout) or (self._is_learning == 2)
+                ) and self._is_learning > 0
 
-            if not learn_on and _is_learning[0] == 1:
-                init_agent_pos = True
-                _is_learning[0] = -1
+                self._nengo_html_ = """
+                <svg width="100%" height="100%" viewbox="0 0 200 75">
+                    <text x="50%" y="50%" fill="{0}" text-anchor="middle"
+                     alignment-baseline="middle" font-size="50">{1}</text>
+                </svg>
+                """.format(
+                    "red" if learning else "grey",
+                    "Explore: ON" if learning else "Explore: Off",
+                )
 
-            if init_agent_pos:
-                world_cfg.reset_pos()
+                if not learning and self._is_learning == 1:
+                    init_agent_pos = True
+                    self._is_learning = -1
 
-            return int(learn_on)
+                if init_agent_pos:
+                    self.my_world.reset_pos()
 
-    else:
-        # Keyboard state branch not detected. Default to continuous learning
-        def learn_activate_func(t):
-            learn_activate_func._nengo_html_ = """
-            <svg width="100%" height="100%" viewbox="0 0 200 75">
-                <text x="50%" y="50%" fill="red" text-anchor="middle"
-                 alignment-baseline="middle" font-size="50">
-                 Explore: ON</text>
-            </svg>
-            """
+                return int(learning)
+            else:
+                # Keyboard state branch not detected. Default to continuous learning
+                self._nengo_html_ = """
+                <svg width="100%" height="100%" viewbox="0 0 200 75">
+                    <text x="50%" y="50%" fill="red" text-anchor="middle"
+                     alignment-baseline="middle" font-size="50">
+                     Explore: ON</text>
+                </svg>
+                """
 
-            # Return 1, to turn learning on permanently
-            return 1
+                # Return 1, to turn learning on permanently
+                return 1
 
-    learn_on = nengo.Node(learn_activate_func)
+    # Need to pass in keyboard handler since it's not local to the class
+    learn_on = nengo.Node(LearnActive(world_cfg, locals().get("__page__")))
     nengo.Connection(learn_on, errors[7])
