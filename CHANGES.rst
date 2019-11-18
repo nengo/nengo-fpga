@@ -26,6 +26,9 @@ Release History
 - Setup Nengo Bones and remote CI.
   (`#41 <https://github.com/nengo/nengo-fpga/pull/41>`__)
 
+- Added notebook examples featuring oscillators.
+  (`#46 <https://github.com/nengo/nengo-fpga/pull/46>`__)
+
 **Changed**
 
 - Compatibility changes for Nengo 3.0.0.

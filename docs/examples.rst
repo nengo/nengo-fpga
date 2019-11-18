@@ -31,6 +31,9 @@ See :ref:`Using Jupyter Notebooks <jupyter>` for help.
    examples/notebooks/01-learn_communication_channel
    examples/notebooks/02-set_neuron_params
    examples/notebooks/03-integrator
+   examples/notebooks/04-oscillator
+   examples/notebooks/05-controlled_oscillator
+   examples/notebooks/06-chaotic_attractor
 
 
 GUI Examples
