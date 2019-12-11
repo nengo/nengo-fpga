@@ -34,6 +34,9 @@ Release History
 - Compatibility changes for Nengo 3.0.0.
   (`#44 <https://github.com/nengo/nengo-fpga/pull/44>`__)
 
+- Minor changes to oscillator notebooks.
+  (`#47 <https://github.com/nengo/nengo-fpga/pull/47>`__)
+
 **Fixed**
 
 - Fixed code to remove all linter errors.

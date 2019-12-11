@@ -94,7 +94,8 @@ def make_anim_controlled_osc(
 
     # Make matplotlib figure
     fig = plt.figure(figsize=figsize)
-    gs = gridspec.GridSpec(1, 2, width_ratios=[4, 1])
+    gs = gridspec.GridSpec(1, 2, width_ratios=[12, 1])
+    gs.update(wspace=0)
     ax = plt.subplot(gs[0], aspect="equal")
 
     # Set the axis limits
@@ -113,8 +114,9 @@ def make_anim_controlled_osc(
     time_str = ax.text(-axis_limits / 1.1, -axis_limits / 1.1, "", fontsize=12)
 
     # Sidebar plot
-    ax2 = plt.subplot(gs[1], aspect="equal")
+    ax2 = plt.subplot(gs[1])
     ax2.set_ylim(-axis_limits, axis_limits)
+    ax2.set_yticks(np.linspace(-int(axis_limits), int(axis_limits), 5))
     ax2.set_xticks([])
     ax2.yaxis.set_label_position("right")
     ax2.yaxis.tick_right()
@@ -141,7 +143,7 @@ def make_anim_controlled_osc(
                 y[max(i * skip - trail_length, 0) : i * skip + 1],
             )
         )
-        dot.set_data([0], [w[i * skip]])
+        dot.set_data([0.5], [w[i * skip]])
         time_str.set_text("Time: %0.2fs" % (i * skip * dt))
         return lsegs, dot, time_str
 
