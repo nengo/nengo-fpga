@@ -17,6 +17,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "nbsphinx",
     "nengo_sphinx_theme",
+    "nengo_sphinx_theme.ext.redirects",
     "numpydoc",
 ]
 
@@ -35,6 +36,8 @@ intersphinx_mapping = {
     "nengo": ("https://www.nengo.ai/nengo/", None),
     "numpy": ("https://docs.scipy.org/doc/numpy", None),
     "python": ("https://docs.python.org/3", None),
+    "nengo-de1": ("https://www.nengo.ai/nengo-de1/", None),
+    "nengo-pynq": ("https://www.nengo.ai/nengo-pynq/", None),
 }
 
 # -- sphinx.ext.todo
@@ -80,3 +83,26 @@ html_theme_options = {
     "nengo_logo": "nengo-fpga-full-light.svg",
     "nengo_logo_color": "#541a8b",
 }
+html_redirects = [
+    ("getting_started.html", "getting-started.html"),
+    (
+        "examples/notebooks/00-communication_channel.html",
+        "examples/notebooks/00-communication-channel.html",
+    ),
+    (
+        "examples/notebooks/01-learn_communication_channel.html",
+        "examples/notebooks/01-learn-communication-channel.html",
+    ),
+    (
+        "examples/notebooks/02-set_neuron_params.html",
+        "examples/notebooks/02-set-neuron-params.html",
+    ),
+    (
+        "examples/notebooks/05-controlled_oscillator.html",
+        "examples/notebooks/05-controlled-oscillator.html",
+    ),
+    (
+        "examples/notebooks/06-chaotic_attractor.html",
+        "examples/notebooks/06-chaotic-attractor.html",
+    ),
+]

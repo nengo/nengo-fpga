@@ -5,9 +5,9 @@ API
 Setting Parameters
 ==================
 
-Many of the Nengo ensemble parameters are omitted from the ``FpgaPesEnsembleNetwork``
-constructor, but all of these ensemble parameters can easily be changed once an
-ensemble is created:
+Many of the Nengo ensemble parameters are omitted from the
+``FpgaPesEnsembleNetwork`` constructor, but all of these ensemble parameters can
+easily be changed once an ensemble is created:
 
 .. code-block:: python
 
@@ -42,8 +42,8 @@ If a recurrent connection exists, we can similarly modify that connection:
 
 .. seealso::
    Check out the Nengo documentation for a full list of `ensemble parameters
-   <https://www.nengo.ai/nengo/frontend-api.html#nengo.Ensemble>`_ and
-   `connection parameter <https://www.nengo.ai/nengo/frontend-api.html#nengo.Connection>`_.
+   <nengo.Ensemble>` and
+   `connection parameters <nengo.Connection>`.
 
 
 Supported Neuron Types
@@ -51,8 +51,8 @@ Supported Neuron Types
 
 Currently NengoFPGA supports the following neuron types:
 
-- `nengo.RecitifiedLinear <https://www.nengo.ai/nengo/frontend-api.html#nengo.RectifiedLinear>`_
-- `nengo.SpikingRectifiedLinear <https://www.nengo.ai/nengo/frontend-api.html#nengo.SpikingRectifiedLinear>`_
+- `nengo.RecitifiedLinear <nengo.RectifiedLinear>`
+- `nengo.SpikingRectifiedLinear <nengo.SpikingRectifiedLinear>`
 
 
 Objects and Functions

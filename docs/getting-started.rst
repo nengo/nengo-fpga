@@ -5,9 +5,10 @@ Getting Started
 Things You Need
 ===============
 
-- `Nengo <https://www.nengo.ai/nengo/getting-started.html>`_
+- :std:doc:`Nengo <nengo:getting-started>`
 - A :ref:`supported FPGA board <supported-hardware>`
-- A NengoFPGA Licence (available from `Applied Brain Research <https://store.appliedbrainresearch.com/collections/nengo-fpga>`_)
+- A NengoFPGA Licence (available from `Applied Brain Research
+  <https://store.appliedbrainresearch.com/collections/nengo-fpga>`_)
 - (Optional) `Nengo GUI <https://github.com/nengo/nengo-gui>`_
 
 .. _quick-guide:
@@ -52,9 +53,9 @@ Installation Quick Reference Guide
 
       where **<board>** is the board name as it appears in ``fpga_config``.
 
-   #. If the script has a successful run you will see a lot of **[INFO]** printed
-      to the console indicating the status of the NengoFPGA system. Near the
-      bottom you will see the RMSE of the network printed:
+   #. If the script has a successful run you will see a lot of **[INFO]**
+      printed to the console indicating the status of the NengoFPGA system.
+      Near the bottom you will see the RMSE of the network printed:
 
       .. code-block:: none
 
@@ -82,7 +83,9 @@ Download the NengoFPGA source code from github using git:
 
    git clone https://github.com/nengo/nengo-fpga.git
 
-or navigate to the `repository <https://github.com/nengo/nengo-fpga>`_ and download the files manually. Once downloaded, navigate to the ``nengo-fpga`` folder in a terminal window and install with:
+or navigate to the `repository <https://github.com/nengo/nengo-fpga>`_ and
+download the files manually. Once downloaded, navigate to the ``nengo-fpga``
+folder in a terminal window and install with:
 
 .. code-block:: bash
 
@@ -95,8 +98,10 @@ FPGA Board Setup
 
 Follow documentation for your particular FPGA device:
 
-- `Board setup for Terasic DE1-SoC <https://www.nengo.ai/nengo-de1/getting_started.html>`_ (Intel Cyclone V)
-- `Board setup for Digilent PYNQ <https://www.nengo.ai/nengo-pynq/getting_started.html>`_ (Xilinx Zynq)
+- :std:doc:`Board setup for Terasic DE1-SoC <nengo-de1:getting-started>`
+  (Intel Cyclone V)
+- :std:doc:`Board setup for Digilent PYNQ <nengo-pynq:getting-started>`
+  (Xilinx Zynq)
 
 The full list of hardware that NengoFPGA supports, and the links to their
 respective documentation can be found :ref:`here <supported-hardware>`.
@@ -106,11 +111,11 @@ respective documentation can be found :ref:`here <supported-hardware>`.
 NengoFPGA Software Configuration
 ================================
 
-NengoFPGA is the frontend that connects to one of many backend FPGA devices.
-You will need to have a :ref:`supported FPGA board <supported-hardware>` with access
-to Applied Brain Research's designs. Each FPGA board will have it's own setup and configuration
-procedure outlined in it's own documentation, however, the NengoFPGA frontend
-has its own configuration as outlined below.
+NengoFPGA is the frontend that connects to one of many backend FPGA devices. You
+will need to have a :ref:`supported FPGA board <supported-hardware>` with access
+to Applied Brain Research's designs. Each FPGA board will have it's own setup
+and configuration procedure outlined in it's own documentation, however, the
+NengoFPGA frontend has its own configuration as outlined below.
 
 The NengoFPGA default config file, ``fpga_config``, is located in the root
 directory of ``nengo-fpga`` and contains example settings for your host machine
@@ -228,11 +233,12 @@ Additionally, ensure you have reviewed the
 :ref:`NengoFPGA configuration <nengofpga-config>` section,
 and appropriately modified the ``fpga_config`` file.
 
-Once done, simply run the ``id_extractor.py`` script located in the ``nengo_fpga``
-directory from within the ``nengo-fpga`` root folder. This will print the Device
-ID as well as save it to a file for future reference. The script requires that
-you provide the name of your board as it appears in the ``fpga_config`` file
-(eg. pynq, de1). From the root directory (``nengo-fpga``) run:
+Once done, simply run the ``id_extractor.py`` script located in the
+``nengo_fpga`` directory from within the ``nengo-fpga`` root folder. This will
+print the Device ID as well as save it to a file for future reference. The
+script requires that you provide the name of your board as it appears in the
+``fpga_config`` file (eg. pynq, de1). From the root directory (``nengo-fpga``)
+run:
 
 .. code-block:: bash
 
@@ -254,9 +260,9 @@ Bitstreams
 ==========
 
 Compiled FPGA designs are binary files that configure the hardware, literally
-strings of bits, so compiled designs are often called *bitstreams*. When
-getting started or updating you NengoFPGA system, you will need to get bitstreams
-for your device.
+strings of bits, so compiled designs are often called *bitstreams*. When getting
+started or updating you NengoFPGA system, you will need to get bitstreams for
+your device.
 
 
 .. _get-bitstreams:
@@ -277,7 +283,8 @@ To receive your tailored bitstreams, please send us an email at
   subject header with the term "NengoFPGA".
 
 
-.. _support@appliedbrainresearch.com: mailto:support@appliedbrainresearch.com?subject=NengoFPGA\ -\
+.. _support@appliedbrainresearch.com:
+   mailto:support@appliedbrainresearch.com?subject=NengoFPGA\ -\
 
 
 .. _update-bitstreams:
@@ -288,6 +295,9 @@ Updating NengoFPGA Bitstreams
 Once you have received your bitstreams, follow documentation for your particular
 FPGA device for how to copy them to the board and get them running:
 
-- `Updating bitstreams for Terasic DE1-SoC <https://www.nengo.ai/nengo-de1/usage.html#updating-bitstreams>`_ (Intel Cyclone V)
-- `Updating bitstreams for Digilent PYNQ <https://www.nengo.ai/nengo-pynq/usage.html#updating-bitstreams>`_ (Xilinx Zynq)
+- :ref:`Updating bitstreams for Terasic DE1-SoC
+  <nengo-de1:/usage.rst#updating-bitstreams>`
+  (Intel Cyclone V)
+- :ref:`Updating bitstreams for Digilent PYNQ
+  <nengo-pynq:/usage.rst#updating-bitstreams>` (Xilinx Zynq)
 

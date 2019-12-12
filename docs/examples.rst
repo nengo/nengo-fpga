@@ -27,13 +27,13 @@ See :ref:`Using Jupyter Notebooks <jupyter>` for help.
 .. toctree::
    :maxdepth: 1
 
-   examples/notebooks/00-communication_channel
-   examples/notebooks/01-learn_communication_channel
-   examples/notebooks/02-set_neuron_params
+   examples/notebooks/00-communication-channel
+   examples/notebooks/01-learn-communication-channel
+   examples/notebooks/02-set-neuron-params
    examples/notebooks/03-integrator
    examples/notebooks/04-oscillator
-   examples/notebooks/05-controlled_oscillator
-   examples/notebooks/06-chaotic_attractor
+   examples/notebooks/05-controlled-oscillator
+   examples/notebooks/06-chaotic-attractor
 
 
 GUI Examples
@@ -107,7 +107,7 @@ To run this example in Nengo, from the |gui_dir| directory, run:
 
 .. code-block:: none
 
-   nengo 00-mnist_vision_network.py -b nengo_fpga
+   nengo 00-mnist-vision-network.py -b nengo_fpga
 
 .. note::
 
@@ -168,7 +168,7 @@ To run this example in Nengo, from the |gui_dir| directory, run:
 
 .. code-block:: none
 
-   nengo 01-adaptive_pendulum.py -b nengo_fpga
+   nengo 01-adaptive-pendulum.py -b nengo_fpga
 
 When the model is loaded into Nengo GUI, you should see a graphical
 representation similar to the image below.
@@ -274,7 +274,7 @@ To run this example in Nengo, from the |gui_dir| directory, run:
 
 .. code-block:: none
 
-   nengo 02-RL_demo.py -b nengo_fpga
+   nengo 02-RL-demo.py -b nengo_fpga
 
 When the model is loaded into Nengo GUI, you should see a graphical
 representation similar to the image below.

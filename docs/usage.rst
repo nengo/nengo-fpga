@@ -5,7 +5,7 @@ Usage
 Converting from Standard Nengo
 ==============================
 
-NengoFPGA is an extension of `Nengo core <https://www.nengo.ai/nengo/>`_.
+NengoFPGA is an extension of :std:doc:`Nengo core <nengo:index>`.
 Networks and models are described using the traditional Nengo workflow and a
 single ensemble, including PES learning, can be replaced with an FPGA ensemble
 using the ``FpgaPesEnsembleNetwork`` class. For example, consider the following
@@ -295,7 +295,10 @@ giving us bounds based on specific memory requirements:
 - The maximum product of neurons and dimensions, *NxD*, used to allocate
   memory for things like encoder and decoder matrices.
 
-These maximum model size values are summarized in the hardware-specific documentation:
+These maximum model size values are summarized in the hardware-specific
+documentation:
 
-- `DE1-SoC feasible model size <https://www.nengo.ai/nengo-de1/appendix.html#maximum-model-size>`_
-- `PYNQ-Z1 feasible model size <https://www.nengo.ai/nengo-pynq/appendix.html#maximum-model-size>`_
+- :ref:`DE1-SoC feasible model size
+  <nengo-de1:/appendix.rst#maximum-model-size>`
+- :ref:`PYNQ-Z1 feasible model size
+  <nengo-pynq:/appendix.rst#maximum-model-size>`

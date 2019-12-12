@@ -2,16 +2,13 @@
 Appendix
 ********
 
-.. todo:
-   Change the link to the ABR store
-
 .. _supported-hardware:
 
 Supported Hardware
 ==================
 
-IP packages can be purchased through
-`Applied Brain Research <https://appliedbrainresearch.com/products/brainboard/>`_.
+IP packages can be purchased through `Applied Brain Research
+<https://store.appliedbrainresearch.com/collections/nengo-fpga>`_.
 
 
 DE1-SoC
@@ -28,11 +25,12 @@ DE1-SoC
 |
 |
 
-The DE1-SoC board is manufactured by Terasic and uses an
-Intel Altera Cyclone V FPGA paired with a dual core ARM Cortex A9.
-The board is available for `purchase from Terasic <https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&No=836>`_.
-See the (`Nengo DE1 documentation <https://www.nengo.ai/nengo-de1/>`_) for how to use
-this board with NengoFPGA.
+The DE1-SoC board is manufactured by Terasic and uses an Intel Altera Cyclone V
+FPGA paired with a dual core ARM Cortex A9. The board is available for `purchase
+from Terasic
+<https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&No=836>`_.
+See the :std:doc:`Nengo DE1 documentation <nengo-de1:index>` for how to use this
+board with NengoFPGA.
 
 |
 |
@@ -50,10 +48,11 @@ PYNQ-Z1
 |
 |
 
-The PYNQ-Z1 board is manufactured by Digilent and uses a ZYNQ 7020 FPGA
-paired with a dual core ARM Cortex A9. The board is available for
-`purchase from Digilent <https://store.digilentinc.com/pynq-z1-python-productivity-for-zynq-7000-arm-fpga-soc/>`_.
-See the (`Nengo PYNQ documentation <https://www.nengo.ai/nengo-pynq/>`_) for how to use
+The PYNQ-Z1 board is manufactured by Digilent and uses a ZYNQ 7020 FPGA paired
+with a dual core ARM Cortex A9. The board is available for `purchase from
+Digilent
+<https://store.digilentinc.com/pynq-z1-python-productivity-for-zynq-7000-arm-fpga-soc/>`_.
+See the :std:doc:`Nengo PYNQ documentation <nengo-pynq:index>` for how to use
 this board with NengoFPGA.
 
 |
@@ -146,10 +145,10 @@ by SSH'ing into the FPGA board. If a connection is made without needing to
 provide a password, then the SSH key has been successfully installed.
 
 If the SSH key has been successfully installed NengoFPGA can be configured to
-use the keys by replacing the **ssh_pwd** entry with **ssh_key**, and providing the
-location of the SSH *private key* on the host system. As an example, if the SSH
-*private key* is located in ``~/.ssh/id_rsa`` on the host system, the **ssh_key**
-entry would be:
+use the keys by replacing the **ssh_pwd** entry with **ssh_key**, and providing
+the location of the SSH *private key* on the host system. As an example, if the
+SSH *private key* is located in ``~/.ssh/id_rsa`` on the host system, the
+**ssh_key** entry would be:
 
 .. code-block:: none
 
@@ -157,8 +156,8 @@ entry would be:
 
 
 .. note::
-   The config file can have *either* an **ssh_pwd** entry or an **ssh_key** entry
-   but **not both**.
+   The config file can have *either* an **ssh_pwd** entry or an **ssh_key**
+   entry but **not both**.
 
 .. _ip-addr:
 
@@ -172,9 +171,9 @@ operating system below.
 .. note::
    Ignore any address like **127.0.0.1**
 
-
-.. todo::
-   Maybe add screenshots?
+..
+   .. todo::
+      Maybe add screenshots?
 
 Windows
 -------
@@ -227,7 +226,8 @@ Jupyter so you can run the examples locally or create your own notebook!
    under the hood for you. At the top, click the **kernel** menu then hover
    over **Change kernel** and select the desired Python version.
 #. Click on the first code cell in the notebook and execute it by clicking
-   the play button at the top or pressing **Shift+Enter**. This will run the code in the current cell and move you to the next cell in the notebook.
+   the play button at the top or pressing **Shift+Enter**. This will run the
+   code in the current cell and move you to the next cell in the notebook.
 #. Step through the notebook by continuing to execute cells, you can execute
    the text cells as cell, so no need to jump down and click on each code cell!
 

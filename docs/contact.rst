@@ -12,4 +12,5 @@ by sending an email to `support@appliedbrainresearch.com`_.
 To help our support team provide a prompt response, please start your
 subject header with the term "NengoFPGA".
 
-.. _support@appliedbrainresearch.com: mailto:support@appliedbrainresearch.com?subject=NengoFPGA\ -\
+.. _support@appliedbrainresearch.com:
+   mailto:support@appliedbrainresearch.com?subject=NengoFPGA\ -\

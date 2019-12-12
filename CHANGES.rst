@@ -42,6 +42,9 @@ Release History
 - Fixed code to remove all linter errors.
   (`#45 <https://github.com/nengo/nengo-fpga/pull/45>`__)
 
+- Start using intersphinx, rename docs using '-'.
+  (`#48 <https://github.com/nengo/nengo-fpga/pull/48>`__)
+
 0.2.1 (September 17, 2019)
 --------------------------
 
