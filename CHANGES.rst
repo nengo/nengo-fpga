@@ -29,6 +29,9 @@ Release History
 - Added notebook examples featuring oscillators.
   (`#46 <https://github.com/nengo/nengo-fpga/pull/46>`__)
 
+- Added spiking to oscillator notebook examples.
+  (`#49 <https://github.com/nengo/nengo-fpga/pull/49>`__)
+
 **Changed**
 
 - Compatibility changes for Nengo 3.0.0.

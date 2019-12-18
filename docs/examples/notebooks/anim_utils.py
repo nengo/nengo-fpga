@@ -102,8 +102,16 @@ def make_anim_controlled_osc(
     axis_limits = max(max(np.absolute(x)), max(np.absolute(y))) * 1.2
     ax.set_xlim(-axis_limits, axis_limits)
     ax.set_ylim(-axis_limits, axis_limits)
-    ax.set_xticks(np.linspace(-int(axis_limits), int(axis_limits), 5))
-    ax.set_yticks(np.linspace(-int(axis_limits), int(axis_limits), 5))
+    ax.set_xticks(np.linspace(
+        -np.round(axis_limits, 0),
+        np.round(axis_limits, 0),
+        num=5)
+    )
+    ax.set_yticks(np.linspace(
+        -np.round(axis_limits, 0),
+        np.round(axis_limits, 0),
+        num=5)
+    )
 
     # Make the initial line collection object
     lsegs = LineCollection(make_2d_segments([0], [0]), cmap=cmap, lw=lw)
@@ -115,8 +123,9 @@ def make_anim_controlled_osc(
 
     # Sidebar plot
     ax2 = plt.subplot(gs[1])
-    ax2.set_ylim(-axis_limits, axis_limits)
-    ax2.set_yticks(np.linspace(-int(axis_limits), int(axis_limits), 5))
+    speed_limits = max(np.absolute(w)) * 1.2
+    ax2.set_ylim(-speed_limits, speed_limits)
+    ax2.set_yticks(np.linspace(-int(speed_limits), int(speed_limits), num=5))
     ax2.set_xticks([])
     ax2.yaxis.set_label_position("right")
     ax2.yaxis.tick_right()
