@@ -40,6 +40,9 @@ Release History
 - Minor changes to oscillator notebooks.
   (`#47 <https://github.com/nengo/nengo-fpga/pull/47>`__)
 
+- Minor changes to getting-started documentation.
+  (`#50 <https://github.com/nengo/nengo-fpga/pull/50>`__)
+
 **Fixed**
 
 - Fixed code to remove all linter errors.

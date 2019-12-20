@@ -209,9 +209,10 @@ board-specific documentation.
 
 .. note::
    It should be noted that the FPGA board should be configured such that
-   non-root users do not require a password to perform ``sudo`` commands.
-   Refer to the respective FGPA board documentation for instructions on how to
-   do this.
+   non-root users do not require a password to perform ``sudo`` commands. If you
+   are using the NengoBrainBoard SD image on your board, this should already be
+   done. If not, refer to the respective FGPA board documentation for instructions
+   on how to do this.
 
 Copy Protection
 ===============
