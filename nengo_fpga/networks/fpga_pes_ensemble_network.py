@@ -6,29 +6,19 @@
 """
 
 import os
+import sys
+import time
+import socket
 import logging
 import threading
+from functools import partial
 import numpy as np
 
 import nengo
 from nengo.builder.signal import Signal
-from nengo.builder.operator import Reset, Copy
+from nengo.builder.operator import Reset, Copy, SimPyFunc
 
 import paramiko
-
-
-# Temporarily import from local sockets module
-# TODO: Remove when sockets merged into nengo_extras
-# try:
-#     from nengo_extras import sockets
-# except ImportError:
-#     from nengo_fpga import sockets
-
-# sockets in nengo_fpga has diverged from sockets in nengo_extras (remote
-# side termination code is not in nengo_extras), use nengo_fpga.sockets until
-# they get merged into nengo_extras
-from nengo_fpga import sockets
-
 from nengo_fpga.fpga_config import fpga_config
 
 
@@ -69,10 +59,13 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         spanning the interval (-pre.radius, pre.radius) in each dimension.
         If None, will use the eval_points associated with ``pre``.
     socket_args : dictionary, optional (Default: Empty dictionary)
-        Parameters to pass on to the ``sockets.UDPSendReceiveSocket`` object
-        that is used to handle UDP communication between the host PC and the
-        FPGA board. The full list of parameters can be found here:
-        https://github.com/nengo/nengo-fpga/blob/master/nengo_fpga/sockets.py#L425
+        Parameters to pass on to the ``socket`` object that is used to handle UDP
+        communication between the host PC and the FPGA board. Acceptable parameters
+        are:
+        ``connect_timeout``: Determines the maximum timeout to wait for a connection
+        from the FPGA board. Default: 300s
+        ``recv_timeout``: Determines the maximum timeout for each packet received
+        from the FPGA board. Default: 0.1s
     feedback : float or (D_out, D_in) array_like, optional
         Defines the transform for a recurrent connection. If ``None``, no
         recurrent connection will be built. The default synapse used for the
@@ -169,6 +162,16 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         # Call the superconstructor
         super(FpgaPesEnsembleNetwork, self).__init__(label, seed, add_to_container)
 
+        # Socket attributes
+        self.udp_socket = None
+        self.send_buffer = None
+        self.recv_buffer = None
+
+        if socket_args is None:
+            socket_args = {}
+        self.connect_timeout = socket_args.get("connect_timeout", 30)
+        self.recv_timeout = socket_args.get("recv_timeout", 0.1)
+
         # Check if the desired FPGA name is defined in the configuration file
         if self.config_found:
             # Handle the udp port selection: Use the config specified port.
@@ -178,26 +181,11 @@ class FpgaPesEnsembleNetwork(nengo.Network):
             if self.udp_port == 0:
                 self.udp_port = int(np.random.uniform(low=20000, high=65535))
 
-            # Set default udp socket arguments
-            if socket_args is None:  # Fix for W0102: dangerous-default-value
-                socket_args = {}
-
-            socket_kwargs = dict(socket_args)
-            socket_kwargs.setdefault("recv_timeout", 0.1)
-
-            # Make the UDP socket nengo process.
-            self.udp_socket = sockets.UDPSendReceiveSocket(
-                listen_addr=(fpga_config.get("host", "ip"), self.udp_port),
-                remote_addr=(fpga_config.get(fpga_name, "ip"), self.udp_port),
-                **socket_kwargs,
-            )
+            self.send_addr = (fpga_config.get(fpga_name, "ip"), self.udp_port)
         else:
             # FPGA name not found, throw a warning.
             logger.warning("Specified FPGA configuration '%s' not found.", fpga_name)
-            print(
-                "WARNING: Specified FPGA configuration '" + fpga_name + "' not found."
-            )
-            self.udp_socket = None
+            print("WARNING: Specified FPGA configuration '%s' not found." % fpga_name)
 
         # Make nengo model. Here, a dummy ensemble is created. It will be
         # replaced with a udp_socket in the builder function (see below).
@@ -262,6 +250,18 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         """
         return os.path.join(self.arg_data_path, self.arg_data_file)
 
+    def terminate_client(self):
+        """Send termination packet to FPGA board.
+
+        Termination packet is a packet where t is less than 0.
+        """
+        self.udp_socket.sendto(
+            (
+                np.ones(self.input_dimensions + self.output_dimensions + 1) * -1
+            ).tobytes(),
+            self.send_addr,
+        )
+
     def close(self):
         """Shutdown connections to FPGA if applicable"""
 
@@ -271,10 +271,19 @@ class FpgaPesEnsembleNetwork(nengo.Network):
 
         # Close the UDP socket if it is open
         if self.udp_socket is not None:
+            # Send termination signal to the board
+            self.terminate_client()
+
+            # Close the udp socket and set it to None
             logger.info(
                 "<%s> UDP Connection closed", fpga_config.get(self.fpga_name, "ip")
             )
             self.udp_socket.close()
+            self.udp_socket = None
+
+        # Reset the udp communication buffers
+        self.send_buffer = np.zeros(self.input_dimensions + self.output_dimensions + 1)
+        self.recv_buffer = np.zeros(self.output_dimensions + 1)
 
         # Close the SSH connection
         logger.info("<%s> SSH connection closed", fpga_config.get(self.fpga_name, "ip"))
@@ -360,11 +369,11 @@ class FpgaPesEnsembleNetwork(nengo.Network):
             # Close sftp connection and release ssh connection lock
             sftp_client.close()
 
-            # Delete argument file (no longer needed)
-            os.remove(self.local_data_filepath)
-
         # Invoke a shell in the ssh client
         ssh_channel = self.ssh_client.invoke_shell()
+
+        # Wait for the SSH shell to initialize
+        time.sleep(0.1)
 
         # If board configuration specifies using sudo to run scripts
         # - Assume all non-root users will require sudo to run the scripts
@@ -408,11 +417,14 @@ class FpgaPesEnsembleNetwork(nengo.Network):
             # The traceback usually contains 3 lines, so collect the first
             # three lines then display it.
             if got_error == 2:
-                ssh_channel.close()
+                # Close the UDP and SSH connections so that the main simulation thread
+                # terminates
+                self.close()
                 raise RuntimeError(
                     "Received the following error on the remote side <%s>:\n%s"
                     % (remote_ip, "\n".join(error_strs))
                 )
+        logger.info("Terminating SSH thread")
 
     def connect(self):
         """Connect to FPGA via SSH if applicable"""
@@ -428,8 +440,73 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         connect_thread = threading.Thread(target=self.connect_thread_func, args=())
         connect_thread.start()
 
+        logger.info("<%s> Open UDP connection", fpga_config.get(self.fpga_name, "ip"))
+        # Create a UDP socket to communicate with the board
+        self.udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.udp_socket.bind((fpga_config.get("host", "ip"), self.udp_port))
+
+        # # Set the socket timeout to the connection timeout and wait for the
+        # # board to connect to the PC.
+        # # Note that this is the "correct" way to wait for an incoming connection
+        # # request. However, because the error detection mechanism in the SSH
+        # # thread is done by closing the UDP socket, a polling approach is used
+        # # (see below).
+        # # TODO: Re-examine this during the SSH refactoring.
+        # self.udp_socket.settimeout(self.connect_timeout)
+        # while True:
+        #     try:
+        #         self.udp_socket.recv_into(self.recv_buffer.data)
+        #         # Connection packet has a t of 0
+        #         if self.recv_buffer[0] <= 0.0:
+        #             break
+        #     except socket.timeout:
+        #         self.close()
+        #     raise RuntimeError("Did not receive connection from board within "
+        #                        + "specified timeout (%fs)." % self.connect_timeout)
+        # if self.recv_buffer[0] < 0.0:
+        #     self.close()
+        #     raise RuntimeError("Simulation terminated by FPGA board.")
+
+        # Connection with the board established. Set the socket timeout to
+        # recv_timeout.
+        self.udp_socket.settimeout(self.recv_timeout)
+
+        # Wait for the connection packet from the board. Note that the
+        # implementation above (setting the socket timeout to ``connect_timeout``)
+        # is the "proper" implementation. Below is a workaround to allow the SSH
+        # connection thread to terminate the connection process (by closing the
+        # udp socket, so an exception is thrown).
+        max_attempts = int(self.connect_timeout / self.recv_timeout)
+        for conn_attempts in range(max_attempts):
+            try:
+                self.udp_socket.recv_into(self.recv_buffer)
+                if self.recv_buffer[0] <= 0.0:
+                    # Received a connection packet (t == 0) from the board, or received
+                    # a "terminate client" packet (t < 0) from the board, so break out
+                    # of the connection waiting loop
+                    break
+            except socket.timeout:
+                pass
+            except AttributeError:
+                sys.exit(1)
+        if conn_attempts >= (max_attempts - 1):
+            # Number of connection attempts exceeds maximum number of attempts.
+            # I.e., no connection has been received within the timeout limit.
+            self.close()
+            raise RuntimeError(
+                "Did not receive connection from board within "
+                + "specified timeout (%fs)." % self.connect_timeout
+            )
+        if self.recv_buffer[0] < 0.0:
+            # Received a "terminate client" packet from the board, terminate the
+            # Nengo simulation.
+            self.close()
+            raise RuntimeError("Simulation terminated by FPGA board.")
+
     def process_ssh_output(self, data):
         """Clean up the data stream coming back over ssh if applicable"""
+
         str_data = data.decode("latin1").replace("\r\n", "\r")
         str_data = str_data.replace("\r\r", "\r")
         str_data = str_data.replace("\r", "\n")
@@ -496,7 +573,6 @@ class FpgaPesEnsembleNetwork(nengo.Network):
                 + " --udp_port=%i" % self.udp_port
                 + " --arg_data_file='%s/%s'"
                 % (fpga_config.get(self.fpga_name, "remote_tmp"), self.arg_data_file)
-                + " --seed=%s" % str(self.seed)
                 + "\n"
             )
         else:
@@ -552,6 +628,79 @@ def validate_net(network):
     return [network.neuron_str_map[type(network.ensemble.neuron_type)], l_rate]
 
 
+def extract_and_save_params(model, network):
+    """Generate the ensemble and connection parameters and save them to file"""
+
+    # Generate the network used to get the ensemble and output connection parameters
+    param_model = nengo.builder.Model(dt=model.dt)
+    nengo.builder.network.build_network(param_model, network)
+
+    # Collect the simulation argument values
+    sim_args = {}
+    sim_args["dt"] = model.dt
+
+    # Collect the ensemble argument values
+    ens_args = {}
+    ens_args["input_dimensions"] = network.input_dimensions
+    ens_args["output_dimensions"] = network.output_dimensions
+    ens_args["n_neurons"] = network.ensemble.n_neurons
+    ens_args["bias"] = param_model.params[network.ensemble].bias
+    ens_args["scaled_encoders"] = param_model.params[network.ensemble].scaled_encoders
+
+    # Collect the connection argument values
+    conn_args = {}
+    conn_args["weights"] = param_model.params[network.connection].weights
+
+    # Validate neuron_type, learning_rule, and feedback connection
+    ens_args["neuron_type"], conn_args["learning_rate"] = validate_net(network)
+
+    # Collect the feedback connection argument values
+    recur_args = {}
+    recur_args["weights"] = 0  # Necessary as flag even if not used
+
+    if network.feedback is not None:
+        # Grab relevant attributes
+        recur_args["weights"] = param_model.params[network.feedback].weights
+        recur_args["tau"] = network.feedback.synapse.tau
+
+    # Save the NPZ data file
+    npz_filename = "fpen_args_" + str(id(network)) + ".npz"
+    network.arg_data_file = npz_filename
+    np.savez_compressed(
+        network.local_data_filepath,
+        sim_args=sim_args,
+        ens_args=ens_args,
+        conn_args=conn_args,
+        recur_args=recur_args,
+    )
+
+
+def udp_comm_func(t, x, net, dt):
+    """UDP communication function for nengo SimPyFunc"""
+
+    # Assemble the information to send to the board
+    net.send_buffer[0] = t
+    net.send_buffer[1:] = x
+
+    # Send information to the board
+    net.udp_socket.sendto(net.send_buffer.tobytes(), net.send_addr)
+
+    # Receive information from the board
+    try:
+        while net.recv_buffer[0] < (t - dt / 2.0):
+            net.udp_socket.recv_into(net.recv_buffer.data)
+            if net.recv_buffer[0] < 0:
+                # Received a "terminate client" packet from the board, terminate the
+                # Nengo simulation.
+                net.close()
+                raise RuntimeError("Simulation terminated by FPGA board.")
+    except socket.timeout:
+        logger.info("Socket timeout for t=%0.5fs", t)
+
+    # Return the received information
+    return net.recv_buffer[1:]
+
+
 @nengo.builder.Builder.register(FpgaPesEnsembleNetwork)
 def build_FpgaPesEnsembleNetwork(model, network):
     """Builder to integrate FPGA network into Nengo
@@ -566,111 +715,76 @@ def build_FpgaPesEnsembleNetwork(model, network):
         print("WARNING: " + warn_str)
 
     # Check if all of the requirements to use the FPGA board are met
-    if network.using_fpga_sim and network.config_found and network.fpga_found:
-        # FPGA requirements met!
-
-        if network.seed is None:
-            # Inherit seed from parent network's build process
-            seeded = True
-            network.seed = model.seeds[network]
-        else:
-            seeded = False
-
-        # Generate the network used to get the ensemble and output connection
-        # parameters
-        param_model = nengo.builder.Model(dt=model.dt)
-        nengo.builder.network.build_network(param_model, network)
-
-        if seeded:
-            # Restore the original seed=None, so that we don't alter the
-            # network state if it is used again in a different network
-            network.seed = None
-
-        # Collect the simulation argument values
-        sim_args = {}
-        sim_args["dt"] = model.dt
-
-        # Collect the ensemble argument values
-        ens_args = {}
-        ens_args["input_dimensions"] = network.input_dimensions
-        ens_args["output_dimensions"] = network.output_dimensions
-        ens_args["n_neurons"] = network.ensemble.n_neurons
-        ens_args["bias"] = param_model.params[network.ensemble].bias
-        ens_args["scaled_encoders"] = param_model.params[
-            network.ensemble
-        ].scaled_encoders
-
-        # Collect the connection argument values
-        conn_args = {}
-        conn_args["weights"] = param_model.params[network.connection].weights
-
-        # Validate neuron_type, learning_rule, and feedback connection
-        ens_args["neuron_type"], conn_args["learning_rate"] = validate_net(network)
-
-        # Collect the feedback connection argument values
-        recur_args = {}
-        recur_args["weights"] = 0  # Necessary as flag even if not used
-
-        if network.feedback is not None:
-            # Grab relevant attributes
-            recur_args["weights"] = param_model.params[network.feedback].weights
-            recur_args["tau"] = network.feedback.synapse.tau
-
-        # Save the NPZ data file
-        npz_filename = "fpen_args_" + str(id(network)) + ".npz"
-        network.arg_data_file = npz_filename
-        np.savez_compressed(
-            network.local_data_filepath,
-            sim_args=sim_args,
-            ens_args=ens_args,
-            conn_args=conn_args,
-            recur_args=recur_args,
-        )
-
-        # Build the nengo network using the network's udp_socket function
-        # Set up input/output signals
-        input_sig = Signal(np.zeros(network.input_dimensions), name="input")
-        model.sig[network.input]["in"] = input_sig
-        model.sig[network.input]["out"] = input_sig
-        model.add_op(Reset(input_sig))
-        input_sig = model.build(nengo.synapses.Lowpass(0), input_sig)
-
-        error_sig = Signal(np.zeros(network.output_dimensions), name="error")
-        model.sig[network.error]["in"] = error_sig
-        model.sig[network.error]["out"] = error_sig
-        model.add_op(Reset(error_sig))
-        error_sig = model.build(nengo.synapses.Lowpass(0), error_sig)
-
-        output_sig = Signal(np.zeros(network.output_dimensions), name="output")
-        model.sig[network.output]["out"] = output_sig
-        if network.connection.synapse is not None:
-            model.build(network.connection.synapse, output_sig)
-
-        # Set up udp_socket combined input signals
-        udp_socket_input_sig = Signal(
-            np.zeros(network.input_dimensions + network.output_dimensions),
-            name="udp_socket_input",
-        )
-        model.add_op(
-            Copy(
-                input_sig,
-                udp_socket_input_sig,
-                dst_slice=slice(0, network.input_dimensions),
-            )
-        )
-        model.add_op(
-            Copy(
-                error_sig,
-                udp_socket_input_sig,
-                dst_slice=slice(network.input_dimensions, None),
-            )
-        )
-
-        # Build udp_socket nengo process
-        model.build(network.udp_socket, udp_socket_input_sig, output_sig)
-    else:
+    if not (network.using_fpga_sim and network.config_found and network.fpga_found):
+        # FPGA requirements not met...
         # Build the dummy network instead of using FPGA-specific stuff
         warn_str = "Building network with dummy (non-FPGA) ensemble."
         logger.warning(warn_str)
         print("WARNING: " + warn_str)
         nengo.builder.network.build_network(model, network)
+        return
+
+    # FPGA requirements met!
+    if network.seed is None:
+        # Inherit seed from parent network's build process
+        seeded = True
+        network.seed = model.seeds[network]
+    else:
+        seeded = False
+
+    # Generate the ensemble and connection parameters and save them to file
+    extract_and_save_params(model, network)
+
+    if seeded:
+        # Restore the original seed=None, so that we don't alter the
+        # network state if it is used again in a different network
+        network.seed = None
+
+    # Build the nengo network using the network's udp_socket function
+    # Set up input/output signals
+    input_sig = Signal(np.zeros(network.input_dimensions), name="input")
+    model.sig[network.input]["in"] = input_sig
+    model.sig[network.input]["out"] = input_sig
+    model.add_op(Reset(input_sig))
+    input_sig = model.build(nengo.synapses.Lowpass(0), input_sig)
+
+    error_sig = Signal(np.zeros(network.output_dimensions), name="error")
+    model.sig[network.error]["in"] = error_sig
+    model.sig[network.error]["out"] = error_sig
+    model.add_op(Reset(error_sig))
+    error_sig = model.build(nengo.synapses.Lowpass(0), error_sig)
+
+    output_sig = Signal(np.zeros(network.output_dimensions), name="output")
+    model.sig[network.output]["out"] = output_sig
+    if network.connection.synapse is not None:
+        model.build(network.connection.synapse, output_sig)
+
+    # Set up udp_socket combined input signals
+    udp_socket_input_sig = Signal(
+        np.zeros(network.input_dimensions + network.output_dimensions),
+        name="udp_socket_input",
+    )
+    model.add_op(
+        Copy(
+            input_sig,
+            udp_socket_input_sig,
+            dst_slice=slice(0, network.input_dimensions),
+        )
+    )
+    model.add_op(
+        Copy(
+            error_sig,
+            udp_socket_input_sig,
+            dst_slice=slice(network.input_dimensions, None),
+        )
+    )
+
+    # Build udp socket function with Nengo SimPyFunc
+    model.add_op(
+        SimPyFunc(
+            output=output_sig,
+            fn=partial(udp_comm_func, net=network, dt=model.dt),
+            t=model.time,
+            x=udp_socket_input_sig,
+        )
+    )
