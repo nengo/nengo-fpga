@@ -43,7 +43,11 @@ docs_req = [
     "nengo_sphinx_theme>=0.12.0",
 ]
 optional_req = []
-tests_req = []
+tests_req = [
+    "pytest>=3.6",
+    "pytest-mock>=2.0",
+    "pytest-cov>=2.6",
+]
 
 setup(
     name="nengo-fpga",

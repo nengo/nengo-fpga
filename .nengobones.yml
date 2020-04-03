@@ -31,6 +31,10 @@ setup_py:
     - nbsphinx
     - numpydoc>=0.6
     - nengo_sphinx_theme>=0.12.0
+  tests_req:
+    - pytest>=3.6
+    - pytest-mock>=2.0
+    - pytest-cov>=2.6
 
 docs_conf_py:
   intersphinx_mapping:
@@ -55,10 +59,13 @@ travis_yml:
   python: 3.6
   jobs:
     - script: static
+    - script: test
     - script: remote-docs
 
 ci_scripts:
   - template: static
+  - template: test
+    coverage: true
   - template: docs
     pip_install:
       - numpy>=1.13.0,<1.17

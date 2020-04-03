@@ -23,6 +23,9 @@ jobs:
       SCRIPT="static"
   -
     env:
+      SCRIPT="test"
+  -
+    env:
       SCRIPT="remote-docs"
 
 before_install:

@@ -29,6 +29,8 @@ Release History
   (`#46 <https://github.com/nengo/nengo-fpga/pull/46>`__)
 - Added spiking to oscillator notebook examples.
   (`#49 <https://github.com/nengo/nengo-fpga/pull/49>`__)
+- Add test suite.
+  (`#55 <https://github.com/nengo/nengo-fpga/pull/55>`__)
 - Added More detail to remote termination signals.
   (`#61 <https://github.com/nengo/nengo-fpga/pull/61>`__)
 

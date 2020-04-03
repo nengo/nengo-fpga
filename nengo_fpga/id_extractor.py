@@ -4,6 +4,8 @@ import socket
 import os
 import sys
 import threading
+import argparse
+
 import numpy as np
 import paramiko
 
@@ -151,24 +153,9 @@ class IDExtractor:
             self.process_ssh_output(data)
             info_str_list = self.ssh_info_str.split("\n")
             for info_str in info_str_list[:-1]:
-                if info_str.startswith("Killed"):
-                    print("<%s> ENCOUNTERED ERROR!" % remote_ip, flush=True)
-                    got_error = 2
-
-                if info_str.startswith("Traceback"):
-                    print("<%s> ENCOUNTERED ERROR!" % remote_ip, flush=True)
-                    got_error = 1
-                elif got_error > 0 and info_str[0] != " ":
-                    # Error string is no longer tabbed, so the actual error
-                    # is bring printed. Collect and terminate (see below)
-                    got_error = 2
-
-                if got_error > 0:
-                    # Once an error is encountered, keep collecting error
-                    # messages until the termination condition (above)
-                    error_strs.append(info_str)
-                else:
-                    print("<%s> %s" % (remote_ip, info_str), flush=True)
+                got_error, error_strs = self.check_ssh_str(
+                    info_str, error_strs, got_error, remote_ip
+                )
             self.ssh_info_str = info_str_list[-1]
 
             # The traceback usually contains 3 lines, so collect the first
@@ -204,6 +191,30 @@ class IDExtractor:
         # received.
         self.ssh_info_str += str_data
 
+    def check_ssh_str(self, info_str, error_strs, got_error, remote_ip):
+        """Process info from ssh and check for errors"""
+
+        if info_str.startswith("Killed"):
+            print("<%s> ENCOUNTERED ERROR!" % remote_ip, flush=True)
+            got_error = 2
+
+        if info_str.startswith("Traceback"):
+            print("<%s> ENCOUNTERED ERROR!" % remote_ip, flush=True)
+            got_error = 1
+        elif got_error > 0 and info_str[0] != " ":
+            # Error string is no longer tabbed, so the actual error
+            # is bring printed. Collect and terminate (see below)
+            got_error = 2
+
+        if got_error > 0:
+            # Once an error is encountered, keep collecting error
+            # messages until the termination condition (above)
+            error_strs.append(info_str)
+        else:
+            print("<%s> %s" % (remote_ip, info_str), flush=True)
+
+        return got_error, error_strs
+
     @property
     def ssh_string(self):
         """Command sent to FPGA device to begin execution
@@ -211,6 +222,7 @@ class IDExtractor:
         Generate the string to be sent over the ssh connection to run the
         remote side ssh script (with appropriate arguments)
         """
+        ssh_str = ""
         if self.config_found:
             ssh_str = (
                 "python "
@@ -219,8 +231,6 @@ class IDExtractor:
                 + " --tcp_port=%i" % self.tcp_port
                 + "\n"
             )
-        else:
-            ssh_str = ""
         return ssh_str
 
     def recv_id(self):
@@ -255,32 +265,12 @@ class IDExtractor:
         self.id_int = int.from_bytes(self.id_bytes, "big")
 
 
-if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(
-        description="Generic script for running the ID Extractor on the "
-        + "FPGA board."
-    )
-
-    # FPGA board name
-    parser.add_argument(
-        "fpga_name",
-        type=str,
-        help="Name of the FPGA board as specified in the fpga_config file",
-    )
-
-    # Print full help text, otherwise error message isn't very useful
-    if len(sys.argv) != 2:
-        parser.print_help()
-        sys.exit()
-
-    # Parse the arguments
-    args = parser.parse_args()
-    filename = "id_" + args.fpga_name + ".txt"
+def main(fpga_name):
+    """Main script to extract device ID"""
+    filename = "id_" + fpga_name + ".txt"
 
     # Connect to FPGA, run script to get ID, write ID to file
-    fpga = IDExtractor(args.fpga_name)
+    fpga = IDExtractor(fpga_name)
     fpga.connect()
     fpga.recv_id()
 
@@ -291,3 +281,33 @@ if __name__ == "__main__":
     fpga.cleanup()
     print(id_str)
     print("Written to file %s" % filename)
+
+
+def run():
+    """Wrapped in a function so we can call this in tests"""
+    if __name__ == "__main__":
+
+        parser = argparse.ArgumentParser(
+            description="Generic script for running the ID Extractor on the "
+            + "FPGA board."
+        )
+
+        # FPGA board name
+        parser.add_argument(
+            "fpga_name",
+            type=str,
+            help="Name of the FPGA board as specified in the fpga_config file",
+        )
+
+        # Print full help text, otherwise error message isn't very useful
+        if len(sys.argv) != 2:
+            parser.print_help()
+            sys.exit()
+
+        # Parse the arguments
+        args = parser.parse_args()
+
+        main(args.fpga_name)
+
+
+run()  # Run the __name__ == __main__ case by default (wrapper function)

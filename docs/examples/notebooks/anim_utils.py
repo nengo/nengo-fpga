@@ -102,15 +102,11 @@ def make_anim_controlled_osc(
     axis_limits = max(max(np.absolute(x)), max(np.absolute(y))) * 1.2
     ax.set_xlim(-axis_limits, axis_limits)
     ax.set_ylim(-axis_limits, axis_limits)
-    ax.set_xticks(np.linspace(
-        -np.round(axis_limits, 0),
-        np.round(axis_limits, 0),
-        num=5)
+    ax.set_xticks(
+        np.linspace(-np.round(axis_limits, 0), np.round(axis_limits, 0), num=5)
     )
-    ax.set_yticks(np.linspace(
-        -np.round(axis_limits, 0),
-        np.round(axis_limits, 0),
-        num=5)
+    ax.set_yticks(
+        np.linspace(-np.round(axis_limits, 0), np.round(axis_limits, 0), num=5)
     )
 
     # Make the initial line collection object

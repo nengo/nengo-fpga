@@ -29,7 +29,3 @@ then simply replace a standard ensemble with the augmented FPGA ensemble:
 
 Check out the rest of the `documentation <https://www.nengo.ai/nengo-fpga/>`_
 for more information.
-
-
-This is only the first step in our journey and we are actively working on a
-full-featured FPGA backend for Nengo!

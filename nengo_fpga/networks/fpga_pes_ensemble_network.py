@@ -118,7 +118,6 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         seed=None,
         add_to_container=None,
     ):
-
         # Flags for determining whether or not the FPGA board is being used
         self.config_found = fpga_config.has_section(fpga_name)
         self.fpga_found = True  # TODO: Ping board to determine?
@@ -504,11 +503,11 @@ class FpgaPesEnsembleNetwork(nengo.Network):
             # Nengo simulation.
             reason = ""
             if self.recv_buffer[0] <= -20:
-                reason = "Unable to load FPGA driver!"
+                reason = "Unable to load FPGA driver! "
             elif self.recv_buffer[0] <= -10:
-                reason = "Unable to acquire FPGA resource lock!"
+                reason = "Unable to acquire FPGA resource lock! "
             self.close()
-            raise RuntimeError(reason + " Simulation terminated by FPGA board.")
+            raise RuntimeError(reason + "Simulation terminated by FPGA board.")
 
     def process_ssh_output(self, data):
         """Clean up the data stream coming back over ssh if applicable"""
@@ -570,6 +569,7 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         Generate the string to be sent over the ssh connection to run the
         remote side ssh script (with appropriate arguments)
         """
+        ssh_str = ""
         if self.config_found:
             ssh_str = (
                 "python "
@@ -581,8 +581,6 @@ class FpgaPesEnsembleNetwork(nengo.Network):
                 % (fpga_config.get(self.fpga_name, "remote_tmp"), self.arg_data_file)
                 + "\n"
             )
-        else:
-            ssh_str = ""
         return ssh_str
 
 
