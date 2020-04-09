@@ -2,6 +2,7 @@
 
 import socket
 import os
+import sys
 import threading
 import numpy as np
 import paramiko
@@ -54,12 +55,12 @@ class IDExtractor:
             self.tcp_recv = None  # Placeholder until socket is connected
 
         else:
-            # FPGA name not found, throw a warning.
+            # FPGA name not found, unable to retrieve ID
             print(
-                "WARNING: Specified FPGA configuration '" + fpga_name + "' not found.",
+                "ERROR: Specified FPGA configuration '" + fpga_name + "' not found.",
                 flush=True,
             )
-            self.tcp_socket = None
+            sys.exit()
 
     def cleanup(self):
         """Shutdown socket and SSH connection"""
@@ -256,7 +257,6 @@ class IDExtractor:
 
 if __name__ == "__main__":
     import argparse
-    import sys
 
     parser = argparse.ArgumentParser(
         description="Generic script for running the ID Extractor on the "

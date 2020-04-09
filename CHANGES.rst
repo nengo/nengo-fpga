@@ -40,6 +40,8 @@ Release History
   (`#50 <https://github.com/nengo/nengo-fpga/pull/50>`__)
 - Improved socket communication for better performance.
   (`#52 <https://github.com/nengo/nengo-fpga/pull/52>`__)
+- Throw an error with invalid config in ID script.
+  (`#53 <https://github.com/nengo/nengo-fpga/pull/53>`__)
 
 **Fixed**
 
