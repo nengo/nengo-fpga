@@ -42,6 +42,8 @@ Release History
   (`#52 <https://github.com/nengo/nengo-fpga/pull/52>`__)
 - Throw an error with invalid config in ID script.
   (`#53 <https://github.com/nengo/nengo-fpga/pull/53>`__)
+- Make all variable names lowercase.
+  (`#59 <https://github.com/nengo/nengo-fpga/pull/59>`__)
 
 **Fixed**
 

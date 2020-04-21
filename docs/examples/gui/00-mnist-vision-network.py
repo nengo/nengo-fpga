@@ -46,28 +46,28 @@ logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.INFO)
 rng = np.random.RandomState(9)
 
 # Load the MNIST data
-(X_train, y_train), (X_test, y_test) = load_mnist()
+(x_train, y_train), (x_test, y_test) = load_mnist()
 
-X_train = 2 * X_train - 1  # normalize to -1 to 1
-X_test = 2 * X_test - 1  # normalize to -1 to 1
+x_train = 2 * x_train - 1  # normalize to -1 to 1
+x_test = 2 * x_test - 1  # normalize to -1 to 1
 
 # Get information about the image
-im_size = int(np.sqrt(X_train.shape[1]))  # Dimension of 1 side of the image
+im_size = int(np.sqrt(x_train.shape[1]))  # Dimension of 1 side of the image
 
 # Resize the images
 reduction_factor = 2
 if reduction_factor > 1:
     im_size_new = int(im_size // reduction_factor)
 
-    X_train_resized = np.zeros((X_train.shape[0], im_size_new ** 2))
-    for i in range(X_train.shape[0]):
-        X_train_resized[i, :] = resize_img(X_train[i], im_size, im_size_new)
-    X_train = X_train_resized
+    x_train_resized = np.zeros((x_train.shape[0], im_size_new ** 2))
+    for i in range(x_train.shape[0]):
+        x_train_resized[i, :] = resize_img(x_train[i], im_size, im_size_new)
+    x_train = x_train_resized
 
-    X_test_resized = np.zeros((X_test.shape[0], im_size_new ** 2))
-    for i in range(X_test.shape[0]):
-        X_test_resized[i, :] = resize_img(X_test[i], im_size, im_size_new)
-    X_test = X_test_resized
+    x_test_resized = np.zeros((x_test.shape[0], im_size_new ** 2))
+    for i in range(x_test.shape[0]):
+        x_test_resized[i, :] = resize_img(x_test[i], im_size, im_size_new)
+    x_test = x_test_resized
 
     im_size = im_size_new
 
@@ -76,7 +76,7 @@ train_targets = one_hot(y_train, 10)
 test_targets = one_hot(y_test, 10)
 
 # Set up the vision network parameters
-n_vis = X_train.shape[1]  # Number of training samples
+n_vis = x_train.shape[1]  # Number of training samples
 n_out = train_targets.shape[1]  # Number of output classes
 n_hid = 16000 // (im_size ** 2)  # Number of neurons to use
 # Note: the number of neurons to use is limited such that NxD <= 16000,
@@ -95,7 +95,7 @@ ens_max_rates = nengo.dists.Choice([max_firing_rates])
 
 # Output connection parameters
 conn_synapse = None
-conn_eval_points = X_train
+conn_eval_points = x_train
 conn_function = train_targets
 conn_solver = nengo.solvers.LstsqL2(reg=0.01)
 
@@ -106,7 +106,7 @@ presentation_time = 0.25
 with nengo.Network(seed=3) as model:
     # Visual input (the MNIST images) to the network
     input_node = nengo.Node(
-        nengo.processes.PresentInput(X_test, presentation_time), label="input"
+        nengo.processes.PresentInput(x_test, presentation_time), label="input"
     )
 
     # Ensemble to run on the FPGA. This ensemble is non-adaptive and just

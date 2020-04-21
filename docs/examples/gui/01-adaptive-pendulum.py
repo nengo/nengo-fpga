@@ -137,12 +137,12 @@ with nengo.Network(seed=3) as model:
     nengo.Connection(dq_target, dq_diff, synapse=None)
     nengo.Connection(env.dq, dq_diff, synapse=None, transform=-1)
 
-    # Compute the control signal (u) where u = Kp * q + Kd * dq
-    Kp = 1.0
-    nengo.Connection(q_diff, env.u, transform=Kp, synapse=None)
+    # Compute the control signal (u) where u = k_p * q + k_d * dq
+    k_p = 1.0
+    nengo.Connection(q_diff, env.u, transform=k_p, synapse=None)
 
-    Kd = 0.2
-    nengo.Connection(dq_diff, env.u, transform=Kd, synapse=None)
+    k_d = 0.2
+    nengo.Connection(dq_diff, env.u, transform=k_d, synapse=None)
 
     # PES Ensemble to compute the adaptive control signal to compensate for
     # unknown variables introduced into the environment.

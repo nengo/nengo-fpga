@@ -9,7 +9,7 @@ import nengo_fpga.utils.paths
 
 logger = logging.getLogger(__name__)
 
-FPGA_CONFIG_FILES = [
+fpga_config_files = [
     nengo_fpga.utils.paths.fpga_config["nengo"],
     nengo_fpga.utils.paths.fpga_config["system"],
     nengo_fpga.utils.paths.fpga_config["user"],
@@ -44,7 +44,7 @@ class _FPGA_CONFIG(configparser.SafeConfigParser):
     def reload_config(self, filenames=None):
         """Reload configs in case of changes"""
         if filenames is None:
-            filenames = FPGA_CONFIG_FILES
+            filenames = fpga_config_files
 
         self._clear()
         self.read(filenames)
