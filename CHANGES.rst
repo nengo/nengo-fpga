@@ -42,6 +42,8 @@ Release History
   (`#52 <https://github.com/nengo/nengo-fpga/pull/52>`__)
 - Throw an error with invalid config in ID script.
   (`#53 <https://github.com/nengo/nengo-fpga/pull/53>`__)
+- Add a directory check in docs template.
+  (`#56 <https://github.com/nengo/nengo-fpga/pull/56>`__)
 
 **Fixed**
 
