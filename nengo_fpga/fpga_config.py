@@ -17,9 +17,9 @@ fpga_config_files = [
 ]
 
 
-class _FPGA_CONFIG(configparser.SafeConfigParser):
+class _FPGA_CONFIG(configparser.ConfigParser):
     def __init__(self):
-        configparser.SafeConfigParser.__init__(self)
+        configparser.ConfigParser.__init__(self)
         self.reload_config()
 
     def _clear(self):
@@ -29,7 +29,7 @@ class _FPGA_CONFIG(configparser.SafeConfigParser):
     def read(self, filenames):
         """Read config file"""
         logger.info("Reading FPGA configurations from {}".format(filenames))
-        return configparser.SafeConfigParser.read(self, filenames)
+        return configparser.ConfigParser.read(self, filenames)
 
     def item_dict(self, section):
         """Organize config in a dictionary"""

@@ -42,6 +42,8 @@ Release History
   (`#52 <https://github.com/nengo/nengo-fpga/pull/52>`__)
 - Throw an error with invalid config in ID script.
   (`#53 <https://github.com/nengo/nengo-fpga/pull/53>`__)
+- Update deprecated SafeConfigParser.
+  (`#57 <https://github.com/nengo/nengo-fpga/pull/57>`__)
 - Remove unused seed from network builder.
   (`#58 <https://github.com/nengo/nengo-fpga/pull/58>`__)
 - Make all variable names lowercase.
