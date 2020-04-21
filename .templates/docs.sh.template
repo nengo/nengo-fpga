@@ -25,6 +25,7 @@
         $(typeset -f exe)  # Send definition of exe function
         conda create -y -n travis-ci-"$TRAVIS_JOB_NUMBER" python="$TRAVIS_PYTHON_VERSION"
         conda activate travis-ci-"$TRAVIS_JOB_NUMBER"
+        if [ -d "nengo-fpga-$TRAVIS_JOB_NUMBER ]; then exe rm -Rf nengo-fpga-$TRAVIS_JOB_NUMBER; fi
         exe git clone -b $BRANCH_NAME https://github.com/{{ repo_name }}.git nengo-fpga-"$TRAVIS_JOB_NUMBER"
 
         # The docs_dir is set in the base and has "../" prepended,
