@@ -724,21 +724,8 @@ def build_FpgaPesEnsembleNetwork(model, network):
         nengo.builder.network.build_network(model, network)
         return
 
-    # FPGA requirements met!
-    if network.seed is None:
-        # Inherit seed from parent network's build process
-        seeded = True
-        network.seed = model.seeds[network]
-    else:
-        seeded = False
-
     # Generate the ensemble and connection parameters and save them to file
     extract_and_save_params(model, network)
-
-    if seeded:
-        # Restore the original seed=None, so that we don't alter the
-        # network state if it is used again in a different network
-        network.seed = None
 
     # Build the nengo network using the network's udp_socket function
     # Set up input/output signals
