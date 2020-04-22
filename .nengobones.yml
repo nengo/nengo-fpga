@@ -54,10 +54,8 @@ docs_conf_py:
 travis_yml:
   python: 3.6
   jobs:
-    - stage: basic
-      script: static
-    - stage: advanced
-      script: docs
+    - script: static
+    - script: remote-docs
 
 ci_scripts:
   - template: static
@@ -65,6 +63,11 @@ ci_scripts:
     pip_install:
       - numpy>=1.13.0,<1.17
       - matplotlib
+  - template: remote-script
+    remote_script: docs
+    output_name: remote-docs
+    host: fpga-ci
+    travis_var_key: 2895d60e3414
 
 codecov_yml: {}
 
