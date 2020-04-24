@@ -426,7 +426,7 @@ class FpgaPesEnsembleNetwork(nengo.Network):
                 )
         logger.info("Terminating SSH thread")
 
-    def connect(self):
+    def connect(self):  # noqa: C901
         """Connect to FPGA via SSH if applicable"""
 
         # Function does nothing if FPGA configuration not found in config file
@@ -498,11 +498,17 @@ class FpgaPesEnsembleNetwork(nengo.Network):
                 "Did not receive connection from board within "
                 + "specified timeout (%fs)." % self.connect_timeout
             )
+
         if self.recv_buffer[0] < 0.0:
             # Received a "terminate client" packet from the board, terminate the
             # Nengo simulation.
+            reason = ""
+            if self.recv_buffer[0] <= -20:
+                reason = "Unable to load FPGA driver!"
+            elif self.recv_buffer[0] <= -10:
+                reason = "Unable to acquire FPGA resource lock!"
             self.close()
-            raise RuntimeError("Simulation terminated by FPGA board.")
+            raise RuntimeError(reason + " Simulation terminated by FPGA board.")
 
     def process_ssh_output(self, data):
         """Clean up the data stream coming back over ssh if applicable"""

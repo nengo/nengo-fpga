@@ -29,6 +29,8 @@ Release History
   (`#46 <https://github.com/nengo/nengo-fpga/pull/46>`__)
 - Added spiking to oscillator notebook examples.
   (`#49 <https://github.com/nengo/nengo-fpga/pull/49>`__)
+- Added More detail to remote termination signals.
+  (`#61 <https://github.com/nengo/nengo-fpga/pull/61>`__)
 
 **Changed**
 
@@ -51,7 +53,7 @@ Release History
 - Switch to remote doc script that tracks nengo-bones.
   (`#60 <https://github.com/nengo/nengo-fpga/pull/60>`__)
 - Switch to abrgl for CI scripts.
-  (`#60 <https://github.com/nengo/nengo-fpga/pull/62>`__)
+  (`#62 <https://github.com/nengo/nengo-fpga/pull/62>`__)
 
 **Fixed**
 
