@@ -48,8 +48,10 @@ Release History
   (`#58 <https://github.com/nengo/nengo-fpga/pull/58>`__)
 - Make all variable names lowercase.
   (`#59 <https://github.com/nengo/nengo-fpga/pull/59>`__)
-- Dwitch to remote doc script that tracks nengo-bones.
+- Switch to remote doc script that tracks nengo-bones.
   (`#60 <https://github.com/nengo/nengo-fpga/pull/60>`__)
+- Switch to abrgl for CI scripts.
+  (`#60 <https://github.com/nengo/nengo-fpga/pull/62>`__)
 
 **Fixed**
 
