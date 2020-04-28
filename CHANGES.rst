@@ -59,6 +59,8 @@ Release History
   (`#45 <https://github.com/nengo/nengo-fpga/pull/45>`__)
 - Start using intersphinx, rename docs using '-'.
   (`#48 <https://github.com/nengo/nengo-fpga/pull/48>`__)
+- Add TRAVIS_JOB_NUMBER to exported variables in remote-docs.sh.
+  (`#63 <https://github.com/nengo/nengo-fpga/pull/63>`__)
 
 
 0.2.1 (September 17, 2019)
