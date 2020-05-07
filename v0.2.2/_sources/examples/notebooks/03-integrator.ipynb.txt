@@ -1,0 +1,297 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Integrator\n",
+    "\n",
+    "This example implements a one-dimensional neural integrator using an on-chip recurrent connection on the FPGA. It shows how neurons can be used to implement stable dynamics. Such dynamics are important for memory, noise cleanup, statistical inference, and many other dynamic transformations.\n",
+    "\n",
+    "In standard control theoretic form, the dynamics of a state vector can be described as:\n",
+    "$$\n",
+    "\\dot{x}(t) = \\mathbf{A}x(t) + \\mathbf{B}u(t)\n",
+    "$$\n",
+    "\n",
+    "where $x(t)$ is the state vector, $u(t)$ is the time-varying input vector, $\\mathbf{A}$ is the dynamics (feedback) matrix, and $\\mathbf{B}$ is the input matrix. For an integrator, $\\mathbf{A} = 0$ and $\\mathbf{B} = 1$.\n",
+    "\n",
+    "By applying the dynamics principal of the NEF, for a neural network using exponential synapses (like the FpgaPesEnsembleNetwork network), the feedback and input matrices can be converted into their equivalent neural forms with:\n",
+    "$$\n",
+    "\\begin{align}\n",
+    "    \\mathbf{A}' &= \\tau\\mathbf{A} + \\mathbf{I}\\\\\n",
+    "    \\mathbf{B}' &= \\tau\\mathbf{B}\n",
+    "\\end{align}\n",
+    "$$\n",
+    "\n",
+    "where $\\mathbf{A}'$ is the neural feedback matrix, $\\mathbf{B}'$ is the neural input matrix, and $\\tau$ is the post-synaptic time constant of the feedback connection. For an integrator:\n",
+    "$$\n",
+    "\\begin{align}\n",
+    "    \\mathbf{A}' &= \\tau \\times 0 + \\mathbf{I} = \\mathbf{I}\\\\\n",
+    "    \\mathbf{B}' &= \\tau \\times 1 = \\tau\n",
+    "\\end{align}\n",
+    "$$\n",
+    "\n",
+    "This implies that the feedback transform should be an identity, and the input transform to the neural population should be scaled by $\\tau$.\n",
+    "\n",
+    "When you run this example, it will automatically put in some step functions on the input, so you can see that the output is integrating (i.e. summing over time) the input. You can also input your own values. Note that since the integrator constantly sums its input, it will saturate quickly if you leave the input non-zero. This makes it clear that neurons have a finite range of representation. Such saturation effects can be exploited to perform useful computations (e.g. soft normalization)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 1: Set up the Python Imports"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%matplotlib inline\n",
+    "import matplotlib.pyplot as plt\n",
+    "\n",
+    "import nengo\n",
+    "from nengo.processes import Piecewise\n",
+    "\n",
+    "import nengo_fpga\n",
+    "from nengo_fpga.networks import FpgaPesEnsembleNetwork"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 2: Choose an FPGA Device\n",
+    "\n",
+    "Define the FPGA device on which the remote FpgaPesEnsembleNetwork will run. This name corresponds with the name in your `fpga_config` file. Recall that in the `fpga_config` file, device names are identified by the square brackets (e.g., **[de1]** or **[pynq]**). The names defined in your configuration file might differ from the example below. Here, the device **de1** is being used."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "board = 'de1'  # Change this to your desired device name"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 3: Create an Input for the Model\n",
+    "We will use a piecewise step function as input, so we can see the effects of recurrence."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "model = nengo.Network(label='Integrator')\n",
+    "# Create a piecewise step function for input\n",
+    "with model:\n",
+    "    input_node = nengo.Node(\n",
+    "        Piecewise({\n",
+    "            0: 0,\n",
+    "            0.2: 1,\n",
+    "            1: 0,\n",
+    "            2: -2,\n",
+    "            3: 0,\n",
+    "            4: 1,\n",
+    "            5: 0\n",
+    "        }))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 4: Create the FPGA Ensemble\n",
+    "\n",
+    "Create a remote FPGA neural ensemble (`FpgaPesEnsembleNetwork`) using the board defined above, 100 neurons, 1 dimensions, and with no learning rate. We will also specify the recurrent connection here."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "tau = 0.05  # Synaptic time constant\n",
+    "\n",
+    "with model:\n",
+    "    # Remote FPGA neural ensemble\n",
+    "    fpga_ens = FpgaPesEnsembleNetwork(\n",
+    "        board,  # The board to use (from above)\n",
+    "        n_neurons=100,  # The number of neurons to use in the ensemble\n",
+    "        dimensions=1,  # 1 dimensions\n",
+    "        learning_rate=0,  # No learning for this example\n",
+    "        feedback=1  # Activate the recurrent connection\n",
+    "    )\n",
+    "\n",
+    "    # Setting `feedback=1` creates a `feedback` connection object\n",
+    "    # with the identity transform. You can set the attributes on this\n",
+    "    # feedback connection object, such as `.function` and `.transform`\n",
+    "    fpga_ens.feedback.synapse = tau  # `nengo.LowPass(tau)`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 5: Connect Everything Together\n",
+    "The recurrent connection is housed on the FPGA device and is created as part of the `FpgaPesEnsembleNetwork` object, so the only connection that needs to be made is the input stimulus to the FPGA ensemble."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "with model:\n",
+    "    # Connect the stimulus, with a scaling transform of tau\n",
+    "    nengo.Connection(input_node, fpga_ens.input,\n",
+    "                     synapse=tau, transform=tau)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 6: Add Probes to Collect Data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "with model:\n",
+    "    # The original input\n",
+    "    input_p = nengo.Probe(input_node)\n",
+    "\n",
+    "    # The output from the FPGA ensemble\n",
+    "    # (filtered with a 10ms post-synaptic filter)\n",
+    "    output_p = nengo.Probe(fpga_ens.output, synapse=0.01)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 7: Run the Model"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "with nengo_fpga.Simulator(model) as sim:\n",
+    "    sim.run(6)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 8: Plot the Results"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def plot_results():\n",
+    "    plt.figure(figsize=(8, 5))\n",
+    "    plt.plot(sim.trange(), sim.data[input_p], 'k--', label=\"Input\")\n",
+    "    plt.plot(sim.trange(), sim.data[output_p], label=\"Integrator output\")\n",
+    "    plot_ideal()\n",
+    "    plt.legend();\n",
+    "\n",
+    "\n",
+    "def plot_ideal():\n",
+    "    # Obtain the input function data from the input_node\n",
+    "    input_t = list(input_node.output.data.keys())\n",
+    "    input_v = list(input_node.output.data.values())\n",
+    "\n",
+    "    # Construct the ideal output (assumes 1D signal)\n",
+    "    values = [[0]]\n",
+    "    input_t += [sim.trange()[-1]]\n",
+    "    for i, v in enumerate(input_v):\n",
+    "        values += [values[-1] + v * (input_t[i + 1] - input_t[i])]\n",
+    "\n",
+    "    # Make the plot\n",
+    "    plt.plot(input_t, values, label=\"Ideal\")\n",
+    "\n",
+    "\n",
+    "plot_results()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The plot above shows the neurons effectively integrating the input signal. Because of the implementation in neurons, the integration is not perfect (i.e., there will be some drift). Run the simulation several times to get a sense of the kinds of drift you might expect."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 9: Spiking Neurons\n",
+    "\n",
+    "The plots above demonstrate the results of an integrator network implemented with non-spiking rectified linear neurons. The network can also be simulated using spiking neurons to illustrate the similarities and differences between a spiking and a non-spiking network.\n",
+    "\n",
+    "Below, we configure the FPGA neural ensemble to use spiking neurons, run the simulation, and plot the results."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "with model:\n",
+    "    fpga_ens.ensemble.neuron_type = nengo.SpikingRectifiedLinear()\n",
+    "\n",
+    "with nengo_fpga.Simulator(model) as sim:\n",
+    "    sim.run(6)\n",
+    "plot_results()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The plot above shows that while the output differs from the non-spiking simulation (because the network parameters are regenerated when a new simulation is created), the performance of the spiking integrator still conforms to the expected output of an integrator."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 10: Experiment!\n",
+    "\n",
+    "Try playing around with the number of neurons in the FPGA ensemble as well as the synaptic time constant (`tau`) to see how it effects performance (e.g., observe how changing these numbers affect the drift)!"
+   ]
+  }
+ ],
+ "metadata": {
+  "language_info": {
+   "name": "python",
+   "pygments_lexer": "ipython3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

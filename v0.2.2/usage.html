@@ -1,0 +1,582 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Usage &#8212; NengoFPGA 0.2.2 docs</title>
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,600|Rajdhani:700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+<link rel="stylesheet" href="https://www.nengo.ai/css/bootstrap.css" type="text/css">
+<style>
+  body .title-bar,
+  body .documentation-source h1:after {
+    background-color: #541a8b;
+  }
+</style>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/scrollreveal"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stickyfill/2.1.0/stickyfill.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+<!-- From basic/layout.html -->
+<script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+  
+  
+<script src="_static/underscore.js"></script>
+  
+  
+<script src="_static/doctools.js"></script>
+  
+  
+<script src="_static/language_data.js"></script>
+  
+  
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+  
+  
+<script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+  
+<script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Getting Started" href="getting-started.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  </head><body class="bg-dark">
+
+<header class="fixed-top header-top shadow-sm">
+  <nav class="navbar navbar-expand-md navbar-light bg-white">
+    <a class="navbar-brand" href="https://www.nengo.ai/">
+      <img
+        src="https://www.nengo.ai/design/_images/general-full-light.svg"
+        alt="Nengo"
+        class="logo"
+      />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbar-collapse"
+      aria-controls="navbar-collapse"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.nengo.ai/">What is Nengo?</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.nengo.ai/examples/">Examples</a>
+        </li>
+        <li class="nav-item dropdown active">
+          <a
+            class="nav-link dropdown-toggle"
+            id="navbar-dropdown-docs"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            href="#"
+            >Documentation</a
+          >
+          <div
+            class="dropdown-menu shadow-lg border-0"
+            aria-labelledby="navbar-dropdown-docs"
+          >
+            
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo/">Nengo Core</a>
+            <a class="dropdown-item" href="https://github.com/nengo/nengo-gui/">Nengo GUI</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-dl/">Nengo DL</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-spa/">Nengo SPA</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-extras/">Nengo Extras</a>
+            <a class="dropdown-item" href="https://arvoelke.github.io/nengolib-docs/">Nengolib</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-fpga/">Nengo FPGA</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-loihi/">Nengo Loihi</a>
+            <a class="dropdown-item" href="https://github.com/nengo/nengo-ocl">Nengo OpenCL</a>
+            <a class="dropdown-item" href="https://github.com/project-rig/nengo_spinnaker">Nengo SpiNNaker</a>
+            <a class="dropdown-item" href="https://github.com/nengo/nengo-mpi">Nengo MPI</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/documentation/"
+              >All documentation</a
+            >
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            id="navbar-dropdown-community"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            href="#"
+            >Community</a
+          >
+          <div
+            class="dropdown-menu shadow-lg border-0"
+            aria-labelledby="navbar-dropdown-community"
+          >
+            <a class="dropdown-item" href="https://forum.nengo.ai">Forum</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/people/"
+              >People</a
+            >
+            <a class="dropdown-item" href="https://www.nengo.ai/summer-school/"
+              >Summer school</a
+            >
+            <a class="dropdown-item" href="https://www.nengo.ai/contributing/"
+              >Contributing</a
+            >
+            <a class="dropdown-item" href="https://www.nengo.ai/publications/"
+              >Publications</a
+            >
+            <a class="dropdown-item" href="https://www.nengo.ai/videos/"
+              >Videos</a
+            >
+            <a class="dropdown-item" href="https://www.nengo.ai/conduct/"
+              >Code of conduct</a
+            >
+            <a class="dropdown-item" href="https://www.nengo.ai/caa/">CAA</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link btn btn-success btn-sm text-white"
+            href="https://www.nengo.ai/getting-started/"
+            >Getting started</a
+          >
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<div class="main-content gradient-top">
+  <div class="container-fluid">
+    <div class="row"><a class="toggle-sidenav d-block d-md-none" href="#"
+  ><i class="icon-close fa fa-fw fa-arrow-left"></i
+  ><i class="icon-open fa fa-fw fa-arrow-right"></i
+></a>
+<div role="complementary" class="sidenav col-4 col-xl-3 p-0 border-right">
+  <h3 class="pt-5 px-5">
+    <a href="index.html">
+      <img
+        class="img-fluid documentation-image"
+        src="https://www.nengo.ai/design/_images/nengo-fpga-full-light.svg"
+        alt="NengoFPGA"
+      />
+    </a>
+  </h3>
+<form class="px-5 py-3 my-0 border-bottom" action="search.html" method="get">
+  <div class="form-group form-group-single">
+    <input type="text" name="q" class="form-control" placeholder="Search" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <button type="submit" class="btn btn-link">
+      <img src="https://www.nengo.ai/img/icon-search.svg" alt="Go" />
+    </button>
+  </div>
+</form><div class="p-5 toctree">
+  
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#converting-from-standard-nengo">Converting from Standard Nengo</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#constructing-the-fpga-ensemble">Constructing the FPGA Ensemble</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connecting-the-fpga-ensemble">Connecting the FPGA Ensemble</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connecting-the-error-ensemble">Connecting the Error Ensemble</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#final-nengofpga-model">Final NengoFPGA Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#basic-use">Basic Use</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-gui">Using the GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#scripting">Scripting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#maximum-model-size">Maximum Model Size</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project.html">Project Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project.html#contributing-to-nengofpga">Contributing to NengoFPGA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project.html#nengofpga-license">NengoFPGA license</a></li>
+</ul>
+
+  
+  </div>
+  
+  <form class="p-5 my-0 border-top">
+    <div class="form-group">
+      <label class="text-gray">Version:</label>
+      <select class="custom-select" onchange="switchVersion(this);">
+        
+        
+        <option value="../usage.html">latest</option>
+        
+        
+          
+        <option selected>v0.2.2</option>
+          
+        
+      </select>
+    </div>
+  </form>
+  
+</div>
+      
+
+      <div class="col-12 col-md-8 col-xl-9">
+        <div class="container">
+          <div class="row">
+            <div class="col-10 offset-1 pb-5 documentation-source" role="main">
+              
+  <div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="converting-from-standard-nengo">
+<h2>Converting from Standard Nengo<a class="headerlink" href="#converting-from-standard-nengo" title="Permalink to this headline">¶</a></h2>
+<p>NengoFPGA is an extension of <a class="reference external" href="https://www.nengo.ai/nengo/index.html" title="(in Nengo v3.1)"><span class="xref std std-doc">Nengo core</span></a>.
+Networks and models are described using the traditional Nengo workflow and a
+single ensemble, including PES learning, can be replaced with an FPGA ensemble
+using the <code class="docutils literal notranslate"><span class="pre">FpgaPesEnsembleNetwork</span></code> class. For example, consider the following
+example of a learned communication channel built with standard Nengo:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nengo</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="k">def</span> <span class="nf">input_func</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span> <span class="o">*</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span> <span class="o">*</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)]</span>
+
+<span class="k">with</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Network</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
+
+    <span class="c1"># Input stimulus</span>
+    <span class="n">input_node</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">input_func</span><span class="p">)</span>
+
+    <span class="c1"># &quot;Pre&quot; ensemble of neurons, and connection from the input</span>
+    <span class="n">pre</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">input_node</span><span class="p">,</span> <span class="n">pre</span><span class="p">)</span>
+
+    <span class="c1"># &quot;Post&quot; ensemble of neurons, and connection from &quot;Pre&quot;</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">post</span><span class="p">)</span>
+
+    <span class="c1"># Create an ensemble for the error signal</span>
+    <span class="c1"># Error = actual - target = &quot;post&quot; - input</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+    <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">input_node</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">transform</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Add the learning rule on the pre-post connection</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">learning_rule_type</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">PES</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
+
+    <span class="c1"># Connect the error into the learning rule</span>
+    <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">conn</span><span class="o">.</span><span class="n">learning_rule</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The Nengo code above creates two neural ensembles, <code class="docutils literal notranslate"><span class="pre">pre</span></code> and <code class="docutils literal notranslate"><span class="pre">post</span></code>, and
+forms a PES-learning connection between these two ensembles. The weights of
+this connection are modulated by an error signal computed by a third neural
+ensemble (<code class="docutils literal notranslate"><span class="pre">error</span></code>).</p>
+<p>NengoFPGA can be used to replace the <code class="docutils literal notranslate"><span class="pre">pre</span></code> ensemble with an ensemble that
+will run on the FPGA. Converting the Nengo model above into a NengoFPGA model
+proceeds in three steps:</p>
+<ol class="arabic simple">
+<li><p>Replacing the desired neural ensemble with and FPGA ensemble.</p></li>
+<li><p>Making the appropriate connections to and from the FPGA ensemble.</p></li>
+<li><p>If desired (i.e., if learning is required), making the connections to and
+from an error-computing neural ensemble.</p></li>
+</ol>
+<div class="section" id="constructing-the-fpga-ensemble">
+<h3>Constructing the FPGA Ensemble<a class="headerlink" href="#constructing-the-fpga-ensemble" title="Permalink to this headline">¶</a></h3>
+<p>To use the FPGA ensemble, first import the <code class="docutils literal notranslate"><span class="pre">FpgaPesEnsembleNetwork</span></code> class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nengo_fpga.networks</span> <span class="kn">import</span> <span class="n">FpgaPesEnsembleNetwork</span>
+</pre></div>
+</div>
+<p>In the code above, the <code class="docutils literal notranslate"><span class="pre">pre</span></code> ensemble is to be replaced by the FPGA
+ensemble. The standard Nengo code for the <code class="docutils literal notranslate"><span class="pre">pre</span></code> ensemble was:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># &quot;Pre&quot; ensemble of neurons, and connection from the input</span>
+<span class="n">pre</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and this is replaced with the <code class="docutils literal notranslate"><span class="pre">FpgaPesEnsembleNetwork</span></code> class. Since learning
+is desired in the above model, the learning rule definition on the pre-post
+connection (<code class="docutils literal notranslate"><span class="pre">conn.learning_rule_type</span> <span class="pre">=</span> <span class="pre">nengo.PES(learning_rate=1e-4)</span></code>) has
+been removed and rolled into the <code class="docutils literal notranslate"><span class="pre">FpgaPesEnsembleNetwork</span></code> constructor.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># &quot;Pre&quot; ensemble &amp; learning rule</span>
+<span class="n">ens_fpga</span> <span class="o">=</span> <span class="n">FpgaPesEnsembleNetwork</span><span class="p">(</span><span class="s1">&#39;de1&#39;</span><span class="p">,</span> <span class="n">n_neurons</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                                  <span class="n">dimensions</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                  <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Notice that the <code class="docutils literal notranslate"><span class="pre">ens_fpga</span></code> ensemble maintains the same arguments as the
+original <code class="docutils literal notranslate"><span class="pre">pre</span></code> ensemble and the learning rule which it encompasses –
+50 neurons, 2 dimensions, and a learning rate of 1e-4. The <code class="docutils literal notranslate"><span class="pre">ens_fpga</span></code> has
+an additional argument, in this case <code class="docutils literal notranslate"><span class="pre">'de1'</span></code>, which specifies the desired
+FPGA device
+(see <a class="reference internal" href="getting-started.html#nengofpga-config"><span class="std std-ref">NengoFPGA Software Configuration</span></a>
+for more details).</p>
+</div>
+<div class="section" id="connecting-the-fpga-ensemble">
+<h3>Connecting the FPGA Ensemble<a class="headerlink" href="#connecting-the-fpga-ensemble" title="Permalink to this headline">¶</a></h3>
+<p>With the FPGA ensemble created, the connections to and from the original
+<code class="docutils literal notranslate"><span class="pre">pre</span></code> ensemble will have to be updated. The original connections are defined
+as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Connection from input to &quot;pre&quot; ensemble</span>
+<span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">input_node</span><span class="p">,</span> <span class="n">pre</span><span class="p">)</span>
+
+<span class="c1"># Connection from &quot;pre&quot; to &quot;post&quot; ensemble</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">post</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and are replaced with the slightly modified FPGA versions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Connection from input to &quot;pre&quot; (FPGA) ensemble</span>
+<span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">input_node</span><span class="p">,</span> <span class="n">ens_fpga</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>  <span class="c1"># Note the added &#39;.input&#39;</span>
+
+<span class="c1"># Connection from &quot;pre&quot; (FPGA) to &quot;post&quot; ensemble</span>
+<span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">ens_fpga</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">post</span><span class="p">)</span>  <span class="c1"># Note the added &#39;.output&#39;</span>
+</pre></div>
+</div>
+<p>The NengoFPGA connections are very similar to the original Nengo connections
+with the exception that they use the interfaces of the
+<code class="docutils literal notranslate"><span class="pre">FpgaPesEnsembleNetwork</span></code> object.
+The <code class="docutils literal notranslate"><span class="pre">ens_fpga.input</span></code> and <code class="docutils literal notranslate"><span class="pre">ens_fpga.output</span></code> replace the input and output
+of the original <code class="docutils literal notranslate"><span class="pre">pre</span></code> ensemble.</p>
+</div>
+<div class="section" id="connecting-the-error-ensemble">
+<h3>Connecting the Error Ensemble<a class="headerlink" href="#connecting-the-error-ensemble" title="Permalink to this headline">¶</a></h3>
+<p>In the original Nengo model, a neural ensemble was used to compute the error
+signal that drives the PES learning rule. Using NengoFPGA, this neural
+ensemble is still needed, and the only change required is to modify the
+connections from this error ensemble to the FPGA ensemble. The original Nengo
+model defined the error ensemble and associated connections as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an ensemble for the error signal</span>
+<span class="c1"># Error = actual - target = &quot;post&quot; - input</span>
+<span class="n">error</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+<span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">input_node</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">transform</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Add the learning rule on the pre-post connection</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">learning_rule_type</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">PES</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
+
+<span class="c1"># Connect the error into the learning rule</span>
+<span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">conn</span><span class="o">.</span><span class="n">learning_rule</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The NengoFPGA equivalent code would be:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an ensemble for the error signal</span>
+<span class="c1"># Error = actual - target = &quot;post&quot; - input</span>
+<span class="n">error</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># Remains unchanged</span>
+<span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>  <span class="c1"># Remains unchanged</span>
+<span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">input_node</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">transform</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Remains unchanged</span>
+
+<span class="c1"># Connect the error into the learning rule</span>
+<span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">ens_fpga</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>  <span class="c1"># Note the added &#39;.error&#39;</span>
+</pre></div>
+</div>
+<p>Note that – as mentioned previously – in the NengoFPGA equivalent code, the
+<code class="docutils literal notranslate"><span class="pre">learning_rule_type</span></code> definition of the pre-post connection has been removed
+as this is declared in the <code class="docutils literal notranslate"><span class="pre">FpgaPesEnsembleNetwork</span></code> object.</p>
+</div>
+<div class="section" id="final-nengofpga-model">
+<h3>Final NengoFPGA Model<a class="headerlink" href="#final-nengofpga-model" title="Permalink to this headline">¶</a></h3>
+<p>Altogether the NengoFPGA version of the learned communication channel would
+look something like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nengo</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">nengo_fpga.networks</span> <span class="kn">import</span> <span class="n">FpgaPesEnsembleNetwork</span>
+
+<span class="k">def</span> <span class="nf">input_func</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span> <span class="o">*</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span> <span class="o">*</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)]</span>
+
+<span class="k">with</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Network</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
+
+    <span class="c1"># Input stimulus</span>
+    <span class="n">input_node</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">input_func</span><span class="p">)</span>
+
+    <span class="c1"># &quot;Pre&quot; ensemble of neurons, and connection from the input</span>
+    <span class="n">ens_fpga</span> <span class="o">=</span> <span class="n">FpgaPesEnsembleNetwork</span><span class="p">(</span><span class="s1">&#39;de1&#39;</span><span class="p">,</span> <span class="n">n_neurons</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                                      <span class="n">dimensions</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                      <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
+    <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">input_node</span><span class="p">,</span> <span class="n">ens_fpga</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>  <span class="c1"># Note the added &#39;.input&#39;</span>
+
+    <span class="c1"># &quot;Post&quot; ensemble of neurons, and connection from &quot;Pre&quot;</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">ens_fpga</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">post</span><span class="p">)</span>  <span class="c1"># Note the added &#39;.output&#39;</span>
+
+    <span class="c1"># Create an ensemble for the error signal</span>
+    <span class="c1"># Error = actual - target = &quot;post&quot; - input</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+    <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">input_node</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">transform</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Connect the error into the learning rule</span>
+    <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">ens_fpga</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>  <span class="c1"># Note the added &#39;.error&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="basic-use">
+<h2>Basic Use<a class="headerlink" href="#basic-use" title="Permalink to this headline">¶</a></h2>
+<p>NengoFPGA is designed to work with Nengo GUI, however you can see also run
+as a script if you prefer not to use the GUI. In either case, if the FPGA device
+is not correctly configured, or the NengoFPGA backend is not selected, the
+<code class="docutils literal notranslate"><span class="pre">FpgaPesEnsembleNetwork</span></code> will be converted to run as standard Nengo objects
+and a warning will be printed.</p>
+<p>For any questions please visit the <a class="reference external" href="https://forum.nengo.ai">Nengo Forum</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ensure you’ve configured your board <strong>and</strong> NengoFPGA as outlined in the
+<a class="reference internal" href="getting-started.html#quick-guide"><span class="std std-ref">Getting Started Guide</span></a>.</p>
+</div>
+<div class="section" id="using-the-gui">
+<h3>Using the GUI<a class="headerlink" href="#using-the-gui" title="Permalink to this headline">¶</a></h3>
+<p>To view and run your networks, simply pass <code class="docutils literal notranslate"><span class="pre">nengo_fpga</span></code> as the backend to
+Nengo GUI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nengo &lt;my_file.py&gt; -b nengo_fpga
+</pre></div>
+</div>
+<p>This should open the GUI in a browser and display the network from
+<code class="docutils literal notranslate"><span class="pre">my_file.py</span></code>. You can begin execution by clicking the play button in the
+bottom left corner. this may take a few moments to establish a connection and
+initialize the FPGA device.</p>
+</div>
+</div>
+<div class="section" id="scripting">
+<span id="id1"></span><h2>Scripting<a class="headerlink" href="#scripting" title="Permalink to this headline">¶</a></h2>
+<p>If you are not using Nengo GUI, you can use the <code class="docutils literal notranslate"><span class="pre">nengo_fpga.Simulator</span></code> in
+Nengo’s scripting environment as well. Consider the following example of
+running a standard Nengo network:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nengo</span>
+
+<span class="k">with</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Network</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
+
+   <span class="c1"># Your network description...</span>
+
+<span class="k">with</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Simulator</span><span class="p">(</span><span class="n">model</span><span class="p">)</span> <span class="k">as</span> <span class="n">sim</span><span class="p">:</span>
+   <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Simply replace the <code class="docutils literal notranslate"><span class="pre">Simulator</span></code> with the one from NengoFPGA:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nengo</span>
+<span class="kn">import</span> <span class="nn">nengo_fpga</span>
+
+<span class="k">with</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Network</span><span class="p">()</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
+
+   <span class="c1"># Your network description...</span>
+   <span class="c1"># Including an FpgaPesEnsembleNetwork</span>
+
+<span class="k">with</span> <span class="n">nengo_fpga</span><span class="o">.</span><span class="n">Simulator</span><span class="p">(</span><span class="n">model</span><span class="p">)</span> <span class="k">as</span> <span class="n">sim</span><span class="p">:</span>
+   <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="maximum-model-size">
+<h2>Maximum Model Size<a class="headerlink" href="#maximum-model-size" title="Permalink to this headline">¶</a></h2>
+<p>When running Nengo models on other hardware there is no set limit to model or
+network size. The system will continue to allocate resources (like memory) until
+it runs out which leads to different limits depending on the capabilities of
+your hardware. On the other hand, the NengoFPGA design is fixed and therefore we
+must provision resources up front. As a result, we have specific upper bounds
+which are chosen such that the resource allocation balances performance and
+flexibility for the given architecture. We store all  neuron parameters on-chip
+giving us bounds based on specific memory requirements:</p>
+<ul class="simple">
+<li><p>The maximum number of neurons, <em>N</em>, used to allocate memory for things like
+neuron activity and bias.</p></li>
+<li><p>The maximum number of representational dimensions (input or output), <em>D</em>,
+used to allocate memory for things like the input and output vector.</p></li>
+<li><p>The maximum product of neurons and dimensions, <em>NxD</em>, used to allocate
+memory for things like encoder and decoder matrices.</p></li>
+</ul>
+<p>These maximum model size values are summarized in the hardware-specific
+documentation:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.nengo.ai/nengo-de1/appendix.html#maximum-model-size" title="(in NengoDE1 v0.2)"><span class="xref std std-ref">DE1-SoC feasible model size</span></a></p></li>
+<li><p><a class="reference external" href="https://www.nengo.ai/nengo-pynq/appendix.html#maximum-model-size" title="(in NengoPYNQ v0.3)"><span class="xref std std-ref">PYNQ-Z1 feasible model size</span></a></p></li>
+</ul>
+</div>
+</div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><footer class="text-light footer-main gradient-bottom">
+  <p class="small text-center mb-0">
+    <a class="no-hover-line" href="https://appliedbrainresearch.com">
+      <img
+        src="https://appliedbrainresearch.com/img/logo-blue-notext.svg"
+        height="48"
+      />
+    </a>
+    <a href="https://www.nengo.ai/">What is Nengo?</a>
+    <a href="https://www.nengo.ai/examples/">Examples</a>
+    <a href="https://www.nengo.ai/documentation/">Documentation</a>
+    <a href="https://www.nengo.ai/getting-started/">Getting started</a>
+    <a href="https://www.nengo.ai/privacy/">Privacy</a>
+  </p>
+  <p class="small text-center mb-0">&copy; Applied Brain Research</p>
+</footer>
+<script>
+  function switchVersion(select) {
+    var option = select.selectedOptions[0];
+    if (option.hasAttribute("value")) {
+      window.location = option.value;
+    }
+  }
+</script>
+
+<script>
+  var elements = document.querySelectorAll('.sidenav');
+  Stickyfill.add(elements);
+</script>
+<script>
+  ScrollReveal().reveal(".fade-in", {
+      scale: 0.85,
+      duration: 1000,
+      delay: 250,
+      interval: 50
+  });
+</script>
+<script>
+  $('a.toggle-sidenav').on('click', function(e) {
+    e.preventDefault();
+    if ( $(this).hasClass('active') ) {
+      $(this).removeClass('active');
+      $('.sidenav').removeClass('open');
+    } else {
+      $(this).addClass('active');
+      $('.sidenav').addClass('open');
+    }
+  });
+</script>
+<script>
+  var lists = document.querySelectorAll('.toctree ul');
+  lists.forEach((ul) => {
+      ul.classList.add("nav");
+  });
+  var links = document.querySelectorAll('.toctree a');
+  links.forEach((link) => {
+      link.classList.add("nav-link");
+  });
+  $("body").scrollspy({target: ".sidenav"});
+</script>
+  </body>
+</html>

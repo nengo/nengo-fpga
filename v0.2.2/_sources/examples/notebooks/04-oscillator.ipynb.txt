@@ -1,0 +1,326 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Simple Harmonic Oscillator\n",
+    "\n",
+    "This example implements a simple harmonic oscillator in a 2-dimensional neural population. The oscillator is more visually interesting than the integrator as it is able to indefinitely sustain an oscillatory behaviour without further input to the system (once the oscillator has been initialized).\n",
+    "\n",
+    "Constructing an oscillator with a neural population follows the same process as with the integrator. Recall that the dynamics of a state vector can be described with:\n",
+    "$$\n",
+    "\\dot{x}(t) = \\mathbf{A}x(t) + \\mathbf{B}u(t)\n",
+    "$$\n",
+    "\n",
+    "For an oscillator,\n",
+    "$$\n",
+    "\\begin{align}\n",
+    "    \\mathbf{A} &= \\begin{bmatrix}\n",
+    "                       0 && \\omega \\\\\n",
+    "                       -\\omega && 0\n",
+    "                  \\end{bmatrix} \\\\\n",
+    "    \\mathbf{B} &= 0\n",
+    "\\end{align}\n",
+    "$$\n",
+    "\n",
+    "where the frequency of the oscillation is $\\frac{\\omega}{2\\pi}$ Hz.\n",
+    "\n",
+    "As with the integrator example, the neural equivalent of the input and feedback matrices can be computed:\n",
+    "$$\n",
+    "\\begin{align}\n",
+    "    \\mathbf{A}' &= \\tau\\mathbf{A} + \\mathbf{I} \\\\\n",
+    "    &= \\tau\\begin{bmatrix}\n",
+    "               0 && \\omega \\\\\n",
+    "               -\\omega && 0\n",
+    "           \\end{bmatrix} + \\mathbf{I} \\\\\n",
+    "    &= \\begin{bmatrix}\n",
+    "           1 && \\tau\\cdot\\omega \\\\\n",
+    "           -\\tau\\cdot\\omega && 1\n",
+    "       \\end{bmatrix}\n",
+    "\\end{align}\n",
+    "$$\n",
+    "\n",
+    "The dimensionality of the neural feedback matrix demonstrates why a 2-dimensional neural population is needed to implement the simple harmonic oscillator. It should also be noted that, according to the neural input matrix, the neural population implementing the oscillator requires no input signal.\n",
+    "\n",
+    "However, a quick analysis of the feedback matrix reveals that when $x(t) = 0$, the oscillator is at an unstable equilibrium. Given the randomness in the generation of the neural population, it is possible for the oscillator to remain at this equilibrium, and this would be visually uninteresting. Thus, for this example, a quick impulse is provided to the oscillator to \"kick\" it into a regime where the oscillatory behaviour can be observed."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 1: Set up the Python Imports"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%matplotlib inline\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "from IPython.display import HTML\n",
+    "\n",
+    "import nengo\n",
+    "from nengo.processes import Piecewise\n",
+    "\n",
+    "import nengo_fpga\n",
+    "from nengo_fpga.networks import FpgaPesEnsembleNetwork\n",
+    "\n",
+    "from anim_utils import make_anim_simple_osc"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 2: Choose an FPGA Device\n",
+    "\n",
+    "Define the FPGA device on which the remote FpgaPesEnsembleNetwork will run. This name corresponds with the name in your `fpga_config` file. Recall that in the `fpga_config` file, device names are identified by the square brackets (e.g., **[de1]** or **[pynq]**). The names defined in your configuration file might differ from the example below. Here, the device **de1** is being used."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "board = 'de1'  # Change this to your desired device name"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 3: Create the Impulse Input for the Model\n",
+    "Using a piecewise step function, a 100ms impulse is generated as the \"kick\" signal."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "model = nengo.Network(label='Simple Oscillator')\n",
+    "# Create the kick function for input\n",
+    "with model:\n",
+    "    input_node = nengo.Node(\n",
+    "        Piecewise({\n",
+    "            0: [1, 0],\n",
+    "            0.1: [0, 0]\n",
+    "        }))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 4: Create the FPGA Ensemble\n",
+    "\n",
+    "Create a remote FPGA neural ensemble (`FpgaPesEnsembleNetwork`) using the board defined above, 200 neurons, 2 dimensions, and with no learning rate. We will also specify the recurrent connection here."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "tau = 0.1  # Synaptic time constant (s)\n",
+    "freq = 1  # Oscillation frequency (Hz)\n",
+    "w = freq * 2 * np.pi  # Omega\n",
+    "\n",
+    "with model:\n",
+    "    # Remote FPGA neural ensemble\n",
+    "    fpga_ens = FpgaPesEnsembleNetwork(\n",
+    "        board,  # The board to use (from above)\n",
+    "        n_neurons=200,  # The number of neurons to use in the ensemble\n",
+    "        dimensions=2,  # 2 dimensions\n",
+    "        learning_rate=0,  # No learning for this example\n",
+    "        feedback=1  # Activate the recurrent connection\n",
+    "    )\n",
+    "\n",
+    "    # Setting `feedback=1` creates a `feedback` connection object\n",
+    "    # with the identity transform. To implement the oscillator, it\n",
+    "    # is necessary to set the transform on the feedback connection\n",
+    "    # using .transform.\n",
+    "    fpga_ens.feedback.synapse = tau  # `nengo.LowPass(tau)`\n",
+    "    fpga_ens.feedback.transform = [[1, tau * w],\n",
+    "                                   [-tau * w, 1]]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 5: Connect Everything Together\n",
+    "The recurrent connection is housed on the FPGA device and is created as part of the `FpgaPesEnsembleNetwork` object, so the only connection that needs to be made is the input stimulus to the FPGA ensemble."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "with model:\n",
+    "    # Connect the stimulus\n",
+    "    nengo.Connection(input_node, fpga_ens.input,\n",
+    "                     synapse=tau, transform=1)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 6: Add Probes to Collect Data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "with model:\n",
+    "    # The original input\n",
+    "    input_p = nengo.Probe(input_node)\n",
+    "\n",
+    "    # The output from the FPGA ensemble\n",
+    "    # (filtered with a 10ms post-synaptic filter)\n",
+    "    output_p = nengo.Probe(fpga_ens.output, synapse=0.01)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 7: Run the Model"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "with nengo_fpga.Simulator(model) as sim:\n",
+    "    sim.run(5)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 8: Plot the Results"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def plot_results():\n",
+    "    plt.figure(figsize=(8, 5))\n",
+    "    plt.plot(sim.trange(), sim.data[input_p][:, 0], 'k--')\n",
+    "    plt.plot(sim.trange(), sim.data[output_p])\n",
+    "    plt.legend(['Kick', '$x_0$', '$x_1$'], loc='upper right')\n",
+    "    plt.xlabel('Time (s)');\n",
+    "\n",
+    "\n",
+    "plot_results()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The plot above shows that the interaction of the two dimensions of the oscillator cause the decoded output of the oscillator to exhibit the desired oscillatory behaviour. From the plot, it can be seen that the oscillation frequency is approximately 1Hz, as specified in the code.\n",
+    "\n",
+    "While a static plot is somewhat informative, the behaviour of the oscillator becomes more apparent by plotting the first dimension of the output against the second dimension of the output. To make the behaviour more striking, the code below animates the 2-dimensional plot. It may take a moment to generate the animation."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def make_anim():\n",
+    "    _, _, anim = make_anim_simple_osc(sim.data[output_p][:, 0],\n",
+    "                                      sim.data[output_p][:, 1])\n",
+    "    return anim\n",
+    "\n",
+    "\n",
+    "HTML(make_anim().to_html5_video())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 9: Spiking Neurons\n",
+    "\n",
+    "The plots above demonstrate the results of a simple oscillator implemented in a network of non-spiking rectified linear neurons. The network can also be simulated using spiking neurons to illustrate the similarities and differences between a spiking and a non-spiking network.\n",
+    "\n",
+    "Below, we configure the FPGA neural ensemble to use spiking neurons, run the simulation, and plot the results."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "with model:\n",
+    "    fpga_ens.ensemble.neuron_type = nengo.SpikingRectifiedLinear()\n",
+    "\n",
+    "with nengo_fpga.Simulator(model) as sim:\n",
+    "    sim.run(5)\n",
+    "plot_results()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "HTML(make_anim().to_html5_video())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The plots above show that with spiking neurons, the output of the network is, expectedly, more noisy (less precise) than the results of the non-spiking network. However, despite this, the oscillator network in its current configuration is stable even with the spikes adding additional noise into the system.\n",
+    "\n",
+    "It should be noted that the output of the spiking network might differ from the output of the non-spiking network because the network parameters are regenerated (randomized) when a new Nengo simulation is created."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 10: Experiment!\n",
+    "\n",
+    "Try playing around with the number of neurons in the FPGA ensemble as well as the synaptic time constant (`tau`) to see how it effects performance (e.g., observe how changing these numbers affect the stability of the oscillator)! Additionally, modify the oscillation frequency (try making it negative) to its impact on the output. You can also change the simulation time and see how long the oscillator is stable for!\n",
+    "\n",
+    "Perform these experiments for both the non-spiking and spiking networks, and observe how the additional noise introduced by the spikes affect the performance of the network with relation to the various network and oscillator parameters."
+   ]
+  }
+ ],
+ "metadata": {
+  "language_info": {
+   "name": "python",
+   "pygments_lexer": "ipython3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

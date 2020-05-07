@@ -1,0 +1,1081 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>nengo_fpga.networks.fpga_pes_ensemble_network &#8212; NengoFPGA 0.2.2 docs</title>
+    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,600|Rajdhani:700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+<link rel="stylesheet" href="https://www.nengo.ai/css/bootstrap.css" type="text/css">
+<style>
+  body .title-bar,
+  body .documentation-source h1:after {
+    background-color: #541a8b;
+  }
+</style>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/scrollreveal"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stickyfill/2.1.0/stickyfill.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+<!-- From basic/layout.html -->
+<script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+  
+  
+<script src="../../../_static/underscore.js"></script>
+  
+  
+<script src="../../../_static/doctools.js"></script>
+  
+  
+<script src="../../../_static/language_data.js"></script>
+  
+  
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+  
+  
+<script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+  
+<script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  </head><body class="bg-dark">
+
+<header class="fixed-top header-top shadow-sm">
+  <nav class="navbar navbar-expand-md navbar-light bg-white">
+    <a class="navbar-brand" href="https://www.nengo.ai/">
+      <img
+        src="https://www.nengo.ai/design/_images/general-full-light.svg"
+        alt="Nengo"
+        class="logo"
+      />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbar-collapse"
+      aria-controls="navbar-collapse"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.nengo.ai/">What is Nengo?</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.nengo.ai/examples/">Examples</a>
+        </li>
+        <li class="nav-item dropdown active">
+          <a
+            class="nav-link dropdown-toggle"
+            id="navbar-dropdown-docs"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            href="#"
+            >Documentation</a
+          >
+          <div
+            class="dropdown-menu shadow-lg border-0"
+            aria-labelledby="navbar-dropdown-docs"
+          >
+            
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo/">Nengo Core</a>
+            <a class="dropdown-item" href="https://github.com/nengo/nengo-gui/">Nengo GUI</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-dl/">Nengo DL</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-spa/">Nengo SPA</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-extras/">Nengo Extras</a>
+            <a class="dropdown-item" href="https://arvoelke.github.io/nengolib-docs/">Nengolib</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-fpga/">Nengo FPGA</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-loihi/">Nengo Loihi</a>
+            <a class="dropdown-item" href="https://github.com/nengo/nengo-ocl">Nengo OpenCL</a>
+            <a class="dropdown-item" href="https://github.com/project-rig/nengo_spinnaker">Nengo SpiNNaker</a>
+            <a class="dropdown-item" href="https://github.com/nengo/nengo-mpi">Nengo MPI</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/documentation/"
+              >All documentation</a
+            >
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            id="navbar-dropdown-community"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            href="#"
+            >Community</a
+          >
+          <div
+            class="dropdown-menu shadow-lg border-0"
+            aria-labelledby="navbar-dropdown-community"
+          >
+            <a class="dropdown-item" href="https://forum.nengo.ai">Forum</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/people/"
+              >People</a
+            >
+            <a class="dropdown-item" href="https://www.nengo.ai/summer-school/"
+              >Summer school</a
+            >
+            <a class="dropdown-item" href="https://www.nengo.ai/contributing/"
+              >Contributing</a
+            >
+            <a class="dropdown-item" href="https://www.nengo.ai/publications/"
+              >Publications</a
+            >
+            <a class="dropdown-item" href="https://www.nengo.ai/videos/"
+              >Videos</a
+            >
+            <a class="dropdown-item" href="https://www.nengo.ai/conduct/"
+              >Code of conduct</a
+            >
+            <a class="dropdown-item" href="https://www.nengo.ai/caa/">CAA</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link btn btn-success btn-sm text-white"
+            href="https://www.nengo.ai/getting-started/"
+            >Getting started</a
+          >
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<div class="main-content gradient-top">
+  <div class="container-fluid">
+    <div class="row"><a class="toggle-sidenav d-block d-md-none" href="#"
+  ><i class="icon-close fa fa-fw fa-arrow-left"></i
+  ><i class="icon-open fa fa-fw fa-arrow-right"></i
+></a>
+<div role="complementary" class="sidenav col-4 col-xl-3 p-0 border-right">
+  <h3 class="pt-5 px-5">
+    <a href="../../../index.html">
+      <img
+        class="img-fluid documentation-image"
+        src="https://www.nengo.ai/design/_images/nengo-fpga-full-light.svg"
+        alt="NengoFPGA"
+      />
+    </a>
+  </h3>
+<form class="px-5 py-3 my-0 border-bottom" action="../../../search.html" method="get">
+  <div class="form-group form-group-single">
+    <input type="text" name="q" class="form-control" placeholder="Search" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <button type="submit" class="btn btn-link">
+      <img src="https://www.nengo.ai/img/icon-search.svg" alt="Go" />
+    </button>
+  </div>
+</form><div class="p-5 toctree">
+  
+    <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendix.html">Appendix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../project.html">Project Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../project.html#contributing-to-nengofpga">Contributing to NengoFPGA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../project.html#nengofpga-license">NengoFPGA license</a></li>
+</ul>
+
+  
+  </div>
+  
+  <form class="p-5 my-0 border-top">
+    <div class="form-group">
+      <label class="text-gray">Version:</label>
+      <select class="custom-select" onchange="switchVersion(this);">
+        
+        
+        <option value="../../../../_modules/nengo_fpga/networks/fpga_pes_ensemble_network.html">latest</option>
+        
+        
+          
+        <option selected>v0.2.2</option>
+          
+        
+      </select>
+    </div>
+  </form>
+  
+</div>
+      
+
+      <div class="col-12 col-md-8 col-xl-9">
+        <div class="container">
+          <div class="row">
+            <div class="col-10 offset-1 pb-5 documentation-source" role="main">
+              
+  <h1>Source code for nengo_fpga.networks.fpga_pes_ensemble_network</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;FPGA network containing:</span>
+
+<span class="sd">- One ensemble</span>
+<span class="sd">- PES learning</span>
+<span class="sd">- Feedback connection</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">nengo</span>
+<span class="kn">from</span> <span class="nn">nengo.builder.signal</span> <span class="kn">import</span> <span class="n">Signal</span>
+<span class="kn">from</span> <span class="nn">nengo.builder.operator</span> <span class="kn">import</span> <span class="n">Reset</span><span class="p">,</span> <span class="n">Copy</span><span class="p">,</span> <span class="n">SimPyFunc</span>
+
+<span class="kn">import</span> <span class="nn">paramiko</span>
+<span class="kn">from</span> <span class="nn">nengo_fpga.fpga_config</span> <span class="kn">import</span> <span class="n">fpga_config</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="FpgaPesEnsembleNetwork"><a class="viewcode-back" href="../../../api.html#nengo_fpga.networks.FpgaPesEnsembleNetwork">[docs]</a><span class="k">class</span> <span class="nc">FpgaPesEnsembleNetwork</span><span class="p">(</span><span class="n">nengo</span><span class="o">.</span><span class="n">Network</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; An ensemble to be run on the FPGA</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fpga_name : str</span>
+<span class="sd">        The name of the fpga defined in the config file.</span>
+<span class="sd">    n_neurons : int</span>
+<span class="sd">        The number of neurons.</span>
+<span class="sd">    dimensions : int</span>
+<span class="sd">        The number of representational dimensions.</span>
+<span class="sd">    learning_rate : float</span>
+<span class="sd">        A scalar indicating the rate at which weights will be adjusted.</span>
+<span class="sd">    function : callable or (n_eval_points, size_mid) array_like, \</span>
+<span class="sd">               optional (Default: None)</span>
+<span class="sd">        Function to compute across the connection. Note that ``pre`` must be</span>
+<span class="sd">        an ensemble to apply a function across the connection.</span>
+<span class="sd">        If an array is passed, the function is implicitly defined by the</span>
+<span class="sd">        points in the array and the provided ``eval_points``, which have a</span>
+<span class="sd">        one-to-one correspondence.</span>
+<span class="sd">    transform : (size_out, size_mid) array_like, optional \</span>
+<span class="sd">                (Default: ``np.array(1.0)``)</span>
+<span class="sd">        Linear transform mapping the pre output to the post input.</span>
+<span class="sd">        This transform is in terms of the sliced size; if either pre</span>
+<span class="sd">        or post is a slice, the transform must be shaped according to</span>
+<span class="sd">        the sliced dimensionality. Additionally, the function is applied</span>
+<span class="sd">        before the transform, so if a function is computed across the</span>
+<span class="sd">        connection, the transform must be of shape ``(size_out, size_mid)``.</span>
+<span class="sd">    eval_points : (n_eval_points, size_in) array_like or int, optional \</span>
+<span class="sd">                  (Default: None)</span>
+<span class="sd">        Points at which to evaluate ``function`` when computing decoders,</span>
+<span class="sd">        spanning the interval (-pre.radius, pre.radius) in each dimension.</span>
+<span class="sd">        If None, will use the eval_points associated with ``pre``.</span>
+<span class="sd">    socket_args : dictionary, optional (Default: Empty dictionary)</span>
+<span class="sd">        Parameters to pass on to the ``socket`` object that is used to handle UDP</span>
+<span class="sd">        communication between the host PC and the FPGA board. Acceptable parameters</span>
+<span class="sd">        are:</span>
+<span class="sd">        ``connect_timeout``: Determines the maximum timeout to wait for a connection</span>
+<span class="sd">        from the FPGA board. Default: 300s</span>
+<span class="sd">        ``recv_timeout``: Determines the maximum timeout for each packet received</span>
+<span class="sd">        from the FPGA board. Default: 0.1s</span>
+<span class="sd">    feedback : float or (D_out, D_in) array_like, optional</span>
+<span class="sd">        Defines the transform for a recurrent connection. If ``None``, no</span>
+<span class="sd">        recurrent connection will be built. The default synapse used for the</span>
+<span class="sd">        recurrent connection is ``nengo.Lowpass(0.1)``, this can be changed</span>
+<span class="sd">        using the ``feedback`` attribute of this class.</span>
+<span class="sd">    label : str, optional (Default: None)</span>
+<span class="sd">        A descriptive label for the connection.</span>
+<span class="sd">    seed : int, optional (Default: None)</span>
+<span class="sd">        The seed used for random number generation.</span>
+<span class="sd">    add_to_container : bool, optional (Default: None)</span>
+<span class="sd">        Determines if this network will be added to the current container. If</span>
+<span class="sd">        ``None``, this network will be added to the network at the top of the</span>
+<span class="sd">        ``Network.context`` stack unless the stack is empty.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    input : `nengo.Node`</span>
+<span class="sd">        A node that serves as the input interface between external Nengo</span>
+<span class="sd">        objects and the FPGA board.</span>
+<span class="sd">    output : `nengo.Node`</span>
+<span class="sd">        A node that serves as the output interface between the FPGA board and</span>
+<span class="sd">        external Nengo objects.</span>
+<span class="sd">    error : `nengo.Node`</span>
+<span class="sd">        A node that provides the error signal to be used by the learning rule</span>
+<span class="sd">        on the FPGA board.</span>
+<span class="sd">    ensemble : `nengo.Ensemble`</span>
+<span class="sd">        An ensemble object whose parameters are used to configure the</span>
+<span class="sd">        ensemble implementation on the FPGA board.</span>
+<span class="sd">    connection : `nengo.Connection`</span>
+<span class="sd">        The connection object used to configure the learning connection</span>
+<span class="sd">        implementation on the FPGA board.</span>
+<span class="sd">    feedback : `nengo.Connection`</span>
+<span class="sd">        The connection object used to configure the recurrent connection</span>
+<span class="sd">        implementation on the FPGA board.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fpga_name</span><span class="p">,</span>
+        <span class="n">n_neurons</span><span class="p">,</span>
+        <span class="n">dimensions</span><span class="p">,</span>
+        <span class="n">learning_rate</span><span class="p">,</span>
+        <span class="n">function</span><span class="o">=</span><span class="n">nengo</span><span class="o">.</span><span class="n">Default</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">nengo</span><span class="o">.</span><span class="n">Default</span><span class="p">,</span>
+        <span class="n">eval_points</span><span class="o">=</span><span class="n">nengo</span><span class="o">.</span><span class="n">Default</span><span class="p">,</span>
+        <span class="n">socket_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">feedback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">add_to_container</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># Flags for determining whether or not the FPGA board is being used</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_found</span> <span class="o">=</span> <span class="n">fpga_config</span><span class="o">.</span><span class="n">has_section</span><span class="p">(</span><span class="n">fpga_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fpga_found</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># TODO: Ping board to determine?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">using_fpga_sim</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Make SSHClient object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh_client</span> <span class="o">=</span> <span class="n">paramiko</span><span class="o">.</span><span class="n">SSHClient</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh_client</span><span class="o">.</span><span class="n">set_missing_host_key_policy</span><span class="p">(</span><span class="n">paramiko</span><span class="o">.</span><span class="n">AutoAddPolicy</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh_info_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh_lock</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Save ssh details</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span> <span class="o">=</span> <span class="n">fpga_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arg_data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">curdir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arg_data_file</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="c1"># Process dimensions, function, transform arguments</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_dimensions</span> <span class="o">=</span> <span class="n">dimensions</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_output_dim</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">)</span>
+
+        <span class="c1"># Process feedback connection</span>
+        <span class="k">if</span> <span class="n">nengo</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">is_array_like</span><span class="p">(</span><span class="n">feedback</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rec_transform</span> <span class="o">=</span> <span class="n">feedback</span>
+        <span class="k">elif</span> <span class="n">feedback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">nengo</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ValidationError</span><span class="p">(</span>
+                <span class="s2">&quot;Must be scalar or array-like&quot;</span><span class="p">,</span> <span class="s2">&quot;feedback&quot;</span><span class="p">,</span> <span class="bp">self</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Neuron type string map</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">neuron_str_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">nengo</span><span class="o">.</span><span class="n">neurons</span><span class="o">.</span><span class="n">RectifiedLinear</span><span class="p">:</span> <span class="s2">&quot;RectifiedLinear&quot;</span><span class="p">,</span>
+            <span class="n">nengo</span><span class="o">.</span><span class="n">neurons</span><span class="o">.</span><span class="n">SpikingRectifiedLinear</span><span class="p">:</span> <span class="s2">&quot;SpikingRectifiedLinear&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_neuron_type</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">neurons</span><span class="o">.</span><span class="n">RectifiedLinear</span><span class="p">()</span>
+
+        <span class="c1"># Store the various parameters needed to initialize the remote network</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+
+        <span class="c1"># Call the superconstructor</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FpgaPesEnsembleNetwork</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">add_to_container</span><span class="p">)</span>
+
+        <span class="c1"># Socket attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">udp_socket</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_buffer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recv_buffer</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">socket_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">socket_args</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connect_timeout</span> <span class="o">=</span> <span class="n">socket_args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;connect_timeout&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recv_timeout</span> <span class="o">=</span> <span class="n">socket_args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;recv_timeout&quot;</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+
+        <span class="c1"># Check if the desired FPGA name is defined in the configuration file</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_found</span><span class="p">:</span>
+            <span class="c1"># Handle the udp port selection: Use the config specified port.</span>
+            <span class="c1"># If none is provided (i.e., the specified port number is 0),</span>
+            <span class="c1"># choose a random udp port number between 20000 and 65535.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">udp_port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;udp_port&quot;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">udp_port</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">udp_port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">65535</span><span class="p">))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_addr</span> <span class="o">=</span> <span class="p">(</span><span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;ip&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">udp_port</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># FPGA name not found, throw a warning.</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Specified FPGA configuration &#39;</span><span class="si">%s</span><span class="s2">&#39; not found.&quot;</span><span class="p">,</span> <span class="n">fpga_name</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: Specified FPGA configuration &#39;</span><span class="si">%s</span><span class="s2">&#39; not found.&quot;</span> <span class="o">%</span> <span class="n">fpga_name</span><span class="p">)</span>
+
+        <span class="c1"># Make nengo model. Here, a dummy ensemble is created. It will be</span>
+        <span class="c1"># replaced with a udp_socket in the builder function (see below).</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">size_in</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_dimensions</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;input&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">size_in</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">output_dimensions</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;error&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">size_in</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">output_dimensions</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span>
+                <span class="n">n_neurons</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">input_dimensions</span><span class="p">,</span>
+                <span class="n">neuron_type</span><span class="o">=</span><span class="n">nengo</span><span class="o">.</span><span class="n">neurons</span><span class="o">.</span><span class="n">RectifiedLinear</span><span class="p">(),</span>
+                <span class="n">eval_points</span><span class="o">=</span><span class="n">eval_points</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Dummy Ensemble&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="p">,</span> <span class="n">synapse</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">,</span>
+                <span class="n">function</span><span class="o">=</span><span class="n">function</span><span class="p">,</span>
+                <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span>
+                <span class="n">eval_points</span><span class="o">=</span><span class="n">eval_points</span><span class="p">,</span>
+                <span class="n">learning_rule_type</span><span class="o">=</span><span class="n">nengo</span><span class="o">.</span><span class="n">PES</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">),</span>
+            <span class="p">)</span>
+
+            <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">learning_rule</span><span class="p">,</span> <span class="n">synapse</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">feedback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">feedback</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">ensemble</span><span class="p">,</span>
+                    <span class="n">synapse</span><span class="o">=</span><span class="n">nengo</span><span class="o">.</span><span class="n">Lowpass</span><span class="p">(</span><span class="mf">0.1</span><span class="p">),</span>
+                    <span class="n">transform</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rec_transform</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">feedback</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Make the object lists immutable so that no extra objects can be added</span>
+        <span class="c1"># to this network.</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FpgaPesEnsembleNetwork.get_output_dim"><a class="viewcode-back" href="../../../api.html#nengo_fpga.networks.FpgaPesEnsembleNetwork.get_output_dim">[docs]</a>    <span class="k">def</span> <span class="nf">get_output_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Simplify init function by moving output shape calculation here&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">function</span> <span class="ow">is</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Default</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output_dimensions</span> <span class="o">=</span> <span class="n">dimensions</span>
+        <span class="k">elif</span> <span class="n">callable</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output_dimensions</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">function</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)))</span>
+        <span class="k">elif</span> <span class="n">nengo</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">is_array_like</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output_dimensions</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">nengo</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ValidationError</span><span class="p">(</span>
+                <span class="s2">&quot;Must be callable or array-like&quot;</span><span class="p">,</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span> <span class="bp">self</span>
+            <span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">local_data_filepath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Full path to ensemble parameter value data file on the local system.</span>
+
+<span class="sd">        Ensemble parameter values are generated by the builder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg_data_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg_data_file</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FpgaPesEnsembleNetwork.terminate_client"><a class="viewcode-back" href="../../../api.html#nengo_fpga.networks.FpgaPesEnsembleNetwork.terminate_client">[docs]</a>    <span class="k">def</span> <span class="nf">terminate_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Send termination packet to FPGA board.</span>
+
+<span class="sd">        Termination packet is a packet where t is less than 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">udp_socket</span><span class="o">.</span><span class="n">sendto</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_dimensions</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_dimensions</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">tobytes</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_addr</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="FpgaPesEnsembleNetwork.close"><a class="viewcode-back" href="../../../api.html#nengo_fpga.networks.FpgaPesEnsembleNetwork.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Shutdown connections to FPGA if applicable&quot;&quot;&quot;</span>
+
+        <span class="c1"># Function does nothing if FPGA configuration not found in config file</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_found</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Close the UDP socket if it is open</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">udp_socket</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Send termination signal to the board</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">terminate_client</span><span class="p">()</span>
+
+            <span class="c1"># Close the udp socket and set it to None</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2">&gt; UDP Connection closed&quot;</span><span class="p">,</span> <span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;ip&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">udp_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">udp_socket</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Reset the udp communication buffers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_dimensions</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_dimensions</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recv_buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_dimensions</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Close the SSH connection</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2">&gt; SSH connection closed&quot;</span><span class="p">,</span> <span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;ip&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh_client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FpgaPesEnsembleNetwork.cleanup"><a class="viewcode-back" href="../../../api.html#nengo_fpga.networks.FpgaPesEnsembleNetwork.cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove FPGA data file if applicable&quot;&quot;&quot;</span>
+
+        <span class="c1"># Function does nothing if FPGA configuration not found in config file</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_found</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Clean up any existing argument data files</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_data_filepath</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_data_filepath</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FpgaPesEnsembleNetwork.connect_ssh_client"><a class="viewcode-back" href="../../../api.html#nengo_fpga.networks.FpgaPesEnsembleNetwork.connect_ssh_client">[docs]</a>    <span class="k">def</span> <span class="nf">connect_ssh_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ssh_user</span><span class="p">,</span> <span class="n">remote_ip</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Helper function to parse config and setup ssh client&quot;&quot;&quot;</span>
+
+        <span class="c1"># Get the SSH options from the fpga_config file</span>
+        <span class="n">ssh_port</span> <span class="o">=</span> <span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;ssh_port&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">fpga_config</span><span class="o">.</span><span class="n">has_option</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;ssh_pwd&quot;</span><span class="p">):</span>
+            <span class="n">ssh_pwd</span> <span class="o">=</span> <span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;ssh_pwd&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ssh_pwd</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">fpga_config</span><span class="o">.</span><span class="n">has_option</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;ssh_key&quot;</span><span class="p">):</span>
+            <span class="n">ssh_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;ssh_key&quot;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ssh_key</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Connect to remote location over ssh</span>
+        <span class="k">if</span> <span class="n">ssh_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># If an ssh key is provided, just use it</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ssh_client</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                <span class="n">remote_ip</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">ssh_port</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">ssh_user</span><span class="p">,</span> <span class="n">key_filename</span><span class="o">=</span><span class="n">ssh_key</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ssh_pwd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># If an ssh password is provided, just use it</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ssh_client</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                <span class="n">remote_ip</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">ssh_port</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">ssh_user</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">ssh_pwd</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If no password or key is specified, just use the default connect</span>
+            <span class="c1"># (paramiko will then try to connect using the id_rsa file in the</span>
+            <span class="c1">#  ~/.ssh/ folder)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ssh_client</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">remote_ip</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">ssh_port</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">ssh_user</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FpgaPesEnsembleNetwork.connect_thread_func"><a class="viewcode-back" href="../../../api.html#nengo_fpga.networks.FpgaPesEnsembleNetwork.connect_thread_func">[docs]</a>    <span class="k">def</span> <span class="nf">connect_thread_func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Start SSH in a separate thread if applicable&quot;&quot;&quot;</span>
+
+        <span class="c1"># Function does nothing if FPGA configuration not found in config file</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_found</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Get the IP of the remote device from the fpga_config file</span>
+        <span class="n">remote_ip</span> <span class="o">=</span> <span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;ip&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Get the SSH options from the fpga_config file</span>
+        <span class="n">ssh_user</span> <span class="o">=</span> <span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;ssh_user&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">connect_ssh_client</span><span class="p">(</span><span class="n">ssh_user</span><span class="p">,</span> <span class="n">remote_ip</span><span class="p">)</span>
+
+        <span class="c1"># Send argument file over</span>
+        <span class="n">remote_data_filepath</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;remote_tmp&quot;</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">arg_data_file</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_data_filepath</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2">&gt; Sending argument data (</span><span class="si">%s</span><span class="s2">) to fpga board&quot;</span><span class="p">,</span>
+                <span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;ip&quot;</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">arg_data_file</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Send the argument data over to the fpga board</span>
+            <span class="c1"># Create sftp connection</span>
+            <span class="n">sftp_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssh_client</span><span class="o">.</span><span class="n">open_sftp</span><span class="p">()</span>
+            <span class="n">sftp_client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_data_filepath</span><span class="p">,</span> <span class="n">remote_data_filepath</span><span class="p">)</span>
+
+            <span class="c1"># Close sftp connection and release ssh connection lock</span>
+            <span class="n">sftp_client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c1"># Invoke a shell in the ssh client</span>
+        <span class="n">ssh_channel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssh_client</span><span class="o">.</span><span class="n">invoke_shell</span><span class="p">()</span>
+
+        <span class="c1"># Wait for the SSH shell to initialize</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+        <span class="c1"># If board configuration specifies using sudo to run scripts</span>
+        <span class="c1"># - Assume all non-root users will require sudo to run the scripts</span>
+        <span class="c1"># - Note: Also assumes that the fpga has been configured to allow</span>
+        <span class="c1">#         the ssh user to run sudo commands WITHOUT needing a password</span>
+        <span class="c1">#         (see specific fpga hardware docs for details)</span>
+        <span class="k">if</span> <span class="n">ssh_user</span> <span class="o">!=</span> <span class="s2">&quot;root&quot;</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2">&gt; Script to be run with sudo. Sudoing.&quot;</span><span class="p">,</span> <span class="n">remote_ip</span><span class="p">)</span>
+            <span class="n">ssh_channel</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;sudo su</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Send required ssh string</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2">&gt; Sending cmd to fpga board: </span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;ip&quot;</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ssh_string</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">ssh_channel</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ssh_string</span><span class="p">)</span>
+
+        <span class="c1"># Variable for remote error handling</span>
+        <span class="n">got_error</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">error_strs</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Get and process the information being returned over the ssh</span>
+        <span class="c1"># connection</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">ssh_channel</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+                <span class="c1"># If no data is received, the client has been closed, so close</span>
+                <span class="c1"># the channel, and break out of the while loop</span>
+                <span class="n">ssh_channel</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">break</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">process_ssh_output</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">info_str_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ssh_info_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">info_str</span> <span class="ow">in</span> <span class="n">info_str_list</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">got_error</span><span class="p">,</span> <span class="n">error_strs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_ssh_str</span><span class="p">(</span>
+                    <span class="n">info_str</span><span class="p">,</span> <span class="n">error_strs</span><span class="p">,</span> <span class="n">got_error</span><span class="p">,</span> <span class="n">remote_ip</span>
+                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ssh_info_str</span> <span class="o">=</span> <span class="n">info_str_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="c1"># The traceback usually contains 3 lines, so collect the first</span>
+            <span class="c1"># three lines then display it.</span>
+            <span class="k">if</span> <span class="n">got_error</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="c1"># Close the UDP and SSH connections so that the main simulation thread</span>
+                <span class="c1"># terminates</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s2">&quot;Received the following error on the remote side &lt;</span><span class="si">%s</span><span class="s2">&gt;:</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span>
+                    <span class="o">%</span> <span class="p">(</span><span class="n">remote_ip</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">error_strs</span><span class="p">))</span>
+                <span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Terminating SSH thread&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FpgaPesEnsembleNetwork.connect"><a class="viewcode-back" href="../../../api.html#nengo_fpga.networks.FpgaPesEnsembleNetwork.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># noqa: C901</span>
+        <span class="sd">&quot;&quot;&quot;Connect to FPGA via SSH if applicable&quot;&quot;&quot;</span>
+
+        <span class="c1"># Function does nothing if FPGA configuration not found in config file</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_found</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2">&gt; Open SSH connection&quot;</span><span class="p">,</span> <span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;ip&quot;</span><span class="p">))</span>
+        <span class="c1"># Start a new thread to open the ssh connection. Use a thread to</span>
+        <span class="c1"># handle the opening of the connection because it can lag for certain</span>
+        <span class="c1"># devices, and we don&#39;t want it to impact the rest of the build process.</span>
+        <span class="n">connect_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connect_thread_func</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">())</span>
+        <span class="n">connect_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2">&gt; Open UDP connection&quot;</span><span class="p">,</span> <span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;ip&quot;</span><span class="p">))</span>
+        <span class="c1"># Create a UDP socket to communicate with the board</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">udp_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_DGRAM</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">udp_socket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">udp_socket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;host&quot;</span><span class="p">,</span> <span class="s2">&quot;ip&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">udp_port</span><span class="p">))</span>
+
+        <span class="c1"># # Set the socket timeout to the connection timeout and wait for the</span>
+        <span class="c1"># # board to connect to the PC.</span>
+        <span class="c1"># # Note that this is the &quot;correct&quot; way to wait for an incoming connection</span>
+        <span class="c1"># # request. However, because the error detection mechanism in the SSH</span>
+        <span class="c1"># # thread is done by closing the UDP socket, a polling approach is used</span>
+        <span class="c1"># # (see below).</span>
+        <span class="c1"># # TODO: Re-examine this during the SSH refactoring.</span>
+        <span class="c1"># self.udp_socket.settimeout(self.connect_timeout)</span>
+        <span class="c1"># while True:</span>
+        <span class="c1">#     try:</span>
+        <span class="c1">#         self.udp_socket.recv_into(self.recv_buffer.data)</span>
+        <span class="c1">#         # Connection packet has a t of 0</span>
+        <span class="c1">#         if self.recv_buffer[0] &lt;= 0.0:</span>
+        <span class="c1">#             break</span>
+        <span class="c1">#     except socket.timeout:</span>
+        <span class="c1">#         self.close()</span>
+        <span class="c1">#     raise RuntimeError(&quot;Did not receive connection from board within &quot;</span>
+        <span class="c1">#                        + &quot;specified timeout (%fs).&quot; % self.connect_timeout)</span>
+        <span class="c1"># if self.recv_buffer[0] &lt; 0.0:</span>
+        <span class="c1">#     self.close()</span>
+        <span class="c1">#     raise RuntimeError(&quot;Simulation terminated by FPGA board.&quot;)</span>
+
+        <span class="c1"># Connection with the board established. Set the socket timeout to</span>
+        <span class="c1"># recv_timeout.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">udp_socket</span><span class="o">.</span><span class="n">settimeout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">recv_timeout</span><span class="p">)</span>
+
+        <span class="c1"># Wait for the connection packet from the board. Note that the</span>
+        <span class="c1"># implementation above (setting the socket timeout to ``connect_timeout``)</span>
+        <span class="c1"># is the &quot;proper&quot; implementation. Below is a workaround to allow the SSH</span>
+        <span class="c1"># connection thread to terminate the connection process (by closing the</span>
+        <span class="c1"># udp socket, so an exception is thrown).</span>
+        <span class="n">max_attempts</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connect_timeout</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">recv_timeout</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">conn_attempts</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_attempts</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">udp_socket</span><span class="o">.</span><span class="n">recv_into</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">recv_buffer</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">recv_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+                    <span class="c1"># Received a connection packet (t == 0) from the board, or received</span>
+                    <span class="c1"># a &quot;terminate client&quot; packet (t &lt; 0) from the board, so break out</span>
+                    <span class="c1"># of the connection waiting loop</span>
+                    <span class="k">break</span>
+            <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">timeout</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">conn_attempts</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">max_attempts</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="c1"># Number of connection attempts exceeds maximum number of attempts.</span>
+            <span class="c1"># I.e., no connection has been received within the timeout limit.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;Did not receive connection from board within &quot;</span>
+                <span class="o">+</span> <span class="s2">&quot;specified timeout (</span><span class="si">%f</span><span class="s2">s).&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">connect_timeout</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">recv_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="c1"># Received a &quot;terminate client&quot; packet from the board, terminate the</span>
+            <span class="c1"># Nengo simulation.</span>
+            <span class="n">reason</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">recv_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">20</span><span class="p">:</span>
+                <span class="n">reason</span> <span class="o">=</span> <span class="s2">&quot;Unable to load FPGA driver! &quot;</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">recv_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">10</span><span class="p">:</span>
+                <span class="n">reason</span> <span class="o">=</span> <span class="s2">&quot;Unable to acquire FPGA resource lock! &quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">reason</span> <span class="o">+</span> <span class="s2">&quot;Simulation terminated by FPGA board.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FpgaPesEnsembleNetwork.process_ssh_output"><a class="viewcode-back" href="../../../api.html#nengo_fpga.networks.FpgaPesEnsembleNetwork.process_ssh_output">[docs]</a>    <span class="k">def</span> <span class="nf">process_ssh_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clean up the data stream coming back over ssh if applicable&quot;&quot;&quot;</span>
+
+        <span class="n">str_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;latin1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">str_data</span> <span class="o">=</span> <span class="n">str_data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">str_data</span> <span class="o">=</span> <span class="n">str_data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Process and dump the returned ssh data to logger. Data (strings)</span>
+        <span class="c1"># returned over SSH are terminated by a newline, so, keep track of</span>
+        <span class="c1"># the data and write the data to logger only when a newline is</span>
+        <span class="c1"># received.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssh_info_str</span> <span class="o">+=</span> <span class="n">str_data</span></div>
+
+<div class="viewcode-block" id="FpgaPesEnsembleNetwork.check_ssh_str"><a class="viewcode-back" href="../../../api.html#nengo_fpga.networks.FpgaPesEnsembleNetwork.check_ssh_str">[docs]</a>    <span class="k">def</span> <span class="nf">check_ssh_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info_str</span><span class="p">,</span> <span class="n">error_strs</span><span class="p">,</span> <span class="n">got_error</span><span class="p">,</span> <span class="n">remote_ip</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Process info from ssh and check for errors&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">info_str</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Killed&quot;</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2">&gt; ENCOUNTERED ERROR!&quot;</span><span class="p">,</span> <span class="n">remote_ip</span><span class="p">)</span>
+            <span class="n">got_error</span> <span class="o">=</span> <span class="mi">2</span>
+
+        <span class="k">if</span> <span class="n">info_str</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Traceback&quot;</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2">&gt; ENCOUNTERED ERROR!&quot;</span><span class="p">,</span> <span class="n">remote_ip</span><span class="p">)</span>
+            <span class="n">got_error</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">got_error</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">info_str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot; &quot;</span><span class="p">:</span>
+            <span class="c1"># Error string is no longer tabbed, so the actual error</span>
+            <span class="c1"># is bring printed. Collect and terminate (see below)</span>
+            <span class="n">got_error</span> <span class="o">=</span> <span class="mi">2</span>
+
+        <span class="k">if</span> <span class="n">got_error</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Once an error is encountered, keep collecting error</span>
+            <span class="c1"># messages until the termination condition (above)</span>
+            <span class="n">error_strs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info_str</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2">&gt; </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">remote_ip</span><span class="p">,</span> <span class="n">info_str</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">got_error</span><span class="p">,</span> <span class="n">error_strs</span></div>
+
+<div class="viewcode-block" id="FpgaPesEnsembleNetwork.reset"><a class="viewcode-back" href="../../../api.html#nengo_fpga.networks.FpgaPesEnsembleNetwork.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reconnect to FPGA if applicable&quot;&quot;&quot;</span>
+
+        <span class="c1"># Function does nothing if FPGA configuration not found in config file</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_found</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Otherwise, close and reopen the SSH connection to the board</span>
+        <span class="c1"># Closing the SSH connection will terminate the board-side script</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2">&gt; Resetting SSH connection:&quot;</span><span class="p">,</span> <span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;ip&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="c1"># Close and reopen ssh connections</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ssh_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Command sent to FPGA device to begin execution</span>
+
+<span class="sd">        Generate the string to be sent over the ssh connection to run the</span>
+<span class="sd">        remote side ssh script (with appropriate arguments)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ssh_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_found</span><span class="p">:</span>
+            <span class="n">ssh_str</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;python &quot;</span>
+                <span class="o">+</span> <span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;remote_script&quot;</span><span class="p">)</span>
+                <span class="o">+</span> <span class="s2">&quot; --host_ip=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;host&quot;</span><span class="p">,</span> <span class="s2">&quot;ip&quot;</span><span class="p">)</span>
+                <span class="o">+</span> <span class="s2">&quot; --remote_ip=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;ip&quot;</span><span class="p">)</span>
+                <span class="o">+</span> <span class="s2">&quot; --udp_port=</span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">udp_port</span>
+                <span class="o">+</span> <span class="s2">&quot; --arg_data_file=&#39;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&#39;&quot;</span>
+                <span class="o">%</span> <span class="p">(</span><span class="n">fpga_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fpga_name</span><span class="p">,</span> <span class="s2">&quot;remote_tmp&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg_data_file</span><span class="p">)</span>
+                <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">ssh_str</span></div>
+
+
+<span class="k">def</span> <span class="nf">validate_net</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Helper function to simplify builder function.</span>
+
+<span class="sd">    Validates network params:</span>
+<span class="sd">        - Neuron type</span>
+<span class="sd">        - Learning connection</span>
+<span class="sd">        - Feedback connection</span>
+
+<span class="sd">    returns [neuron_type (str),</span>
+<span class="sd">             learning_rate (float),</span>
+<span class="sd">            ]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Check neuron type</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">neuron_type</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">neuron_str_map</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">nengo</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">BuildError</span><span class="p">(</span>
+            <span class="s2">&quot;Neuron type &#39;</span><span class="si">%s</span><span class="s2">&#39; is not supported.&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">neuron_type</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Check learning</span>
+    <span class="k">if</span> <span class="n">network</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">learning_rule_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">l_rate</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">learning_rule_type</span><span class="p">,</span> <span class="n">nengo</span><span class="o">.</span><span class="n">PES</span><span class="p">):</span>
+        <span class="n">l_rate</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">learning_rule_type</span><span class="o">.</span><span class="n">learning_rate</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">nengo</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">BuildError</span><span class="p">(</span>
+            <span class="s2">&quot;Learning rule &#39;</span><span class="si">%s</span><span class="s2">&#39; is not supported.&quot;</span>
+            <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">learning_rule_type</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Check Feedback (params not set here)</span>
+    <span class="k">if</span> <span class="n">network</span><span class="o">.</span><span class="n">feedback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Validation</span>
+        <span class="k">if</span> <span class="n">network</span><span class="o">.</span><span class="n">feedback</span><span class="o">.</span><span class="n">learning_rule_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">nengo</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">BuildError</span><span class="p">(</span>
+                <span class="s2">&quot;The FPGA feedback connection does not support learning.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">feedback</span><span class="o">.</span><span class="n">synapse</span><span class="p">,</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Lowpass</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">nengo</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">BuildError</span><span class="p">(</span>
+                <span class="s2">&quot;The FPGA feedback connection only supports the &quot;</span>
+                <span class="s2">&quot;`nengo.Lowpass` synapse.&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">neuron_str_map</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">neuron_type</span><span class="p">)],</span> <span class="n">l_rate</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">extract_and_save_params</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">network</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate the ensemble and connection parameters and save them to file&quot;&quot;&quot;</span>
+
+    <span class="c1"># Generate the network used to get the ensemble and output connection parameters</span>
+    <span class="n">param_model</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">dt</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
+    <span class="n">nengo</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">build_network</span><span class="p">(</span><span class="n">param_model</span><span class="p">,</span> <span class="n">network</span><span class="p">)</span>
+
+    <span class="c1"># Collect the simulation argument values</span>
+    <span class="n">sim_args</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">sim_args</span><span class="p">[</span><span class="s2">&quot;dt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">dt</span>
+
+    <span class="c1"># Collect the ensemble argument values</span>
+    <span class="n">ens_args</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">ens_args</span><span class="p">[</span><span class="s2">&quot;input_dimensions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">input_dimensions</span>
+    <span class="n">ens_args</span><span class="p">[</span><span class="s2">&quot;output_dimensions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">output_dimensions</span>
+    <span class="n">ens_args</span><span class="p">[</span><span class="s2">&quot;n_neurons&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">n_neurons</span>
+    <span class="n">ens_args</span><span class="p">[</span><span class="s2">&quot;bias&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">param_model</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">ensemble</span><span class="p">]</span><span class="o">.</span><span class="n">bias</span>
+    <span class="n">ens_args</span><span class="p">[</span><span class="s2">&quot;scaled_encoders&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">param_model</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">ensemble</span><span class="p">]</span><span class="o">.</span><span class="n">scaled_encoders</span>
+
+    <span class="c1"># Collect the connection argument values</span>
+    <span class="n">conn_args</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">conn_args</span><span class="p">[</span><span class="s2">&quot;weights&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">param_model</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">connection</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span>
+
+    <span class="c1"># Validate neuron_type, learning_rule, and feedback connection</span>
+    <span class="n">ens_args</span><span class="p">[</span><span class="s2">&quot;neuron_type&quot;</span><span class="p">],</span> <span class="n">conn_args</span><span class="p">[</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">validate_net</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
+
+    <span class="c1"># Collect the feedback connection argument values</span>
+    <span class="n">recur_args</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">recur_args</span><span class="p">[</span><span class="s2">&quot;weights&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Necessary as flag even if not used</span>
+
+    <span class="k">if</span> <span class="n">network</span><span class="o">.</span><span class="n">feedback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Grab relevant attributes</span>
+        <span class="n">recur_args</span><span class="p">[</span><span class="s2">&quot;weights&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">param_model</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">feedback</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span>
+        <span class="n">recur_args</span><span class="p">[</span><span class="s2">&quot;tau&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">feedback</span><span class="o">.</span><span class="n">synapse</span><span class="o">.</span><span class="n">tau</span>
+
+    <span class="c1"># Save the NPZ data file</span>
+    <span class="n">npz_filename</span> <span class="o">=</span> <span class="s2">&quot;fpen_args_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">network</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;.npz&quot;</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">arg_data_file</span> <span class="o">=</span> <span class="n">npz_filename</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">savez_compressed</span><span class="p">(</span>
+        <span class="n">network</span><span class="o">.</span><span class="n">local_data_filepath</span><span class="p">,</span>
+        <span class="n">sim_args</span><span class="o">=</span><span class="n">sim_args</span><span class="p">,</span>
+        <span class="n">ens_args</span><span class="o">=</span><span class="n">ens_args</span><span class="p">,</span>
+        <span class="n">conn_args</span><span class="o">=</span><span class="n">conn_args</span><span class="p">,</span>
+        <span class="n">recur_args</span><span class="o">=</span><span class="n">recur_args</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">udp_comm_func</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">net</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;UDP communication function for nengo SimPyFunc&quot;&quot;&quot;</span>
+
+    <span class="c1"># Assemble the information to send to the board</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">send_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">send_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">x</span>
+
+    <span class="c1"># Send information to the board</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">udp_socket</span><span class="o">.</span><span class="n">sendto</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">send_buffer</span><span class="o">.</span><span class="n">tobytes</span><span class="p">(),</span> <span class="n">net</span><span class="o">.</span><span class="n">send_addr</span><span class="p">)</span>
+
+    <span class="c1"># Receive information from the board</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">net</span><span class="o">.</span><span class="n">recv_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">dt</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">):</span>
+            <span class="n">net</span><span class="o">.</span><span class="n">udp_socket</span><span class="o">.</span><span class="n">recv_into</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">recv_buffer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">net</span><span class="o">.</span><span class="n">recv_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># Received a &quot;terminate client&quot; packet from the board, terminate the</span>
+                <span class="c1"># Nengo simulation.</span>
+                <span class="n">net</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Simulation terminated by FPGA board.&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">timeout</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Socket timeout for t=</span><span class="si">%0.5f</span><span class="s2">s&quot;</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+    <span class="c1"># Return the received information</span>
+    <span class="k">return</span> <span class="n">net</span><span class="o">.</span><span class="n">recv_buffer</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+
+<span class="nd">@nengo</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">Builder</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">FpgaPesEnsembleNetwork</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">build_FpgaPesEnsembleNetwork</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">network</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Builder to integrate FPGA network into Nengo</span>
+
+<span class="sd">    Add build steps like nengo?</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Check if nengo_fpga.Simulator is being used to build this network</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">network</span><span class="o">.</span><span class="n">using_fpga_sim</span><span class="p">:</span>
+        <span class="n">warn_str</span> <span class="o">=</span> <span class="s2">&quot;FpgaPesEnsembleNetwork not being built with nengo_fpga simulator.&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">warn_str</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: &quot;</span> <span class="o">+</span> <span class="n">warn_str</span><span class="p">)</span>
+
+    <span class="c1"># Check if all of the requirements to use the FPGA board are met</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">using_fpga_sim</span> <span class="ow">and</span> <span class="n">network</span><span class="o">.</span><span class="n">config_found</span> <span class="ow">and</span> <span class="n">network</span><span class="o">.</span><span class="n">fpga_found</span><span class="p">):</span>
+        <span class="c1"># FPGA requirements not met...</span>
+        <span class="c1"># Build the dummy network instead of using FPGA-specific stuff</span>
+        <span class="n">warn_str</span> <span class="o">=</span> <span class="s2">&quot;Building network with dummy (non-FPGA) ensemble.&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">warn_str</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: &quot;</span> <span class="o">+</span> <span class="n">warn_str</span><span class="p">)</span>
+        <span class="n">nengo</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">build_network</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">network</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Generate the ensemble and connection parameters and save them to file</span>
+    <span class="n">extract_and_save_params</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">network</span><span class="p">)</span>
+
+    <span class="c1"># Build the nengo network using the network&#39;s udp_socket function</span>
+    <span class="c1"># Set up input/output signals</span>
+    <span class="n">input_sig</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">input_dimensions</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;input&quot;</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">sig</span><span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">input</span><span class="p">][</span><span class="s2">&quot;in&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_sig</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">sig</span><span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">input</span><span class="p">][</span><span class="s2">&quot;out&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_sig</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add_op</span><span class="p">(</span><span class="n">Reset</span><span class="p">(</span><span class="n">input_sig</span><span class="p">))</span>
+    <span class="n">input_sig</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">nengo</span><span class="o">.</span><span class="n">synapses</span><span class="o">.</span><span class="n">Lowpass</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">input_sig</span><span class="p">)</span>
+
+    <span class="n">error_sig</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">output_dimensions</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;error&quot;</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">sig</span><span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">error</span><span class="p">][</span><span class="s2">&quot;in&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">error_sig</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">sig</span><span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">error</span><span class="p">][</span><span class="s2">&quot;out&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">error_sig</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add_op</span><span class="p">(</span><span class="n">Reset</span><span class="p">(</span><span class="n">error_sig</span><span class="p">))</span>
+    <span class="n">error_sig</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">nengo</span><span class="o">.</span><span class="n">synapses</span><span class="o">.</span><span class="n">Lowpass</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">error_sig</span><span class="p">)</span>
+
+    <span class="n">output_sig</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">output_dimensions</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">sig</span><span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">output</span><span class="p">][</span><span class="s2">&quot;out&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output_sig</span>
+    <span class="k">if</span> <span class="n">network</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">synapse</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">synapse</span><span class="p">,</span> <span class="n">output_sig</span><span class="p">)</span>
+
+    <span class="c1"># Set up udp_socket combined input signals</span>
+    <span class="n">udp_socket_input_sig</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">input_dimensions</span> <span class="o">+</span> <span class="n">network</span><span class="o">.</span><span class="n">output_dimensions</span><span class="p">),</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;udp_socket_input&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add_op</span><span class="p">(</span>
+        <span class="n">Copy</span><span class="p">(</span>
+            <span class="n">input_sig</span><span class="p">,</span>
+            <span class="n">udp_socket_input_sig</span><span class="p">,</span>
+            <span class="n">dst_slice</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">input_dimensions</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add_op</span><span class="p">(</span>
+        <span class="n">Copy</span><span class="p">(</span>
+            <span class="n">error_sig</span><span class="p">,</span>
+            <span class="n">udp_socket_input_sig</span><span class="p">,</span>
+            <span class="n">dst_slice</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">input_dimensions</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Build udp socket function with Nengo SimPyFunc</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add_op</span><span class="p">(</span>
+        <span class="n">SimPyFunc</span><span class="p">(</span>
+            <span class="n">output</span><span class="o">=</span><span class="n">output_sig</span><span class="p">,</span>
+            <span class="n">fn</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">udp_comm_func</span><span class="p">,</span> <span class="n">net</span><span class="o">=</span><span class="n">network</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">dt</span><span class="p">),</span>
+            <span class="n">t</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">time</span><span class="p">,</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">udp_socket_input_sig</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><footer class="text-light footer-main gradient-bottom">
+  <p class="small text-center mb-0">
+    <a class="no-hover-line" href="https://appliedbrainresearch.com">
+      <img
+        src="https://appliedbrainresearch.com/img/logo-blue-notext.svg"
+        height="48"
+      />
+    </a>
+    <a href="https://www.nengo.ai/">What is Nengo?</a>
+    <a href="https://www.nengo.ai/examples/">Examples</a>
+    <a href="https://www.nengo.ai/documentation/">Documentation</a>
+    <a href="https://www.nengo.ai/getting-started/">Getting started</a>
+    <a href="https://www.nengo.ai/privacy/">Privacy</a>
+  </p>
+  <p class="small text-center mb-0">&copy; Applied Brain Research</p>
+</footer>
+<script>
+  function switchVersion(select) {
+    var option = select.selectedOptions[0];
+    if (option.hasAttribute("value")) {
+      window.location = option.value;
+    }
+  }
+</script>
+
+<script>
+  var elements = document.querySelectorAll('.sidenav');
+  Stickyfill.add(elements);
+</script>
+<script>
+  ScrollReveal().reveal(".fade-in", {
+      scale: 0.85,
+      duration: 1000,
+      delay: 250,
+      interval: 50
+  });
+</script>
+<script>
+  $('a.toggle-sidenav').on('click', function(e) {
+    e.preventDefault();
+    if ( $(this).hasClass('active') ) {
+      $(this).removeClass('active');
+      $('.sidenav').removeClass('open');
+    } else {
+      $(this).addClass('active');
+      $('.sidenav').addClass('open');
+    }
+  });
+</script>
+<script>
+  var lists = document.querySelectorAll('.toctree ul');
+  lists.forEach((ul) => {
+      ul.classList.add("nav");
+  });
+  var links = document.querySelectorAll('.toctree a');
+  links.forEach((link) => {
+      link.classList.add("nav-link");
+  });
+  $("body").scrollspy({target: ".sidenav"});
+</script>
+  </body>
+</html>
