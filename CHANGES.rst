@@ -21,6 +21,11 @@ Release History
 0.2.3 (Unreleased)
 ------------------
 
+**Fixed**
+
+- Update Numpy license URL.
+  (`#64 <https://github.com/nengo/nengo-fpga/pull/64>`__)
+
 
 0.2.2 (May 7, 2020)
 -------------------
