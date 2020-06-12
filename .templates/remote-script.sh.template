@@ -2,7 +2,7 @@
 
 {% block remote_install %}
 {{ super() }}
-        pip install nengo-bones
+        pip install git+https://github.com/nengo/nengo-bones#egg=nengo-bones
         bones-generate --output-dir .ci ci-scripts || REMOTE_STATUS=1
         bash .ci/{{ remote_script }}.sh install || REMOTE_STATUS=1
 

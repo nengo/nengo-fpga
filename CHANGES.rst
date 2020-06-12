@@ -23,14 +23,19 @@ Release History
 
 **Added**
 
-- Added slack notifications for failing master builds
+- Added slack notifications for failing master builds.
   (`#65 <https://github.com/nengo/nengo-fpga/pull/65>`__)
+
+**Changed**
+
+- Changed remote-script to pip install nengo-bones from git.
+  (`#67 <https://github.com/nengo/nengo-fpga/pull/67>`__)
 
 **Fixed**
 
 - Update Numpy license URL.
   (`#64 <https://github.com/nengo/nengo-fpga/pull/64>`__)
-- Fixed slack notification link
+- Fixed slack notification link.
   (`#66 <https://github.com/nengo/nengo-fpga/pull/66>`__)
 
 
