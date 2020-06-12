@@ -21,12 +21,17 @@ Release History
 0.2.3 (Unreleased)
 ------------------
 
+**Added**
+
+- Added slack notifications for failing master builds
+  (`#65 <https://github.com/nengo/nengo-fpga/pull/65>`__)
+
 **Fixed**
 
 - Update Numpy license URL.
   (`#64 <https://github.com/nengo/nengo-fpga/pull/64>`__)
-- Added slack notifications for failing master builds
-  (`#65 <https://github.com/nengo/nengo-fpga/pull/65>`__)
+- Fixed slack notification link
+  (`#66 <https://github.com/nengo/nengo-fpga/pull/66>`__)
 
 
 0.2.2 (May 7, 2020)

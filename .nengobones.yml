@@ -61,15 +61,15 @@ travis_yml:
     - script: static
     - script: test
     - script: remote-docs
-  slack_notifications: "TSNZSAg9e4UIWkanxq+kIjFdm8SDTda70Ch5JVa9p+pGssptq+/yLYxT0qesT5G\
-    EYzcYTLwogHUGBI4ROYdj9/BOCfqA0pFlC/rTFVuh0Q0OiIWND1bDdA2u3doxLJ/jQjMAo/Jl/k9bIfJaBR\
-    vipoAZFmv1UV3zF4xGsCy2RRrYjQ3a39QO1w97/nZ+an7QXdUBwokfcapodj3HodDSl/eJi3bnwjVgBW1pm\
-    iZPIUCrWljZqTtjc+SLbQWoXaeime6TFaDPD/mhz0I69JhSEERHZK89pbTDkYqT+CVNswmoRhiqUvIDiToF\
-    CSOhF9pbmoyKudNuCWNgEMAUgI+Aq8yStR6t2JIMOOfalvM1UtHXomae/AOSi+lyI4iV++9Sq8G5hp7b+tj\
-    3urUwcnnwGVmYk/BUVIz+NzOR4oV7vEKn1RYNyNf1mQIsr4FxXb7ret9iGQE6OYNcdiacTsCr7SJ44HXhW1\
-    LmNp2qkAsz6nzI47b+86lOjJuB/wTss7pceo/D5a1IlDuR/Y28nxJkqizwPnU5izwrB6l/28zzV1zghgfjP\
-    le8VJvQGE4B1gRJDtDZ1rkPR2jy92oI24oudL4QCGjSUiM++vrY4Pi+sr0+yFCxLj03g3KFU7Nfj8Au6V27\
-    IqrHzJsr7Ec9b+PNH1NARIYcT+B1nzdr1g6LYGk="
+  slack_notifications: "DO3CdeRII8IUEe+ao+ceg9+nSeVx9Vmc97h4Er5vuThH1EojnWjGwscAK0rD9aQ\
+    9IpojQ7URk5lOKQYgBMEfoRLknOoq4V+IyH1KslXC9f3i3kVKIRA7q1TYWEoQW0lzc4PR0aWZBBTv/m8VqH\
+    sWsw4QMXERvwimfxz7QNkTIFIEVdakAdE8ICdVjw8Kl17u5+vj/LHuc1m/Wgs/ruN8IfLfdLXlJj17/KvGy\
+    uoJK9He366nStBkoU4xnGDi9Vl0mhzQRo/2Xe7FXGT/P2aUH93Awlj/Ucx4EmKypM+Bh/55OkKzZbSlvLyv\
+    TqUJsaqjiCOiz7ZLJd4GFPLBPgIJ4yzIBzxOQGR1hh0BqNNDmXgqO3mexUpfaxkp5UCgusOyL5RkSLYUMcs\
+    7NEDQNF9m6hLV+C6T6rQS95CTK+w/dohmyAeP506OPCpYpIqFDZYXR4Ah/Douyv4gKr7udzBAPo1ROqPpLd\
+    pFTxOSHBd+BYX6BHvDBQ8rVY60tHax7LzCqKBEeJgMoVsTOG52KBSj+xSKWmrhXpXG7cCOOD5kfU/6/ayP+\
+    xGjCBdmwHhbcWkKC3PlKu8sJnZMheeYTygUmQWZbzEBVPrPc/WcfKWDctXZ1DozhgF2siG/irLZ+MfACqKT\
+    wE3ot5Vmib+f6kTlQEo3dXfKzSrWeR9fnqM6YvY="
 
 ci_scripts:
   - template: static
