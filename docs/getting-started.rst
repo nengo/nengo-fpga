@@ -20,9 +20,11 @@ Installation Quick Reference Guide
 
 .. rst-class:: compact
 
-1. Get the your board NengoFPGA ready using the
-   :ref:`device-specific board setup documentation <board-setup>`.
-#. :ref:`Install NengoFPGA <software-install>`.
+First, get the your board NengoFPGA ready using the
+:ref:`device-specific board setup documentation <board-setup>`.
+Once your board is set up, do the following steps on the PC connected to the board:
+
+1. :ref:`Install NengoFPGA <software-install>`.
 #. :ref:`Edit the NengoFPGA config file <nengofpga-config>` to match your setup.
 #. Test NengoFPGA by running the ID extractor script:
 

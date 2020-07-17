@@ -23,8 +23,8 @@ Release History
 
 **Added**
 
-- Added slack notifications for failing master builds.
-  (`#65 <https://github.com/nengo/nengo-fpga/pull/65>`__)
+- Added PC-running instruction clarification in getting started guide.
+  (`#69 <https://github.com/nengo/nengo-fpga/pull/69>`__)
 
 **Changed**
 
