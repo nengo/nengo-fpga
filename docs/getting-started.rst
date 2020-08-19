@@ -9,7 +9,7 @@ Things You Need
 - A :ref:`supported FPGA board <supported-hardware>`
 - A NengoFPGA Licence (available from `Applied Brain Research
   <https://store.appliedbrainresearch.com/collections/nengo-fpga>`_)
-- (Optional) `Nengo GUI <https://github.com/nengo/nengo-gui>`_
+- (Optional) `NengoGUI <https://github.com/nengo/nengo-gui>`_
 
 .. _quick-guide:
 

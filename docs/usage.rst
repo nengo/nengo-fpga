@@ -212,7 +212,7 @@ look something like this:
 Basic Use
 =========
 
-NengoFPGA is designed to work with Nengo GUI, however you can see also run
+NengoFPGA is designed to work with NengoGUI, however you can see also run
 as a script if you prefer not to use the GUI. In either case, if the FPGA device
 is not correctly configured, or the NengoFPGA backend is not selected, the
 ``FpgaPesEnsembleNetwork`` will be converted to run as standard Nengo objects
@@ -229,7 +229,7 @@ Using the GUI
 -------------
 
 To view and run your networks, simply pass ``nengo_fpga`` as the backend to
-Nengo GUI:
+NengoGUI:
 
 .. code-block:: bash
 
@@ -245,7 +245,7 @@ initialize the FPGA device.
 Scripting
 =========
 
-If you are not using Nengo GUI, you can use the ``nengo_fpga.Simulator`` in
+If you are not using NengoGUI, you can use the ``nengo_fpga.Simulator`` in
 Nengo's scripting environment as well. Consider the following example of
 running a standard Nengo network:
 

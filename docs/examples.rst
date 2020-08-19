@@ -8,10 +8,10 @@ NengoFPGA has a few examples to show you what's possible and get you started.
 There are some simple examples that are built with Jupyter
 notebooks that illustrate the code with interspersed text information.
 These notebook examples use the :ref:`scripting <scripting>` mode of
-NengoFPGA without needing Nengo GUI.
+NengoFPGA without needing NengoGUI.
 
 There are also some more complex examples that are not built in notebooks
-and instead use Nengo GUI. These examples are more complex and some have
+and instead use NengoGUI. These examples are more complex and some have
 opportunities for you to interact with the system via the GUI.
 
 
@@ -41,7 +41,7 @@ GUI Examples
 
 .. |gui_dir| replace:: ``nengo_fpga/docs/examples/gui``
 
-These examples are designed to be used with Nengo GUI, so it will have to be
+These examples are designed to be used with NengoGUI, so it will have to be
 installed. This can be done by running ``pip install nengo-gui`` from your
 command line.
 
@@ -64,7 +64,7 @@ command line.
    indicates to the GUI to use the NengoFPGA backend (``nengo_fpga``) instead
    of standard Nengo backend.
 
-   Successfully running the ``nengo`` command will open the Nengo GUI
+   Successfully running the ``nengo`` command will open the NengoGUI
    interface in a web browser. On the right, you will see the code for the
    example Nengo model, and on the left is a graphical representation of the
    Nengo model.
@@ -100,7 +100,7 @@ confidence for each one of the 10 (zero through nine) possible number classes.
 This example has some additional requirements, be sure you have the following
 required packages installed:
 
-1. Nengo Extras: ``pip install nengo_extras``
+1. NengoExtras: ``pip install nengo_extras``
 #. Python image library: ``pip install pillow``
 
 To run this example in Nengo, from the |gui_dir| directory, run:
@@ -124,7 +124,7 @@ To run this example in Nengo, from the |gui_dir| directory, run:
    the data set directly from the link above and place it in the |gui_dir|
    directory.
 
-When the model is loaded into Nengo GUI, you should see a graphical
+When the model is loaded into NengoGUI, you should see a graphical
 representation similar to the image below.
 
 .. image:: _static/mnist_gui.png
@@ -170,7 +170,7 @@ To run this example in Nengo, from the |gui_dir| directory, run:
 
    nengo 01-adaptive-pendulum.py -b nengo_fpga
 
-When the model is loaded into Nengo GUI, you should see a graphical
+When the model is loaded into NengoGUI, you should see a graphical
 representation similar to the image below.
 
 .. image:: _static/pendulum_gui.png
@@ -276,7 +276,7 @@ To run this example in Nengo, from the |gui_dir| directory, run:
 
    nengo 02-RL-demo.py -b nengo_fpga
 
-When the model is loaded into Nengo GUI, you should see a graphical
+When the model is loaded into NengoGUI, you should see a graphical
 representation similar to the image below.
 
 .. image:: _static/rl_gui.png
@@ -296,7 +296,7 @@ For this example, the graphical pane is divided into four quadrants.
   Also indicated is the current "learning" state of the agent -- the agent
   is learning when **Explore** is **ON**, and conversely, is not adapting to
   the reward signals when **Explore** is **OFF**. If the ``keyboard-state``
-  branch of the Nengo GUI is being used, the learning mode of the agent can
+  branch of the NengoGUI is being used, the learning mode of the agent can
   be controlled using keyboard presses (see :ref:`below <keyboard-state>`).
 - The bottom right quadrant displays the output of the action selection network
   (``Thalamus``), as well as the associated spike rasters for each action:
@@ -377,4 +377,4 @@ disable or permanently enable learning; reset the agent's location back to the
 start location; and change the world map.
 
 If you do not see instructions for key presses then this feature is currently
-not available with your installed version of Nengo GUI.
+not available with your installed version of NengoGUI.
