@@ -109,7 +109,7 @@ def config_contents():
 def dummy_extractor(config_contents, gen_configs, mocker):  # noqa: W0521
     """Setup an ID extractor
 
-        `config_contents` was kept separate so we can update the config file
+    `config_contents` was kept separate so we can update the config file
     """
 
     # Create a dummy config for testing
@@ -130,7 +130,7 @@ def dummy_extractor(config_contents, gen_configs, mocker):  # noqa: W0521
 def dummy_net(config_contents, gen_configs):  # noqa: W0521
     """Setup an FPGA network
 
-        `config_contents` was kept separate so we can update the config file
+    `config_contents` was kept separate so we can update the config file
     """
 
     # Create a dummy config for testing
@@ -178,7 +178,7 @@ def dummy_sim(mocker):
 def dummy_com():
     """Dummy class to mock out ssh channel and socket
 
-       Some socket functions are readonly and require a mock class
+    Some socket functions are readonly and require a mock class
     """
 
     class DummyCom:
@@ -212,7 +212,7 @@ def dummy_com():
 def params(request):  # pragma: no cover
     """Create a dummy network and extract params for fullstack tests
 
-        Fixture itself is parametrized for neuron type
+    Fixture itself is parametrized for neuron type
     """
 
     # Tell Nengo to use 32b, like the FPGA

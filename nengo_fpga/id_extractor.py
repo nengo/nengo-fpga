@@ -13,7 +13,7 @@ from nengo_fpga.fpga_config import fpga_config
 
 
 class IDExtractor:
-    """ Class that connects to the FPGA and extracts the Device ID
+    """Class that connects to the FPGA and extracts the Device ID
 
     Parameters
     ----------

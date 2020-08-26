@@ -119,7 +119,7 @@ def test_cleanup(dummy_extractor, dummy_com, mocker):
 def test_connect_ssh_client(ssh_method, config_contents, gen_configs, mocker):
     """Test the IDExtractor's connect_ssh_client function
 
-       Almost identical to test in "test_networks"
+    Almost identical to test in "test_networks"
     """
 
     # Create a dummy config for testing
@@ -166,7 +166,7 @@ def test_connect_ssh_client(ssh_method, config_contents, gen_configs, mocker):
 def test_connect_thread_func(dummy_extractor, dummy_com, config_contents, mocker):
     """Test the IDExtractor's connect_thread_func function
 
-       Similar to the test in "test_id"
+    Similar to the test in "test_id"
     """
 
     # Don't use ssh connections
@@ -233,7 +233,7 @@ def test_connect(dummy_extractor, mocker):
 def test_process_ssh_output(dummy_extractor):
     """Test the IDExtractor's process_ssh_output
 
-       Almost identical to test in "test_networks"
+    Almost identical to test in "test_networks"
     """
 
     # Create a test string using carraige returns that should be replaced
@@ -249,7 +249,7 @@ def test_process_ssh_output(dummy_extractor):
 def test_check_ssh_str(dummy_extractor):
     """Test remote string processing
 
-       Almost identical to test in "test_networks"
+    Almost identical to test in "test_networks"
     """
 
     # Init
@@ -291,7 +291,7 @@ def test_check_ssh_str(dummy_extractor):
 def test_ssh_string(dummy_extractor, config_contents):
     """Test we have the correct arguments in the string command
 
-       Almost identical to test in "test_networks"
+    Almost identical to test in "test_networks"
     """
 
     # Split up the ssh command string

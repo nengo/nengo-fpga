@@ -135,7 +135,12 @@ def test_init_default(config_contents, gen_configs, mocker):
     n_neurons = 10
     l_rate = 0.001
 
-    dummy_net = FpgaPesEnsembleNetwork(fpga_name, n_neurons, dims_in, l_rate,)
+    dummy_net = FpgaPesEnsembleNetwork(
+        fpga_name,
+        n_neurons,
+        dims_in,
+        l_rate,
+    )
 
     assert dummy_net.input_dimensions == dims_in
     out_dim_spy.assert_called_once_with(dummy_net, nengo.Default, dims_in)
@@ -292,7 +297,7 @@ def test_connect_ssh_client(
 ):
     """Test the FPGA networks connect_ssh_client function
 
-       Almost identical to test in "test_id"
+    Almost identical to test in "test_id"
     """
 
     # Create a dummy config for testing
@@ -333,7 +338,7 @@ def test_connect_ssh_client(
 def test_connect_thread_func(dummy_net, dummy_com, config_contents, mocker):
     """Test the FPGA network's connect_thread_func
 
-       Similar to the test in "test_id"
+    Similar to the test in "test_id"
     """
 
     # Don't use ssh connections
@@ -511,7 +516,7 @@ def test_connect(dummy_net, mocker):
 def test_process_ssh_output(dummy_net):
     """Test the IDExtractor's process_ssh_output
 
-       Almost identical to test in "test_id"
+    Almost identical to test in "test_id"
     """
 
     # Create a test string using carraige returns that should be replaced
@@ -527,7 +532,7 @@ def test_process_ssh_output(dummy_net):
 def test_check_ssh_str(dummy_net):
     """Test remote string processing
 
-       Almost identical to test in "test_id"
+    Almost identical to test in "test_id"
     """
 
     # Init
@@ -591,7 +596,7 @@ def test_reset(dummy_net, mocker):
 def test_ssh_string(dummy_net, config_contents):
     """Test we have the correct arguments in the string command
 
-       Almost identical to test in "test_id"
+    Almost identical to test in "test_id"
     """
 
     # Set arg data file name
@@ -653,8 +658,8 @@ def test_validate_net(dummy_net):
     class DummyRule(nengo.learning_rules.LearningRuleType):
         """Dummy learning rule
 
-           Can't use BCM or Oja since they use neuron connections
-           Can't use Voja since it needs a post ensemble and we have a node
+        Can't use BCM or Oja since they use neuron connections
+        Can't use Voja since it needs a post ensemble and we have a node
         """
 
         modifies = "decoders"
