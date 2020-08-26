@@ -69,6 +69,14 @@ setup(
         "tests": tests_req,
     },
     python_requires=">=3.5",
-    package_data={"nengo_fpga": ["fpga_config",],},
-    entry_points={"nengo.backends": ["fpga = nengo_fpga:Simulator",],},
+    package_data={
+        "nengo_fpga": [
+            "fpga_config",
+        ],
+    },
+    entry_points={
+        "nengo.backends": [
+            "fpga = nengo_fpga:Simulator",
+        ],
+    },
 )
