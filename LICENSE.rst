@@ -24,6 +24,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+This license pertains only to the NengoFPGA interface software. License information
+for the supported hardware implementations can be found at their respective license
+pages:
+
+* `NengoDE1 <https://www.nengo.ai/nengo-de1/license.html>`_
+* `NengoPYNQ <https://www.nengo.ai/nengo-pynq/license.html>`_
+
 Licensed Code
 =============
 

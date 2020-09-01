@@ -29,7 +29,7 @@ The DE1-SoC board is manufactured by Terasic and uses an Intel Altera Cyclone V
 FPGA paired with a dual core ARM Cortex A9. The board is available for `purchase
 from Terasic
 <https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&No=836>`_.
-See the :std:doc:`Nengo DE1 documentation <nengo-de1:index>` for how to use this
+See the :std:doc:`NengoDE1 documentation <nengo-de1:index>` for how to use this
 board with NengoFPGA.
 
 |
@@ -52,7 +52,7 @@ The PYNQ-Z1 board is manufactured by Digilent and uses a ZYNQ 7020 FPGA paired
 with a dual core ARM Cortex A9. The board is available for `purchase from
 Digilent
 <https://store.digilentinc.com/pynq-z1-python-productivity-for-zynq-7000-arm-fpga-soc/>`_.
-See the :std:doc:`Nengo PYNQ documentation <nengo-pynq:index>` for how to use
+See the :std:doc:`NengoPYNQ documentation <nengo-pynq:index>` for how to use
 this board with NengoFPGA.
 
 |
