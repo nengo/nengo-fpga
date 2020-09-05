@@ -36,10 +36,10 @@ if nengo.Network.add.__module__ == "nengo.network":
         """
         try:
             net_add(obj)
-        except AttributeError:
+        except AttributeError as e:
             net_type = type(nengo.Network.context[-1])
             raise nengo.exceptions.NetworkContextError(
                 "Cannot add new objects to a %s" % net_type
-            )
+            ) from e
 
     nengo.Network.add = staticmethod(add)

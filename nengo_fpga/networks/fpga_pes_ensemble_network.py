@@ -159,7 +159,7 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         self.learning_rate = learning_rate
 
         # Call the superconstructor
-        super(FpgaPesEnsembleNetwork, self).__init__(label, seed, add_to_container)
+        super().__init__(label, seed, add_to_container)
 
         # Socket attributes
         self.udp_socket = None

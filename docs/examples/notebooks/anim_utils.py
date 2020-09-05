@@ -148,7 +148,7 @@ def make_anim_controlled_osc(
                 y[max(i * skip - trail_length, 0) : i * skip + 1],
             )
         )
-        dot.set_data([0.5], [w[i * skip]])
+        dot.set_data([0.015], [w[i * skip]])
         time_str.set_text("Time: %0.2fs" % (i * skip * dt))
         return lsegs, dot, time_str
 

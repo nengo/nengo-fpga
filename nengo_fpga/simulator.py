@@ -62,19 +62,19 @@ class Simulator(nengo.simulator.Simulator):
         atexit.register(self.terminate)
 
         # Call nengo.Simulator super constructor
-        super(Simulator, self).__init__(network, **kwargs)
+        super().__init__(network, **kwargs)
 
     def close(self):
         """Close all connections to the remote networks"""
         for net in self.fpga_networks_list:
             net.close()
-        super(Simulator, self).close()
+        super().close()
 
     def reset(self, seed=None):
         """Call the reset function for each remote network"""
         for net in self.fpga_networks_list:
             net.reset()
-        super(Simulator, self).reset(seed)
+        super().reset(seed)
 
     def terminate(self):
         """
