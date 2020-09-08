@@ -14,11 +14,11 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.mathjax",
     "sphinx.ext.todo",
-    "sphinx.ext.viewcode",
     "nbsphinx",
     "nengo_sphinx_theme",
     "nengo_sphinx_theme.ext.backoff",
     "nengo_sphinx_theme.ext.redirects",
+    "nengo_sphinx_theme.ext.sourcelinks",
     "notfound.extension",
     "numpydoc",
 ]
@@ -54,6 +54,10 @@ notfound_urls_prefix = "/nengo-fpga/"
 
 # -- numpydoc config
 numpydoc_show_class_members = False
+
+# -- nengo_sphinx_theme.ext.sourcelinks
+sourcelinks_module = "nengo_fpga"
+sourcelinks_url = "https://github.com/nengo/nengo-fpga"
 
 # -- sphinx
 nitpicky = True
