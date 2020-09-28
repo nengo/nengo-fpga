@@ -102,7 +102,7 @@ Follow documentation for your particular FPGA device:
 
 - :std:doc:`Board setup for Terasic DE1-SoC <nengo-de1:getting-started>`
   (Intel Cyclone V)
-- :std:doc:`Board setup for Digilent PYNQ <nengo-pynq:getting-started>`
+- :std:doc:`Board setup for Digilent or TUL PYNQ <nengo-pynq:getting-started>`
   (Xilinx Zynq)
 
 The full list of hardware that NengoFPGA supports, and the links to their
@@ -301,6 +301,6 @@ FPGA device for how to copy them to the board and get them running:
 - :ref:`Updating bitstreams for Terasic DE1-SoC
   <nengo-de1:/usage.rst#updating-bitstreams>`
   (Intel Cyclone V)
-- :ref:`Updating bitstreams for Digilent PYNQ
+- :ref:`Updating bitstreams for Digilent or TUL PYNQ
   <nengo-pynq:/usage.rst#updating-bitstreams>` (Xilinx Zynq)
 

@@ -25,6 +25,8 @@ Release History
 
 - Added PC-running instruction clarification in getting started guide.
   (`#69 <https://github.com/nengo/nengo-fpga/pull/69>`__)
+- Added information about PYNQ-Z2 support to documentation.
+  (`#71 <https://github.com/nengo/nengo-fpga/pull/71>`__)
 
 **Changed**
 

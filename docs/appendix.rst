@@ -14,11 +14,11 @@ IP packages can be purchased through `Applied Brain Research
 DE1-SoC
 -------
 
-   .. image:: _static/de1.png
-      :alt: DE1 board
-      :width: 28%
-      :align: right
-      :target: https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&No=836
+.. image:: _static/de1.png
+   :alt: DE1 board
+   :width: 30%
+   :align: right
+   :target: https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&No=836
 
 .. Pipes add vertical space
 
@@ -39,11 +39,11 @@ board with NengoFPGA.
 PYNQ-Z1
 -------
 
-   .. image:: _static/pynq.png
-      :alt: PYNQ board
-      :width: 30%
-      :align: right
-      :target: https://store.digilentinc.com/pynq-z1-python-productivity-for-zynq-7000-arm-fpga-soc/
+.. image:: _static/pynq.png
+   :alt: PYNQ board
+   :width: 30%
+   :align: right
+   :target: https://store.digilentinc.com/pynq-z1-python-productivity-for-zynq-7000-arm-fpga-soc/
 
 |
 |
@@ -52,6 +52,29 @@ The PYNQ-Z1 board is manufactured by Digilent and uses a ZYNQ 7020 FPGA paired
 with a dual core ARM Cortex A9. The board is available for `purchase from
 Digilent
 <https://store.digilentinc.com/pynq-z1-python-productivity-for-zynq-7000-arm-fpga-soc/>`_.
+See the :std:doc:`NengoPYNQ documentation <nengo-pynq:index>` for how to use
+this board with NengoFPGA.
+
+|
+|
+
+
+PYNQ-Z2
+-------
+
+.. image:: _static/pynqz2.png
+   :alt: PYNQ board
+   :width: 30%
+   :align: right
+   :target: http://www.tul.com.tw/ProductsPYNQ-Z2.html
+
+|
+|
+
+The PYNQ-Z2 board is manufactured by TUL and uses a ZYNQ 7020 FPGA paired
+with a dual core ARM Cortex A9. The board is available for `purchase from
+TUL (or one of their international distributors)
+<http://www.tul.com.tw/ProductsPYNQ-Z2.html>`_.
 See the :std:doc:`NengoPYNQ documentation <nengo-pynq:index>` for how to use
 this board with NengoFPGA.
 

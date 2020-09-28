@@ -300,5 +300,5 @@ documentation:
 
 - :ref:`DE1-SoC feasible model size
   <nengo-de1:/appendix.rst#maximum-model-size>`
-- :ref:`PYNQ-Z1 feasible model size
+- :ref:`PYNQ-Z1 / Z2 feasible model size
   <nengo-pynq:/appendix.rst#maximum-model-size>`
