@@ -1,18 +1,18 @@
 """Tests for the FPGA network classes"""
 import os
 import socket
-import numpy as np
-import pytest
 
 import nengo
+import numpy as np
+import pytest
 from nengo.solvers import NoSolver
 
 from nengo_fpga import fpga_config
 from nengo_fpga.networks import FpgaPesEnsembleNetwork
 from nengo_fpga.networks.fpga_pes_ensemble_network import (
-    validate_net,
     extract_and_save_params,
     udp_comm_func,
+    validate_net,
 )
 
 
@@ -163,7 +163,7 @@ def test_init_default(config_contents, gen_configs, mocker):
     assert dummy_net.connection.pre == dummy_net.ensemble
     assert dummy_net.connection.post == dummy_net.output
     assert dummy_net.connection.function is None
-    assert dummy_net.connection.transform.init == nengo.Connection.transform.default
+    assert type(dummy_net.connection.transform) == nengo.transforms.NoTransform
     assert np.all(
         dummy_net.connection.eval_points == nengo.Connection.eval_points.default
     )

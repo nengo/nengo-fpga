@@ -3,6 +3,7 @@
 import atexit
 
 import nengo
+
 from .networks import FpgaPesEnsembleNetwork
 
 

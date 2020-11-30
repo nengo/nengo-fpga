@@ -1,14 +1,12 @@
 """Tests for the full nengo-fpga stack including all supported devices"""
 
-import pytest
-import numpy as np
-
 import nengo
+import numpy as np
+import pytest
 from nengo.solvers import NoSolver
 
 import nengo_fpga
 from nengo_fpga.networks import FpgaPesEnsembleNetwork
-
 
 # Mark all as fullstack, and add device parameter
 pytestmark = [pytest.mark.fullstack, pytest.mark.parametrize("device", ["pynq", "de1"])]

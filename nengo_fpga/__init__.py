@@ -11,11 +11,9 @@ in the `examples` directory of the source code repository.
 
 import nengo
 
-from . import utils
-from .simulator import Simulator
+from . import id_extractor, utils
 from .fpga_config import fpga_config
-from . import id_extractor
-
+from .simulator import Simulator
 from .version import version as __version__
 
 __copyright__ = "2013-2019, Applied Brain Research"

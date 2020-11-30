@@ -1,9 +1,9 @@
 """Tests for NengoFPGA Simulator"""
+import nengo
 import pytest
 
-import nengo
-from nengo_fpga.simulator import Simulator
 from nengo_fpga.networks import FpgaPesEnsembleNetwork
+from nengo_fpga.simulator import Simulator
 
 
 def test_init(mocker):

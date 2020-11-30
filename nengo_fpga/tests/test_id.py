@@ -1,11 +1,11 @@
 """Tests for the ID extraction process"""
 import os
 import socket
+
 import pytest
 
+from nengo_fpga import fpga_config, id_extractor
 from nengo_fpga.id_extractor import IDExtractor
-from nengo_fpga import id_extractor
-from nengo_fpga import fpga_config
 
 
 def test_script(mocker):

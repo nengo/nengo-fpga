@@ -5,7 +5,6 @@ import sys
 
 import nengo
 
-
 if sys.platform.startswith("win"):
     config_dir = os.path.expanduser(os.path.join("~", ".nengo"))
 else:

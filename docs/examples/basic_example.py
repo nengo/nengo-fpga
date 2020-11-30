@@ -1,10 +1,11 @@
 import argparse
 import logging
-import numpy as np
 
 import nengo
-from nengo_fpga.networks import FpgaPesEnsembleNetwork
+import numpy as np
+
 from nengo_fpga import Simulator
+from nengo_fpga.networks import FpgaPesEnsembleNetwork
 
 # This script demonstrates how to build a basic communication channel
 # using an adaptive neural ensemble implemented on the FPGA. The adaptive

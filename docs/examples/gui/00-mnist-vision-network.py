@@ -1,13 +1,14 @@
 import logging
-import numpy as np
+
 import nengo
+import numpy as np
+from nengo_extras.data import load_mnist
+from nengo_extras.gui import image_display_function
+from nengo_extras.vision import Gabor, Mask
 
 # Requires python image library: pip install pillow
 from PIL import Image
 
-from nengo_extras.data import load_mnist
-from nengo_extras.vision import Gabor, Mask
-from nengo_extras.gui import image_display_function
 from nengo_fpga.networks import FpgaPesEnsembleNetwork
 
 

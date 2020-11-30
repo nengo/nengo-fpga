@@ -112,7 +112,7 @@ To run this example in Nengo, from the |gui_dir| directory, run:
 .. note::
 
    On the first run of the MNIST example, the python code downloads the MNIST
-   data set from `<http://deeplearning.net/data/mnist/mnist.pkl.gz>`_ into the
+   data set from `<https://ndownloader.figshare.com/files/25635053>`_ into the
    |gui_dir| directory. The data set is approximately 16MB in size and may
    take a while to download (depending on the speed of your internet
    connection). Please do not interrupt the script while the download is
@@ -122,7 +122,7 @@ To run this example in Nengo, from the |gui_dir| directory, run:
    (``mnist.pkl.gz``) is corrupted, simply delete the ``mnist.pkl.gz`` file
    from the |gui_dir| directory and re-run the script. You may also download
    the data set directly from the link above and place it in the |gui_dir|
-   directory.
+   directory. Be sure to rename it ``mnist.pkl.gz`` if necessary.
 
 When the model is loaded into NengoGUI, you should see a graphical
 representation similar to the image below.

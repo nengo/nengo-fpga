@@ -1,9 +1,9 @@
 import logging
-import numpy as np
 
 import nengo
-from nengo_fpga.networks import FpgaPesEnsembleNetwork
+import numpy as np
 
+from nengo_fpga.networks import FpgaPesEnsembleNetwork
 
 # Set the nengo logging level to 'info' to display all of the information
 # coming back over the ssh connection.

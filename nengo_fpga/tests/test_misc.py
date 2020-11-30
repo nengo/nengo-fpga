@@ -1,8 +1,8 @@
 """Tests for some misc incidental functions"""
 from importlib import reload
 
-import pytest
 import nengo
+import pytest
 
 from nengo_fpga.utils import paths
 

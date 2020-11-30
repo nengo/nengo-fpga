@@ -1,10 +1,10 @@
 """Top level script for reading device ID"""
 
-import socket
+import argparse
 import os
+import socket
 import sys
 import threading
-import argparse
 
 import numpy as np
 import paramiko

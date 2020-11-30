@@ -21,16 +21,16 @@
 # isn't quite perfect at doing this).  Note that this means it cannot learn
 # to do actions that will lead to *future* rewards.
 
-import time
 import logging
-import numpy as np
+import time
 
 import nengo
-from nengo_fpga.networks import FpgaPesEnsembleNetwork
-
+import numpy as np
 from grid import Cell as GridCell
-from grid import World as GridWorld
 from grid import ContinuousAgent, GridNode
+from grid import World as GridWorld
+
+from nengo_fpga.networks import FpgaPesEnsembleNetwork
 
 # Note: Requires the "keyboard_state" branch of nengo_gui for full
 #       interactive functionality

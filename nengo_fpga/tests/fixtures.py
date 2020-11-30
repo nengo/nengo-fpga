@@ -1,15 +1,16 @@
 # pylint: disable=redefined-outer-name
 """Test fixtures used in the test suite"""
 import os
-import pytest
-import numpy as np
 
 import nengo
+import numpy as np
+import pytest
+
 import nengo_fpga
-from nengo_fpga.id_extractor import IDExtractor
 from nengo_fpga import fpga_config
-from nengo_fpga.simulator import Simulator
+from nengo_fpga.id_extractor import IDExtractor
 from nengo_fpga.networks import FpgaPesEnsembleNetwork
+from nengo_fpga.simulator import Simulator
 
 
 @pytest.fixture  # noqa: C901

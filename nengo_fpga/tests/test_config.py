@@ -1,15 +1,15 @@
 """Tests for fpga_config parser"""
 import os
 
-from nengo_fpga.utils import paths
 from nengo_fpga import fpga_config
 from nengo_fpga.fpga_config import _FPGA_CONFIG, fpga_config_files
+from nengo_fpga.utils import paths
 
 
 def test_load_hierarchy(mocker, gen_configs):
     """Ensure we load configs from the correct locations"""
 
-    # Set project dir to differentiate from systm dir (root package dir)
+    # Set project dir to differentiate from system dir (root package dir)
     tmp_dir = os.path.join(os.getcwd(), "tmp")
     mocker.patch.dict(
         paths.fpga_config, {"project": os.path.join(tmp_dir, "fpga_config")}

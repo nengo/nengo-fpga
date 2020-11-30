@@ -5,22 +5,21 @@
 - Feedback connection
 """
 
-import os
-import sys
-import time
-import socket
 import logging
+import os
+import socket
+import sys
 import threading
+import time
 from functools import partial
-import numpy as np
 
 import nengo
-from nengo.builder.signal import Signal
-from nengo.builder.operator import Reset, Copy, SimPyFunc
-
+import numpy as np
 import paramiko
-from nengo_fpga.fpga_config import fpga_config
+from nengo.builder.operator import Copy, Reset, SimPyFunc
+from nengo.builder.signal import Signal
 
+from nengo_fpga.fpga_config import fpga_config
 
 logger = logging.getLogger(__name__)
 

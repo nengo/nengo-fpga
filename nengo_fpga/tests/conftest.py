@@ -1,13 +1,14 @@
 # pylint: disable=W0611
 """Setup pytest environment to include fixtures"""
 import pytest
+
 from nengo_fpga.tests.fixtures import (
-    gen_configs,
     config_contents,
-    dummy_extractor,
-    dummy_sim,
-    dummy_net,
     dummy_com,
+    dummy_extractor,
+    dummy_net,
+    dummy_sim,
+    gen_configs,
     params,
 )
 

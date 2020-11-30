@@ -2,9 +2,9 @@
 
 """Read NengoFPGA config that describes available FPGA devices"""
 
+import configparser
 import logging
 
-import configparser
 import nengo_fpga.utils.paths
 
 logger = logging.getLogger(__name__)
