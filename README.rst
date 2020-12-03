@@ -1,4 +1,4 @@
-.. image:: ./docs/_static/full-light.svg
+.. image:: https://www.nengo.ai/design/_images/nengo-fpga-full-light.svg
   :target: https://www.nengo.ai/nengo-fpga
   :alt: NengoFPGA
   :width: 400px
