@@ -16,7 +16,7 @@ from .fpga_config import fpga_config
 from .simulator import Simulator
 from .version import version as __version__
 
-__copyright__ = "2013-2019, Applied Brain Research"
+__copyright__ = "2013-2021, Applied Brain Research"
 __license__ = "Free for non-commercial use; see LICENSE.rst"
 
 

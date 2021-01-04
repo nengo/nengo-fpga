@@ -77,7 +77,7 @@ user_agent = "nengo_fpga"
 
 project = "NengoFPGA"
 authors = "Applied Brain Research"
-copyright = "2018-2020 Applied Brain Research"
+copyright = "2018-2021 Applied Brain Research"
 version = ".".join(nengo_fpga.__version__.split(".")[:2])  # Short X.Y version
 release = nengo_fpga.__version__  # Full version, with tags
 
