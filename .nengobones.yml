@@ -83,7 +83,7 @@ ci_scripts:
   - template: remote-script
     remote_script: docs
     output_name: remote-docs
-    host: abrgl-ci
+    host: abrgl
     travis_var_key: 2895d60e3414
 
 codecov_yml: {}
