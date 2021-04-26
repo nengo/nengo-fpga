@@ -195,7 +195,7 @@ def test_output_dim(dummy_net, mocker):
 
 
 def test_data_filepath(dummy_net, mocker):
-    """ Test local_data_filepath property"""
+    """Test local_data_filepath property"""
 
     # Arbitrary file path
     path = "path"

@@ -228,7 +228,7 @@ class FpgaPesEnsembleNetwork(nengo.Network):
             self.objects[k] = tuple(v)
 
     def get_output_dim(self, function, dimensions):
-        """ Simplify init function by moving output shape calculation here"""
+        """Simplify init function by moving output shape calculation here"""
         if function is nengo.Default:
             self.output_dimensions = dimensions
         elif callable(function):
@@ -299,7 +299,7 @@ class FpgaPesEnsembleNetwork(nengo.Network):
             os.remove(self.local_data_filepath)
 
     def connect_ssh_client(self, ssh_user, remote_ip):
-        """ Helper function to parse config and setup ssh client"""
+        """Helper function to parse config and setup ssh client"""
 
         # Get the SSH options from the fpga_config file
         ssh_port = fpga_config.get(self.fpga_name, "ssh_port")

@@ -73,7 +73,7 @@ class IDExtractor:
             self.tcp_recv.close()
 
     def connect_ssh_client(self, ssh_user, remote_ip):
-        """ Helper function to parse config and setup ssh client"""
+        """Helper function to parse config and setup ssh client"""
 
         # Get the SSH options from the fpga_config file
         ssh_port = fpga_config.get(self.fpga_name, "ssh_port")
