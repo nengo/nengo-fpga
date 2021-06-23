@@ -1,10 +1,7 @@
-{% extends "templates/remote.sh.template" %}
+{% extends "templates/remote-script.sh.template" %}
 
 {% block remote_install %}
 {{ super() }}
-        pip install git+https://github.com/nengo/nengo-bones#egg=nengo-bones
-        bones-generate --output-dir .ci ci-scripts || REMOTE_STATUS=1
-        bash .ci/{{ remote_script }}.sh install || REMOTE_STATUS=1
 
         FPGA_CONFIG="\$HOME/fpga_config"
 
@@ -18,22 +15,12 @@
 
 {% endblock %}
 
-{% block remote_script %}
-{{ super() }}
-        export TRAVIS_JOB_NUMBER="$TRAVIS_JOB_NUMBER"
-        export TRAVIS_BRANCH="$TRAVIS_BRANCH"
-        export TRAVIS_TAG="$TRAVIS_TAG"
-        export TEST_ARGS="$TEST_ARGS"
-
-        bash .ci/{{ remote_script }}.sh script || REMOTE_STATUS=1
-{% endblock %}
-
 {% block after_script %}
-    {% if remote_script == "docs" %}
+    # TODO: Remove this block when incorporated into NengoBones
+    {% if remote_script.endswith("docs") %}
     REMOTE_FAILED_FILE="tmp/nengo-fpga-$TRAVIS_JOB_NUMBER/{{ pkg }}/$TRAVIS_JOB_NUMBER.failed"
     ssh -q {{ host }} [[ -e "$REMOTE_FAILED_FILE" ]] && exe scp {{ host }}:"$REMOTE_FAILED_FILE" .
     exe rsync -azh "{{ host }}:./tmp/{{ pkg }}-$TRAVIS_JOB_NUMBER/{{ pkg }}-docs" ..
     {% endif %}
-    exe bash .ci/{{ remote_script }}.sh after_script
 {{ super() }}
 {% endblock %}

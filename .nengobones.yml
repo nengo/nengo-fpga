@@ -80,10 +80,18 @@ ci_scripts:
     pip_install:
       - numpy>=1.13.0,<1.17
       - matplotlib
+  - template: slurm-script
+    slurm_command: "srun -pCI"
+    wrapped_commands:
+      - sphinx-build
+    slurm_script: docs
+    output_name: slurm-docs
   - template: remote-script
-    remote_script: docs
+    remote_script: slurm-docs
+    remote_setup:
+      - conda install -y pandoc ffmpeg
     output_name: remote-docs
-    host: abrgl
+    host: abrghost
     travis_var_key: 2895d60e3414
 
 codecov_yml: {}

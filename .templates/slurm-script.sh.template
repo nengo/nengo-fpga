@@ -1,0 +1,76 @@
+{% extends "templates/base_script.sh.template" %}
+
+{#
+
+Usage Instructions
+==================
+
+This script is intended to be used to apply a SLURM wrapper around other NengoBones
+generated CI scripts.
+
+.nengobones.yml parameters:
+
+`slurm_command`: The SLURM command used to create the SLURM job. Use quotations to avoid
+problems with the space character. Examples:
+    - "srun"
+    - "srun -pCI -G1"
+    - "sbatch"
+
+`wrapped_commands`: A list of commands to be wrapped with `slurm_command`. The command
+will be executed as: <slurm_command> <command>
+Example, if <slurm_command> is "srun -pCI", and <command> is "pytest", then the command
+will be executed as "srun -pCI pytest"
+
+`slurm_script`: The CI script to be executed, but using the SLURM-wrapped commands
+instead of the typical non-SLURM invocation.
+
+`output_name`: Desired output name of the generated CI script.
+
+#}
+
+{% block install %}
+    bash .ci/{{ slurm_script }}.sh install || STATUS=1
+{% endblock %}
+
+{% block before_script %}
+    bash .ci/{{ slurm_script }}.sh before_script || STATUS=1
+{% endblock %}
+
+{% block script %}
+    # Enable `expand_aliases` option for bash interpreter
+    shopt -s expand_aliases
+
+    # Create aliases for commands to include SLURM command prefix
+    {% for command in wrapped_commands %}
+    alias {{ command }}="{{ slurm_command }} {{ command }}"
+    echo "Created alias for {{ command }}: "
+    type -a {{ command }}
+
+    {% endfor %}
+    # Run script. Use existing shell instead of subshell to ensure alias applies.
+    . .ci/{{ slurm_script }}.sh script || STATUS=1
+{% endblock %}
+
+{% block before_cache %}
+    bash .ci/{{ slurm_script }}.sh before_cache || STATUS=1
+{% endblock %}
+
+{% block after_success %}
+    bash .ci/{{ slurm_script }}.sh after_success || STATUS=1
+{% endblock %}
+
+{% block after_failure %}
+    bash .ci/{{ slurm_script }}.sh after_failure || STATUS=1
+{% endblock %}
+
+{% block before_deploy %}
+    bash .ci/{{ slurm_script }}.sh before_deploy || STATUS=1
+{% endblock %}
+
+{% block after_deploy %}
+    bash .ci/{{ slurm_script }}.sh after_deploy || STATUS=1
+{% endblock %}
+
+{% block after_script %}
+    bash .ci/{{ slurm_script }}.sh after_script || STATUS=1
+{% endblock %}
