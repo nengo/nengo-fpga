@@ -50,7 +50,7 @@ def gen_configs(request):
                 os.rename(fname, fname + ".bak")
 
             # Write config file
-            with open(fname, "w") as f:
+            with open(fname, "w", encoding="ascii") as f:
                 self.configs.append(fname)
                 for sec, content in contents.items():
                     f.write("[{}]\n".format(sec))

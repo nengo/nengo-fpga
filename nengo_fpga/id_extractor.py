@@ -276,7 +276,7 @@ def main(fpga_name):
 
     id_str = "Found board ID: 0x%0.16X" % fpga.id_int
 
-    with open(filename, "w") as file:
+    with open(filename, "w", encoding="ascii") as file:
         file.write(id_str)
     fpga.cleanup()
     print(id_str)
