@@ -28,7 +28,7 @@ class _FPGA_CONFIG(configparser.ConfigParser):
 
     def read(self, filenames):
         """Read config file"""
-        logger.info("Reading FPGA configurations from {}".format(filenames))
+        logger.info("Reading FPGA configurations from %s", filenames)
         return configparser.ConfigParser.read(self, filenames)
 
     def item_dict(self, section):

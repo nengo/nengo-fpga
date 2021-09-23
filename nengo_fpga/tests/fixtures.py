@@ -53,9 +53,9 @@ def gen_configs(request):
             with open(fname, "w", encoding="ascii") as f:
                 self.configs.append(fname)
                 for sec, content in contents.items():
-                    f.write("[{}]\n".format(sec))
+                    f.write(f"[{sec}]\n")
                     for k, v in content.items():
-                        f.write("{} = {}\n".format(k, v))
+                        f.write(f"{k} = {v}\n")
                     f.write("\n")
 
         def cleanup(self):

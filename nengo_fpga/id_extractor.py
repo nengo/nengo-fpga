@@ -125,13 +125,13 @@ class IDExtractor:
         #         the ssh user to run sudo commands WITHOUT needing a password
         #         (see specific fpga hardware docs for details)
         if ssh_user != "root":
-            print("<%s> Script to be run with sudo. Sudoing." % remote_ip, flush=True)
+            print(f"<{remote_ip}> Script to be run with sudo. Sudoing.", flush=True)
             ssh_channel.send("sudo su\n")
 
         # Send required ssh string
         print(
-            "<%s> Sending cmd to fpga board: \n%s"
-            % (fpga_config.get(self.fpga_name, "ip"), self.ssh_string),
+            f"<{fpga_config.get(self.fpga_name, 'ip')}> Sending cmd to fpga board: \n"
+            f"{self.ssh_string}",
             flush=True,
         )
         ssh_channel.send(self.ssh_string)
@@ -163,14 +163,14 @@ class IDExtractor:
             if got_error == 2:
                 ssh_channel.close()
                 raise RuntimeError(
-                    "Received the following error on the remote side <%s>:\n%s"
-                    % (remote_ip, "\n".join(error_strs))
+                    f"Received the following error on the remote side <{remote_ip}>:\n"
+                    + "\n".join(error_strs)
                 )
 
     def connect(self):
         """Connect to device via SSH"""
         print(
-            "<%s> Open SSH connection" % fpga_config.get(self.fpga_name, "ip"),
+            f"<{fpga_config.get(self.fpga_name, 'ip')}> Open SSH connection",
             flush=True,
         )
         # Start a new thread to open the ssh connection. Use a thread to
@@ -195,11 +195,11 @@ class IDExtractor:
         """Process info from ssh and check for errors"""
 
         if info_str.startswith("Killed"):
-            print("<%s> ENCOUNTERED ERROR!" % remote_ip, flush=True)
+            print(f"<{remote_ip}> ENCOUNTERED ERROR!", flush=True)
             got_error = 2
 
         if info_str.startswith("Traceback"):
-            print("<%s> ENCOUNTERED ERROR!" % remote_ip, flush=True)
+            print(f"<{remote_ip}> ENCOUNTERED ERROR!", flush=True)
             got_error = 1
         elif got_error > 0 and info_str[0] != " ":
             # Error string is no longer tabbed, so the actual error
@@ -211,7 +211,7 @@ class IDExtractor:
             # messages until the termination condition (above)
             error_strs.append(info_str)
         else:
-            print("<%s> %s" % (remote_ip, info_str), flush=True)
+            print(f"<{remote_ip}> {info_str}", flush=True)
 
         return got_error, error_strs
 
@@ -227,8 +227,8 @@ class IDExtractor:
             ssh_str = (
                 "python "
                 + fpga_config.get(self.fpga_name, "id_script")
-                + ' --host_ip="%s"' % fpga_config.get("host", "ip")
-                + " --tcp_port=%i" % self.tcp_port
+                + f" --host_ip=\"{fpga_config.get('host', 'ip')}\""
+                + f" --tcp_port={self.tcp_port}"
                 + "\n"
             )
         return ssh_str
@@ -245,18 +245,18 @@ class IDExtractor:
             except socket.timeout as e:
                 connect_attempts += 1
                 if connect_attempts >= self.max_attempts:
-                    e.args = (
-                        "ERROR: Could not connect to %s"
+                    self.cleanup()
+                    raise RuntimeError(
+                        f"Could not connect to {self.fpga_name}"
                         ", please ensure you have the correct"
                         " FPGA configuration or increase the"
-                        " number of connection attempts." % self.fpga_name,
-                    )
-                    self.cleanup()
-                    raise
+                        " number of connection attempts."
+                    ) from e
                 else:
                     print(
-                        "WARNING: Could not connect to %s for %0.1fs,"
-                        " trying again..." % (self.fpga_name, self.timeout),
+                        f"WARNING: Could not connect to {self.fpga_name} for "
+                        f"{self.timeout:.1f}s,"
+                        " trying again...",
                         flush=True,
                     )
 
@@ -274,13 +274,13 @@ def main(fpga_name):
     fpga.connect()
     fpga.recv_id()
 
-    id_str = "Found board ID: 0x%0.16X" % fpga.id_int
+    id_str = f"Found board ID: {fpga.id_int:#016X}"
 
     with open(filename, "w", encoding="ascii") as file:
         file.write(id_str)
     fpga.cleanup()
     print(id_str)
-    print("Written to file %s" % filename)
+    print(f"Written to file {filename}")
 
 
 def run():

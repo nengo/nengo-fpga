@@ -385,9 +385,7 @@ def test_connect_thread_func(dummy_net, dummy_com, config_contents, mocker):
     )
     ssh_put_mock.assert_called_once_with(
         dummy_net.local_data_filepath,
-        "{}/{}".format(
-            config_contents["test-fpga"]["remote_tmp"], dummy_net.arg_data_file
-        ),
+        f"{config_contents['test-fpga']['remote_tmp']}/{dummy_net.arg_data_file}",
     )
     ssh_close_mock.assert_called_once()
     chan_send_mock.assert_has_calls(
@@ -610,14 +608,15 @@ def test_ssh_string(dummy_net, config_contents):
     assert args[0] == "python"
     assert args[1] == config_contents["test-fpga"]["remote_script"]
     assert args[2].split("=")[0] == "--host_ip"
-    assert args[2].split("=")[1] == "'{}'".format(config_contents["host"]["ip"])
+    assert args[2].split("=")[1] == f"'{config_contents['host']['ip']}'"
     assert args[3].split("=")[0] == "--remote_ip"
-    assert args[3].split("=")[1] == "'{}'".format(config_contents["test-fpga"]["ip"])
+    assert args[3].split("=")[1] == f"'{config_contents['test-fpga']['ip']}'"
     assert args[4].split("=")[0] == "--udp_port"
-    assert args[4].split("=")[1] == "{}".format(dummy_net.udp_port)
+    assert args[4].split("=")[1] == f"{dummy_net.udp_port}"
     assert args[5].split("=")[0] == "--arg_data_file"
-    assert args[5].split("=")[1] == "'{}/{}'\n".format(
-        config_contents["test-fpga"]["remote_tmp"], arg_fname
+    assert (
+        args[5].split("=")[1]
+        == f"'{config_contents['test-fpga']['remote_tmp']}/{arg_fname}'\n"
     )
 
     # Test default case

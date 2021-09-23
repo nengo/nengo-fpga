@@ -10,7 +10,6 @@ name = "nengo-fpga"
 version_info = (0, 2, 3)  # (major, minor, patch)
 dev = 0
 
-version = "{v}{dev}".format(
-    v=".".join(str(v) for v in version_info),
-    dev=(".dev%d" % dev) if dev is not None else "",
+version = f"{'.'.join(str(v) for v in version_info)}" + (
+    f".dev{dev}" if dev is not None else ""
 )

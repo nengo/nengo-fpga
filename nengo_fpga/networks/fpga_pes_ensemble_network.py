@@ -183,7 +183,7 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         else:
             # FPGA name not found, throw a warning.
             logger.warning("Specified FPGA configuration '%s' not found.", fpga_name)
-            print("WARNING: Specified FPGA configuration '%s' not found." % fpga_name)
+            print(f"WARNING: Specified FPGA configuration '{fpga_name}' not found.")
 
         # Make nengo model. Here, a dummy ensemble is created. It will be
         # replaced with a udp_socket in the builder function (see below).
@@ -347,9 +347,8 @@ class FpgaPesEnsembleNetwork(nengo.Network):
         self.connect_ssh_client(ssh_user, remote_ip)
 
         # Send argument file over
-        remote_data_filepath = "%s/%s" % (
-            fpga_config.get(self.fpga_name, "remote_tmp"),
-            self.arg_data_file,
+        remote_data_filepath = (
+            f"{fpga_config.get(self.fpga_name, 'remote_tmp')}/{self.arg_data_file}"
         )
 
         if os.path.exists(self.local_data_filepath):
@@ -419,8 +418,8 @@ class FpgaPesEnsembleNetwork(nengo.Network):
                 # terminates
                 self.close()
                 raise RuntimeError(
-                    "Received the following error on the remote side <%s>:\n%s"
-                    % (remote_ip, "\n".join(error_strs))
+                    f"Received the following error on the remote side <{remote_ip}>:\n"
+                    + "\n".join(error_strs)
                 )
         logger.info("Terminating SSH thread")
 
@@ -493,8 +492,8 @@ class FpgaPesEnsembleNetwork(nengo.Network):
             # I.e., no connection has been received within the timeout limit.
             self.close()
             raise RuntimeError(
-                "Did not receive connection from board within "
-                + "specified timeout (%fs)." % self.connect_timeout
+                f"Did not receive connection from board within "
+                f"specified timeout ({self.connect_timeout}s)."
             )
 
         if self.recv_buffer[0] < 0.0:
@@ -573,11 +572,11 @@ class FpgaPesEnsembleNetwork(nengo.Network):
             ssh_str = (
                 "python "
                 + fpga_config.get(self.fpga_name, "remote_script")
-                + " --host_ip='%s'" % fpga_config.get("host", "ip")
-                + " --remote_ip='%s'" % fpga_config.get(self.fpga_name, "ip")
-                + " --udp_port=%i" % self.udp_port
-                + " --arg_data_file='%s/%s'"
-                % (fpga_config.get(self.fpga_name, "remote_tmp"), self.arg_data_file)
+                + f" --host_ip='{fpga_config.get('host', 'ip')}'"
+                + f" --remote_ip='{fpga_config.get(self.fpga_name, 'ip')}'"
+                + f" --udp_port={self.udp_port}"
+                + f" --arg_data_file='{fpga_config.get(self.fpga_name, 'remote_tmp')}"
+                + f"/{self.arg_data_file}'"
                 + "\n"
             )
         return ssh_str
@@ -600,7 +599,7 @@ def validate_net(network):
     # Check neuron type
     if type(network.ensemble.neuron_type) not in network.neuron_str_map:
         raise nengo.exceptions.BuildError(
-            "Neuron type '%s' is not supported." % type(network.ensemble.neuron_type)
+            f"Neuron type '{type(network.ensemble.neuron_type)}' is not supported."
         )
 
     # Check learning
@@ -610,8 +609,8 @@ def validate_net(network):
         l_rate = network.connection.learning_rule_type.learning_rate
     else:
         raise nengo.exceptions.BuildError(
-            "Learning rule '%s' is not supported."
-            % type(network.connection.learning_rule_type)
+            f"Learning rule '{type(network.connection.learning_rule_type)}' is not "
+            f"supported."
         )
 
     # Check Feedback (params not set here)

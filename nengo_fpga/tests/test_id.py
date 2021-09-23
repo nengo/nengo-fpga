@@ -301,9 +301,9 @@ def test_ssh_string(dummy_extractor, config_contents):
     assert args[0] == "python"
     assert args[1] == config_contents["test-fpga"]["id_script"]
     assert args[2].split("=")[0] == "--host_ip"
-    assert args[2].split("=")[1] == '"{}"'.format(config_contents["host"]["ip"])
+    assert args[2].split("=")[1] == f"\"{config_contents['host']['ip']}\""
     assert args[3].split("=")[0] == "--tcp_port"
-    assert args[3].split("=")[1] == "{}\n".format(dummy_extractor.tcp_port)
+    assert args[3].split("=")[1] == f"{dummy_extractor.tcp_port}\n"
 
     # Test default case
     dummy_extractor.config_found = False
