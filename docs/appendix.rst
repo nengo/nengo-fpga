@@ -8,7 +8,7 @@ Supported Hardware
 ==================
 
 IP packages can be purchased through `Applied Brain Research
-<https://store.appliedbrainresearch.com/collections/nengo-fpga>`_.
+<https://www.appliedbrainresearch.com/store>`_.
 
 
 DE1-SoC

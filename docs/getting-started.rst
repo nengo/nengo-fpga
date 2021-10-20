@@ -8,7 +8,7 @@ Things You Need
 - :std:doc:`Nengo <nengo:getting-started>`
 - A :ref:`supported FPGA board <supported-hardware>`
 - A NengoFPGA Licence (available from `Applied Brain Research
-  <https://store.appliedbrainresearch.com/collections/nengo-fpga>`_)
+  <https://www.appliedbrainresearch.com/store>`_)
 - (Optional) `NengoGUI <https://github.com/nengo/nengo-gui>`_
 
 .. _quick-guide:
@@ -265,8 +265,12 @@ Bitstreams
 Compiled FPGA designs are binary files that configure the hardware, literally
 strings of bits, so compiled designs are often called *bitstreams*. When getting
 started or updating you NengoFPGA system, you will need to get bitstreams for
-your device.
+your device. The NengoFPGA bitstreams are tailored to your specific device.
 
+A NengoFPGA license (available from the `Applied Brain Research store
+<https://www.appliedbrainresearch.com/store>`_) is required to obtain a NengoFPGA
+bitstream. After purchasing the appropriate device-specific license, follow the
+instructions below to obtain your tailored bitstream.
 
 .. _get-bitstreams:
 
@@ -278,6 +282,8 @@ If you haven't already, you will need to :ref:`get your Device ID <device-id>`.
 To receive your tailored bitstreams, please send us an email at
 `support@appliedbrainresearch.com`_ with the following information:
 
+- The email address tied to your NengoFPGA license. Typically this is the email address
+  provided at the store checkout.
 - Your Device ID. Either the hex string itself or attach the ``id_<board>.txt``
   file to the email.
 - Which :ref:`supported hardware device <supported-hardware>` is associated with
