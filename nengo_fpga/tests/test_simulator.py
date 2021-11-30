@@ -17,7 +17,7 @@ def test_init(mocker):
     dt = 1  # Check kwargs are passed through
     sim = Simulator(nengo_net, dt=dt)
 
-    assert sim.fpga_networks_list == []
+    assert not sim.fpga_networks_list
     super_mock.assert_called_once_with(nengo_net, dt=dt)
     super_mock.reset_mock()
 

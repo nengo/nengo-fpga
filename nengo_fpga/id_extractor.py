@@ -274,7 +274,7 @@ def main(fpga_name):
     fpga.connect()
     fpga.recv_id()
 
-    id_str = f"Found board ID: {fpga.id_int:#016X}"
+    id_str = f"Found board ID: {fpga.id_int:#018X}"
 
     with open(filename, "w", encoding="ascii") as file:
         file.write(id_str)
