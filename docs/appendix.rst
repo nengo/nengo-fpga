@@ -66,7 +66,7 @@ PYNQ-Z2
    :alt: PYNQ board
    :width: 30%
    :align: right
-   :target: http://www.tul.com.tw/ProductsPYNQ-Z2.html
+   :target: https://www.tulembedded.com/FPGA/ProductsPYNQ-Z2.html
 
 |
 |
@@ -74,7 +74,7 @@ PYNQ-Z2
 The PYNQ-Z2 board is manufactured by TUL and uses a ZYNQ 7020 FPGA paired
 with a dual core ARM Cortex A9. The board is available for `purchase from
 TUL (or one of their international distributors)
-<http://www.tul.com.tw/ProductsPYNQ-Z2.html>`_.
+<https://www.tulembedded.com/FPGA/ProductsPYNQ-Z2.html>`_.
 See the :std:doc:`NengoPYNQ documentation <nengo-pynq:index>` for how to use
 this board with NengoFPGA.
 
