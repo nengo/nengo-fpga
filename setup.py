@@ -80,4 +80,7 @@ setup(
             "fpga = nengo_fpga:Simulator",
         ],
     },
+    classifiers=[
+        "License :: Free for non-commercial use",
+    ],
 )
