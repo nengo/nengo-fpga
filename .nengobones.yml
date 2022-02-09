@@ -22,7 +22,7 @@ setup_py:
       - fpga = nengo_fpga:Simulator
   install_req:
     - nengo>=3.0.0
-    - numpy>=1.13.0,<1.17
+    - numpy>=1.13.0
     - paramiko>=2.4.1
   docs_req:
     - sphinx>=1.8
@@ -78,7 +78,7 @@ ci_scripts:
     coverage: true
   - template: docs
     pip_install:
-      - numpy>=1.13.0,<1.17
+      - numpy>=1.13.0
       - matplotlib
   - template: slurm-script
     slurm_command: "srun -pCI"

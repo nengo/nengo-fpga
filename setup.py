@@ -31,7 +31,7 @@ version = runpy.run_path(str(root / "nengo_fpga" / "version.py"))["version"]
 
 install_req = [
     "nengo>=3.0.0",
-    "numpy>=1.13.0,<1.17",
+    "numpy>=1.13.0",
     "paramiko>=2.4.1",
 ]
 docs_req = [
@@ -58,7 +58,7 @@ setup(
     packages=find_packages(),
     url="https://www.nengo.ai/nengo-fpga",
     include_package_data=False,
-    license="Free for non-commercial use",
+    license="Proprietary",
     description="FPGA backend for Nengo",
     long_description=read("README.rst", "CHANGES.rst"),
     zip_safe=False,
@@ -81,6 +81,6 @@ setup(
         ],
     },
     classifiers=[
-        "License :: Free for non-commercial use",
+        "License :: Other/Proprietary License",
     ],
 )

@@ -1,3 +1,3 @@
 """Provides utility functions and path information"""
 
-from . import paths
+from . import fileio, paths

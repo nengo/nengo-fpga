@@ -20,6 +20,7 @@ from nengo.builder.operator import Copy, Reset, SimPyFunc
 from nengo.builder.signal import Signal
 
 from nengo_fpga.fpga_config import fpga_config
+from nengo_fpga.utils.fileio import write_array
 
 logger = logging.getLogger(__name__)
 
@@ -668,6 +669,11 @@ def extract_and_save_params(model, network):
     # Save the NPZ data file
     npz_filename = "fpen_args_" + str(id(network)) + ".npz"
     network.arg_data_file = npz_filename
+
+    # Monkey patch NumPy's write_array function to override pickle protocol from 3 to 2
+    numpy_writearray = np.lib.format.write_array
+    np.lib.format.write_array = write_array
+
     np.savez_compressed(
         network.local_data_filepath,
         sim_args=sim_args,
@@ -675,6 +681,9 @@ def extract_and_save_params(model, network):
         conn_args=conn_args,
         recur_args=recur_args,
     )
+
+    # Undo monkey patch
+    np.lib.format.write_array = numpy_writearray
 
 
 def udp_comm_func(t, x, net, dt):
