@@ -6,7 +6,26 @@ NengoFPGA license
 
 Copyright (c) 2018-2022 Applied Brain Research
 
-All rights reserved. Contact sales@appliedbrainresearch.com for licensing.
+**ABR License**
+
+NengoFPGA is made available under a proprietary license, the
+"ABR TECHNOLOGY LICENSE AND USE AGREEMENT" (the "ABR License").
+The main ABR License file is available for download at
+`<https://www.appliedbrainresearch.com/license>`_.
+The entire contents of this ``LICENSE.rst`` file, including any
+terms and conditions herein, form part of the ABR License.
+
+Commercial Use Licenses are available to purchase for a yearly fee.
+Academic and Personal Use Licenses for NengoFPGA are available at
+a reduced cost.
+Both types of licences can be obtained from the
+ABR store at `<https://www.appliedbrainresearch.com/store>`_.
+
+If you have any sales questions,
+please contact `<sales@appliedbrainresearch.com>`_.
+If you have any technical support questions, please post them on the ABR
+community forums at `<https://forum.nengo.ai/>`_ or contact
+`<support@appliedbrainresearch.com>`_.
 
 This license pertains only to the NengoFPGA interface software. License information
 for the supported hardware implementations can be found at their respective license

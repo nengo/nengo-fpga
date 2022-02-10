@@ -4,6 +4,7 @@ repo_name: nengo/nengo-fpga
 
 description: FPGA backend for Nengo
 copyright_start: 2018
+license: abr-nonfree
 
 license_rst: {}
 
