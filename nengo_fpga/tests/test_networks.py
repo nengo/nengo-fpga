@@ -79,6 +79,7 @@ def test_init(config_contents, gen_configs, mocker):
     assert dummy_net.connection.pre == dummy_net.ensemble
     assert dummy_net.connection.post == dummy_net.output
     assert dummy_net.connection.function == test_func
+    assert dummy_net.connection.synapse is None
     assert np.all(dummy_net.connection.transform.init == transform)
     assert np.all(dummy_net.connection.eval_points == eval_points)
 
