@@ -209,6 +209,7 @@ class FpgaPesEnsembleNetwork(nengo.Network):
                 transform=transform,
                 eval_points=eval_points,
                 learning_rule_type=nengo.PES(learning_rate),
+                synapse=None,
             )
 
             nengo.Connection(self.error, self.connection.learning_rule, synapse=None)
