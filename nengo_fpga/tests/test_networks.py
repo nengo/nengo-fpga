@@ -1,4 +1,4 @@
-"""Tests for the FPGA network classes"""
+"""Tests for the FPGA network classes."""
 import os
 import socket
 
@@ -17,7 +17,7 @@ from nengo_fpga.networks.fpga_pes_ensemble_network import (
 
 
 def test_init(config_contents, gen_configs, mocker):
-    """Test the FPGA network's init function"""
+    """Test the FPGA network's init function."""
 
     # Create a dummy config for testing
     fname = os.path.join(os.getcwd(), "test-config")
@@ -42,7 +42,7 @@ def test_init(config_contents, gen_configs, mocker):
     seed = 5
 
     def test_func(x):
-        """Dummy function to test output dim"""
+        """Dummy function to test output dim."""
         return [0] * dims_out
 
     dummy_net = FpgaPesEnsembleNetwork(
@@ -118,7 +118,7 @@ def test_init(config_contents, gen_configs, mocker):
 
 
 def test_init_default(config_contents, gen_configs, mocker):
-    """Test the FPGA network's init function"""
+    """Test the FPGA network's init function."""
 
     # Create a dummy config for testing
     fname = os.path.join(os.getcwd(), "test-config")
@@ -173,7 +173,7 @@ def test_init_default(config_contents, gen_configs, mocker):
 
 
 def test_output_dim(dummy_net, mocker):
-    """Test we correctly interpret output dimensionality"""
+    """Test we correctly interpret output dimensionality."""
 
     # Test default output function
     default_dim = 1
@@ -196,7 +196,7 @@ def test_output_dim(dummy_net, mocker):
 
 
 def test_data_filepath(dummy_net, mocker):
-    """Test local_data_filepath property"""
+    """Test local_data_filepath property."""
 
     # Arbitrary file path
     path = "path"
@@ -209,7 +209,7 @@ def test_data_filepath(dummy_net, mocker):
 
 
 def test_terminate_client(dummy_net, dummy_com, config_contents, mocker):
-    """Test the FPGA network's terminate_client function"""
+    """Test the FPGA network's terminate_client function."""
 
     # The udp socket isn't defined in init, so make a dummy one here
     dummy_net.udp_socket = dummy_com()
@@ -225,7 +225,7 @@ def test_terminate_client(dummy_net, dummy_com, config_contents, mocker):
 
 
 def test_close(dummy_net, dummy_com, mocker):
-    """Test the FPGA network's close function"""
+    """Test the FPGA network's close function."""
 
     # Mock out cleanup functions
     terminate_mock = mocker.patch.object(dummy_net, "terminate_client")
@@ -269,7 +269,7 @@ def test_close(dummy_net, dummy_com, mocker):
 
 
 def test_cleanup(dummy_net, mocker):
-    """Test the FPGA network's cleanup function"""
+    """Test the FPGA network's cleanup function."""
 
     # Don't actually touch files
     isfile_mock = mocker.patch("os.path.isfile", return_value=True)
@@ -296,7 +296,8 @@ def test_cleanup(dummy_net, mocker):
 def test_connect_ssh_client(
     ssh_method, dummy_net, config_contents, gen_configs, mocker
 ):
-    """Test the FPGA networks connect_ssh_client function
+    """
+    Test the FPGA networks connect_ssh_client function.
 
     Almost identical to test in "test_id"
     """
@@ -337,7 +338,8 @@ def test_connect_ssh_client(
 
 
 def test_connect_thread_func(dummy_net, dummy_com, config_contents, mocker):
-    """Test the FPGA network's connect_thread_func
+    """
+    Test the FPGA network's connect_thread_func.
 
     Similar to the test in "test_id"
     """
@@ -411,7 +413,7 @@ def test_connect_thread_func(dummy_net, dummy_com, config_contents, mocker):
 
 
 def test_connect(dummy_net, mocker):
-    """Test the FPGA network's connect function"""
+    """Test the FPGA network's connect function."""
 
     # Test no config condition returns immediately
     dummy_net.config_found = False
@@ -454,7 +456,7 @@ def test_connect(dummy_net, mocker):
     dummy_net.recv_buffer = np.zeros(1)  # Init buffer
 
     def recv_func_kill(data):
-        """Dummy recv_into function to update recv buffer"""
+        """Dummy recv_into function to update recv buffer."""
         data[0] = -1  # Return -1 kill signal
 
     recv_mock.side_effect = recv_func_kill
@@ -470,7 +472,7 @@ def test_connect(dummy_net, mocker):
 
     # Test receive -11 unavailable resource lock signal
     def recv_func_lock(data):
-        """Dummy recv_into function to update recv buffer"""
+        """Dummy recv_into function to update recv buffer."""
         data[0] = -11  # Return -1 kill signal
 
     recv_mock.side_effect = recv_func_lock
@@ -486,7 +488,7 @@ def test_connect(dummy_net, mocker):
 
     # Test receive -21 driver failure signal
     def recv_func_driver(data):
-        """Dummy recv_into function to update recv buffer"""
+        """Dummy recv_into function to update recv buffer."""
         data[0] = -21  # Return -1 kill signal
 
     recv_mock.side_effect = recv_func_driver
@@ -502,7 +504,7 @@ def test_connect(dummy_net, mocker):
 
     # Test normal working condition
     def recv_func_normal(data):
-        """Dummy recv_into function to update recv buffer"""
+        """Dummy recv_into function to update recv buffer."""
         data[0] = 0  # Return valid data
 
     recv_mock.side_effect = recv_func_normal
@@ -513,7 +515,8 @@ def test_connect(dummy_net, mocker):
 
 
 def test_process_ssh_output(dummy_net):
-    """Test the IDExtractor's process_ssh_output
+    """
+    Test the IDExtractor's process_ssh_output.
 
     Almost identical to test in "test_id"
     """
@@ -529,7 +532,8 @@ def test_process_ssh_output(dummy_net):
 
 
 def test_check_ssh_str(dummy_net):
-    """Test remote string processing
+    """
+    Test remote string processing.
 
     Almost identical to test in "test_id"
     """
@@ -571,7 +575,7 @@ def test_check_ssh_str(dummy_net):
 
 
 def test_reset(dummy_net, mocker):
-    """Test the FPGA network's reset function"""
+    """Test the FPGA network's reset function."""
 
     # Mock out some class functions
     close_mock = mocker.patch.object(dummy_net, "close")
@@ -593,7 +597,8 @@ def test_reset(dummy_net, mocker):
 
 
 def test_ssh_string(dummy_net, config_contents):
-    """Test we have the correct arguments in the string command
+    """
+    Test we have the correct arguments in the string command.
 
     Almost identical to test in "test_id"
     """
@@ -626,7 +631,7 @@ def test_ssh_string(dummy_net, config_contents):
 
 
 def test_validate_net(dummy_net):
-    """Test validation of FPGA networks"""
+    """Test validation of FPGA networks."""
 
     # Test unsupported (must be valid nengo neuron or we get ValidationErrors)
     dummy_net.ensemble.neuron_type = nengo.LIF()
@@ -656,10 +661,11 @@ def test_validate_net(dummy_net):
 
     # Test invalid learning rule
     class DummyRule(nengo.learning_rules.LearningRuleType):
-        """Dummy learning rule
+        """
+        Dummy learning rule.
 
-        Can't use BCM or Oja since they use neuron connections
-        Can't use Voja since it needs a post ensemble and we have a node
+        Can't use BCM or Oja since they use neuron connections Can't use Voja
+        since it needs a post ensemble and we have a node
         """
 
         modifies = "decoders"
@@ -699,11 +705,11 @@ def test_validate_net(dummy_net):
 
 
 def test_save_params(config_contents, gen_configs, mocker):
-    """Test saving params to file"""
+    """Test saving params to file."""
 
     # Create a dummy model object (we only need dt)
     class DummyModel:
-        """Dummy model object to provide dt"""
+        """Dummy model object to provide dt."""
 
         def __init__(self, dt):
             self.dt = dt
@@ -795,7 +801,7 @@ def test_save_params(config_contents, gen_configs, mocker):
 
 
 def test_udp_comm_func(dummy_net, dummy_com, mocker):
-    """Test SimPyFunc udp implementation"""
+    """Test SimPyFunc udp implementation."""
 
     # Don't use sockets
     dummy_net.udp_socket = dummy_com()
@@ -821,7 +827,7 @@ def test_udp_comm_func(dummy_net, dummy_com, mocker):
 
     # Test case receiving kill signal -1
     def recv_kill(data):
-        """Dummy function to update recv_into data"""
+        """Dummy function to update recv_into data."""
         np.frombuffer(data)[0] = -1  # Send terminate signal
 
     recv_mock.side_effect = recv_kill
@@ -837,7 +843,7 @@ def test_udp_comm_func(dummy_net, dummy_com, mocker):
     recv_mock.reset_mock()
 
     def recv_func(data):
-        """Dummy function to update recv_into data"""
+        """Dummy function to update recv_into data."""
 
         # Increment time, we want two steps in the loop hence t / 2
         np.frombuffer(data)[0] += t / 2.0
@@ -854,7 +860,7 @@ def test_udp_comm_func(dummy_net, dummy_com, mocker):
 
 
 def test_builder(dummy_net, mocker):
-    """Build a few networks to hit all the builder code"""
+    """Build a few networks to hit all the builder code."""
 
     # Don't generate params file
     mocker.patch(

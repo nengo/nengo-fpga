@@ -1,4 +1,4 @@
-"""Tests for the full nengo-fpga stack including all supported devices"""
+"""Tests for the full nengo-fpga stack including all supported devices."""
 
 import nengo
 import numpy as np
@@ -16,7 +16,7 @@ nengo.rc.set("precision", "bits", "32")
 
 
 def test_ff_learn(params, device):
-    """Feedforward test with decoders initialized to 0 and learning"""
+    """Feedforward test with decoders initialized to 0 and learning."""
 
     l_rate = 0.001
     stim_val = 0.25
@@ -86,7 +86,7 @@ def test_ff_learn(params, device):
 
 
 def test_ff_no_learn(params, device):
-    """Feedforward test with solved decoders and no learning"""
+    """Feedforward test with solved decoders and no learning."""
 
     tol = 0.005
     if isinstance(params["neuron"], nengo.SpikingRectifiedLinear):
@@ -139,7 +139,7 @@ def test_ff_no_learn(params, device):
 
 
 def test_feedback(params, device):
-    """Feedback test with solved decoders"""
+    """Feedback test with solved decoders."""
 
     stim_val = 0.5
     tol = 0.005
@@ -149,7 +149,7 @@ def test_feedback(params, device):
     p_syn = 0.05
 
     def stim_func(t):
-        """Return value for the first 1 second of simulation"""
+        """Return value for the first 1 second of simulation."""
         val = stim_val * tau if t < 1 else 0
         return [val] * params["dims_in"]
 

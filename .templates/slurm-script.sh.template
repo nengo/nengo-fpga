@@ -29,11 +29,11 @@ instead of the typical non-SLURM invocation.
 #}
 
 {% block install %}
-    bash .ci/{{ slurm_script }}.sh install || STATUS=1
+    bash bones-scripts/{{ slurm_script }}.sh install || STATUS=1
 {% endblock %}
 
 {% block before_script %}
-    bash .ci/{{ slurm_script }}.sh before_script || STATUS=1
+    bash bones-scripts/{{ slurm_script }}.sh before_script || STATUS=1
 {% endblock %}
 
 {% block script %}
@@ -48,29 +48,29 @@ instead of the typical non-SLURM invocation.
 
     {% endfor %}
     # Run script. Use existing shell instead of subshell to ensure alias applies.
-    . .ci/{{ slurm_script }}.sh script || STATUS=1
+    . bones-scripts/{{ slurm_script }}.sh script || STATUS=1
 {% endblock %}
 
 {% block before_cache %}
-    bash .ci/{{ slurm_script }}.sh before_cache || STATUS=1
+    bash bones-scripts/{{ slurm_script }}.sh before_cache || STATUS=1
 {% endblock %}
 
 {% block after_success %}
-    bash .ci/{{ slurm_script }}.sh after_success || STATUS=1
+    bash bones-scripts/{{ slurm_script }}.sh after_success || STATUS=1
 {% endblock %}
 
 {% block after_failure %}
-    bash .ci/{{ slurm_script }}.sh after_failure || STATUS=1
+    bash bones-scripts/{{ slurm_script }}.sh after_failure || STATUS=1
 {% endblock %}
 
 {% block before_deploy %}
-    bash .ci/{{ slurm_script }}.sh before_deploy || STATUS=1
+    bash bones-scripts/{{ slurm_script }}.sh before_deploy || STATUS=1
 {% endblock %}
 
 {% block after_deploy %}
-    bash .ci/{{ slurm_script }}.sh after_deploy || STATUS=1
+    bash bones-scripts/{{ slurm_script }}.sh after_deploy || STATUS=1
 {% endblock %}
 
 {% block after_script %}
-    bash .ci/{{ slurm_script }}.sh after_script || STATUS=1
+    bash bones-scripts/{{ slurm_script }}.sh after_script || STATUS=1
 {% endblock %}

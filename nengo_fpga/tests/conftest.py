@@ -1,5 +1,5 @@
 # pylint: disable=W0611
-"""Setup pytest environment to include fixtures"""
+"""Setup pytest environment to include fixtures."""
 import pytest
 
 from nengo_fpga.tests.fixtures import (
@@ -14,7 +14,7 @@ from nengo_fpga.tests.fixtures import (
 
 
 def pytest_addoption(parser):
-    """Add fullstack runtime arg"""
+    """Add fullstack runtime arg."""
     parser.addoption(
         "--fullstack",
         action="store_true",
@@ -24,7 +24,7 @@ def pytest_addoption(parser):
 
 
 def pytest_collection_modifyitems(config, items):
-    """Do not run the fullstack tests by default"""
+    """Do not run the fullstack tests by default."""
     if not config.getvalue("fullstack"):
         skip_fullstack = pytest.mark.skip("Fullstack tests skipped by default")
         for item in items:

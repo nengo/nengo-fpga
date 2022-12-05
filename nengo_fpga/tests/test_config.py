@@ -1,4 +1,4 @@
-"""Tests for fpga_config parser"""
+"""Tests for fpga_config parser."""
 import os
 
 from nengo_fpga import fpga_config
@@ -7,7 +7,7 @@ from nengo_fpga.utils import paths
 
 
 def test_load_hierarchy(mocker, gen_configs):
-    """Ensure we load configs from the correct locations"""
+    """Ensure we load configs from the correct locations."""
 
     # Set project dir to differentiate from system dir (root package dir)
     tmp_dir = os.path.join(os.getcwd(), "tmp")
@@ -40,7 +40,7 @@ def test_load_hierarchy(mocker, gen_configs):
 
 
 def test_reload_config(mocker):
-    """Check the reload_config behaviour"""
+    """Check the reload_config behaviour."""
 
     # Don't actually do anything with configs
     clear_mock = mocker.patch.object(_FPGA_CONFIG, "_clear")
@@ -57,7 +57,7 @@ def test_reload_config(mocker):
 
 
 def test_clear(gen_configs):
-    """Test the clear function of the config parser"""
+    """Test the clear function of the config parser."""
 
     # Create a dummy config and load it
     fname = os.path.join(os.getcwd(), "test_config")
@@ -73,7 +73,7 @@ def test_clear(gen_configs):
 
 
 def test_read(gen_configs):
-    """Test the read function of the config parser"""
+    """Test the read function of the config parser."""
 
     # Create a dummy config
     fname = os.path.join(os.getcwd(), "test_config")
@@ -88,7 +88,7 @@ def test_read(gen_configs):
 
 
 def test_item_dict(gen_configs):
-    """Test the item dict function of the config parser"""
+    """Test the item dict function of the config parser."""
 
     # Create a dummy config and load it
     fname = os.path.join(os.getcwd(), "test_config")

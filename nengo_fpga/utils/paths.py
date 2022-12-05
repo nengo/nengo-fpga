@@ -1,4 +1,4 @@
-"""Provides standard paths to configs and resources"""
+"""Provides standard paths to configs and resources."""
 
 import os
 import sys

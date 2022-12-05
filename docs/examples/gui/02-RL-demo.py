@@ -257,7 +257,7 @@ with model:
             if self.page is not None:
 
                 init_agent_pos = False
-                # Create a dictionary isntead of if/else
+                # Create a dictionary instead of if/else
                 # "<key press>": (<learning>, <init_agent_pos>)
                 keyboard_dict = {
                     "q": (2, True),

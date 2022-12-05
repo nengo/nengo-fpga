@@ -1,4 +1,4 @@
-"""Provides helper functions dealing with file I/O"""
+"""Provides helper functions dealing with file I/O."""
 
 import numpy
 from numpy.compat import isfileobj, pickle
@@ -12,11 +12,9 @@ from numpy.lib.format import (
 def write_array(
     fp, array, version=None, allow_pickle=True, pickle_kwargs=None
 ):  # pragma: no cover
-    """
-    This is basically the NumPy numpy.lib.format.write_array function with the only
-    change being pickle protocol 2 is used to dump the data (instead of 3 in the
-    most recent release of NumPy)
-    """
+    """This is basically the NumPy numpy.lib.format.write_array function with the only
+    change being pickle protocol 2 is used to dump the data (instead of 3 in the most
+    recent release of NumPy)"""
     _check_version(version)
     _write_array_header(fp, header_data_from_array_1_0(array), version)
 
@@ -30,7 +28,7 @@ def write_array(
         # We contain Python objects so we cannot write out the data
         # directly.  Instead, we will pickle it out
         if not allow_pickle:
-            raise ValueError("Object arrays cannot be saved when " "allow_pickle=False")
+            raise ValueError("Object arrays cannot be saved when allow_pickle=False")
         if pickle_kwargs is None:
             pickle_kwargs = {}
 

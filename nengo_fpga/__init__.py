@@ -26,8 +26,8 @@ if nengo.Network.add.__module__ == "nengo.network":
 
     def add(obj):
         """
-        monkey-patch Network.add so that we can give a better error message
-        if someone tries to add new objects.
+        monkey-patch Network.add so that we can give a better error message if someone
+        tries to add new objects.
 
         TODO: it'd be nice to do this without the monkey-patching, but we'll
         probably have to modify nengo

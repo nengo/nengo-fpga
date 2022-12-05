@@ -1,4 +1,4 @@
-"""Tests for the ID extraction process"""
+"""Tests for the ID extraction process."""
 import os
 import socket
 
@@ -30,7 +30,7 @@ def test_script(mocker):
 
 
 def test_missing_arg(mocker):
-    """Test the ID script run as __main__ without fpga_name arg"""
+    """Test the ID script run as __main__ without fpga_name arg."""
 
     # Explicitly set args to parse
     args = [
@@ -52,7 +52,7 @@ def test_missing_arg(mocker):
 
 
 def test_main(mocker):
-    """Test the main function of the ID extractor script"""
+    """Test the main function of the ID extractor script."""
 
     # Don't actually create the driver
     mocker.patch.object(IDExtractor, "__init__", return_value=None)
@@ -81,21 +81,21 @@ def test_main(mocker):
 
 
 def test_driver_no_config():
-    """Test the ID extractor given an invalid fpga name"""
+    """Test the ID extractor given an invalid fpga name."""
 
     with pytest.raises(SystemExit):
         IDExtractor("not-a-valid-name")
 
 
 def test_driver_init(dummy_extractor):
-    """Check a few token values on our dummy extractor init"""
+    """Check a few token values on our dummy extractor init."""
     assert dummy_extractor.ssh_info_str == ""
     assert dummy_extractor.config_found
     assert dummy_extractor.tcp_port > 0
 
 
 def test_cleanup(dummy_extractor, dummy_com, mocker):
-    """Test the IDExtractor's cleanup function"""
+    """Test the IDExtractor's cleanup function."""
 
     # Mock out close calls
     dummy_extractor.tcp_init = dummy_com()
@@ -117,7 +117,8 @@ def test_cleanup(dummy_extractor, dummy_com, mocker):
     "ssh_method", [None, ("ssh_pwd", "passwd"), ("ssh_key", "key-path")]
 )
 def test_connect_ssh_client(ssh_method, config_contents, gen_configs, mocker):
-    """Test the IDExtractor's connect_ssh_client function
+    """
+    Test the IDExtractor's connect_ssh_client function.
 
     Almost identical to test in "test_networks"
     """
@@ -164,7 +165,8 @@ def test_connect_ssh_client(ssh_method, config_contents, gen_configs, mocker):
 
 
 def test_connect_thread_func(dummy_extractor, dummy_com, config_contents, mocker):
-    """Test the IDExtractor's connect_thread_func function
+    """
+    Test the IDExtractor's connect_thread_func function.
 
     Similar to the test in "test_id"
     """
@@ -218,7 +220,7 @@ def test_connect_thread_func(dummy_extractor, dummy_com, config_contents, mocker
 
 
 def test_connect(dummy_extractor, mocker):
-    """Test the IDExtractor's connect function"""
+    """Test the IDExtractor's connect function."""
 
     # Don't actually create and start a thread
     thread_mock = mocker.patch("threading.Thread")
@@ -231,7 +233,8 @@ def test_connect(dummy_extractor, mocker):
 
 
 def test_process_ssh_output(dummy_extractor):
-    """Test the IDExtractor's process_ssh_output
+    """
+    Test the IDExtractor's process_ssh_output.
 
     Almost identical to test in "test_networks"
     """
@@ -247,7 +250,8 @@ def test_process_ssh_output(dummy_extractor):
 
 
 def test_check_ssh_str(dummy_extractor):
-    """Test remote string processing
+    """
+    Test remote string processing.
 
     Almost identical to test in "test_networks"
     """
@@ -289,7 +293,8 @@ def test_check_ssh_str(dummy_extractor):
 
 
 def test_ssh_string(dummy_extractor, config_contents):
-    """Test we have the correct arguments in the string command
+    """
+    Test we have the correct arguments in the string command.
 
     Almost identical to test in "test_networks"
     """
@@ -311,7 +316,7 @@ def test_ssh_string(dummy_extractor, config_contents):
 
 
 def test_recv_id(dummy_extractor, dummy_com, mocker):
-    """Test the IDExtractor's recv_id function"""
+    """Test the IDExtractor's recv_id function."""
 
     # Arbitrary expected val
     expected_int = 1234
