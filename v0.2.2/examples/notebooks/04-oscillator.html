@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html>
@@ -21,27 +20,56 @@
 <script src="https://unpkg.com/scrollreveal"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stickyfill/2.1.0/stickyfill.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GT8XEDLTMJ"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+ gtag('config', 'G-GT8XEDLTMJ');
+</script>
+<!-- End Google tag (gtag.js) -->
+
+<!-- Matomo -->
+<script>
+ var _paq = window._paq = window._paq || [];
+ _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+ _paq.push(["setCookieDomain", "*.appliedbrainresearch.com"]);
+ _paq.push(["setDomains", ["*.appliedbrainresearch.com","*.edge.nengo.ai","*.forum.nengo.ai","*.labs.nengo.ai","*.nengo.ai"]]);
+ _paq.push(["enableCrossDomainLinking"]);
+ _paq.push(["setDoNotTrack", true]);
+ _paq.push(['trackPageView']);
+ _paq.push(['enableLinkTracking']);
+ (function() {
+   var u="https://appliedbrainresearch.matomo.cloud/";
+   _paq.push(['setTrackerUrl', u+'matomo.php']);
+   _paq.push(['setSiteId', '3']);
+   var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+   g.async=true; g.src='//cdn.matomo.cloud/appliedbrainresearch.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+ })();
+</script>
+<!-- End Matomo Code -->
 <!-- From basic/layout.html -->
 <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-  
-  
+
+
 <script src="../../_static/underscore.js"></script>
-  
-  
+
+
 <script src="../../_static/doctools.js"></script>
-  
-  
+
+
 <script src="../../_static/language_data.js"></script>
-  
-  
+
+
 <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-  
-  
+
+
 <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
-  
+
+
 <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
-  
+
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -93,7 +121,7 @@
             class="dropdown-menu shadow-lg border-0"
             aria-labelledby="navbar-dropdown-docs"
           >
-            
+
             <a class="dropdown-item" href="https://www.nengo.ai/nengo/">Nengo Core</a>
             <a class="dropdown-item" href="https://github.com/nengo/nengo-gui/">Nengo GUI</a>
             <a class="dropdown-item" href="https://www.nengo.ai/nengo-dl/">Nengo DL</a>
@@ -187,7 +215,7 @@
     </button>
   </div>
 </form><div class="p-5 toctree">
-  
+
     <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../getting-started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
@@ -213,35 +241,35 @@
 <li class="toctree-l1"><a class="reference internal" href="../../project.html#nengofpga-license">NengoFPGA license</a></li>
 </ul>
 
-  
+
   </div>
-  
+
   <form class="p-5 my-0 border-top">
     <div class="form-group">
       <label class="text-gray">Version:</label>
       <select class="custom-select" onchange="switchVersion(this);">
-        
-        
+
+
         <option value="../../../examples/notebooks/04-oscillator.html">latest</option>
-        
-        
-          
+
+
+
         <option selected>v0.2.2</option>
-          
-        
+
+
       </select>
     </div>
   </form>
-  
+
 </div>
-      
+
 
       <div class="col-12 col-md-8 col-xl-9">
         <div class="container">
           <div class="row">
             <div class="col-10 offset-1 pb-5 documentation-source" role="main">
-              
-  
+
+
 <style>
 /* CSS for nbsphinx extension */
 
