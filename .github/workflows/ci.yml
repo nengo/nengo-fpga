@@ -1,0 +1,57 @@
+name: CI testing
+on:
+  pull_request: {}
+  push:
+    branches:
+      - main
+      - release-candidate-*
+    tags:
+      - v*
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        description: Run the build with SSH debugging enabled
+        type: boolean
+        required: false
+        default: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        include:
+          - script: static
+          - script: test
+            coverage-name: test
+          - script: docs
+      fail-fast: false
+    env:
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      SSH_CONFIG: ${{ secrets.SSH_CONFIG }}
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+    steps:
+      - uses: nengo/nengo-bones/actions/setup@main
+        with:
+          python-version: "3.8"
+      - name: Install ffmpeg for docs
+        if: ${{ matrix.script == 'docs' }}
+        uses: FedericoCarboni/setup-ffmpeg@v2
+      - uses: nengo/nengo-bones/actions/generate-and-check@main
+      - uses: nengo/nengo-bones/actions/run-script@main
+        with:
+          name: ${{ matrix.script }}
+      - uses: actions/upload-artifact@v3
+        if: ${{ always() && matrix.coverage-name }}
+        with:
+          name: coverage-${{ matrix.coverage-name }}
+          path: .coverage
+  coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs:
+      - test
+    if: ${{ always() }}
+    steps:
+      - uses: nengo/nengo-bones/actions/coverage-report@main

@@ -5,6 +5,7 @@ repo_name: nengo/nengo-fpga
 description: FPGA backend for Nengo
 copyright_start: 2018
 license: abr-nonfree
+main_branch: main
 
 license_rst: {}
 
@@ -44,34 +45,13 @@ docs_conf_py:
     nengo-pynq: "https://www.nengo.ai/nengo-pynq/"
   html_redirects:
     getting_started.html: getting-started.html
-    examples/notebooks/00-communication_channel.html:
-      examples/notebooks/00-communication-channel.html
-    examples/notebooks/01-learn_communication_channel.html:
-      examples/notebooks/01-learn-communication-channel.html
-    examples/notebooks/02-set_neuron_params.html:
-      examples/notebooks/02-set-neuron-params.html
-    examples/notebooks/05-controlled_oscillator.html:
-      examples/notebooks/05-controlled-oscillator.html
-    examples/notebooks/06-chaotic_attractor.html:
-      examples/notebooks/06-chaotic-attractor.html
+    examples/notebooks/00-communication_channel.html: examples/notebooks/00-communication-channel.html
+    examples/notebooks/01-learn_communication_channel.html: examples/notebooks/01-learn-communication-channel.html
+    examples/notebooks/02-set_neuron_params.html: examples/notebooks/02-set-neuron-params.html
+    examples/notebooks/05-controlled_oscillator.html: examples/notebooks/05-controlled-oscillator.html
+    examples/notebooks/06-chaotic_attractor.html: examples/notebooks/06-chaotic-attractor.html
   nengo_logo: nengo-fpga-full-light.svg
   nengo_logo_color: "#541a8b"
-
-travis_yml:
-  python: 3.6
-  jobs:
-    - script: static
-    - script: test
-    - script: remote-docs
-  slack_notifications: "ajq+5SXA+dscgOAUZs0HcALHNhRpo9iiqDGRhpuVAesnwJWwHWRpRZleVLkOKX7\
-    FghRU+GVzMvH97DCSaNJXAsggipZ3uXgGwMFSpMV/ytA0PT3Reox42anLJdCAdjr80Cb1O/OzA03vEcVAVm\
-    E+d/pTUhsQwmsWmITjypUNsrJrUnGHSGFcAeio+taILHsS54jGpzaw5EdElUxYiHapIbgQ6l3Fyw/RSqCUH\
-    6RAFdQGy0fqZ36qhm/vv5y+S58n7zDsPWtP8+BG67EjkILHrkrNxOBB7EUUdNmTqLa7we08rNtvo58Fk4pD\
-    KTaCT8WL3rD107+GdH+o4iAeK/10m0Sb6yFqMTDTJYlRyJ1J6JNYqXfhbrbHrliWWVnOLB5LIloEzjcfpcp\
-    73AcQQjxr8zE42B726cXiN94vmL4RgzyEfO4oMw6T5VQb3fRgjc+nUVhGIe4hEjg6/XVYjtLRVx782kAJEN\
-    1ML6tdJ/KA197znGPRznhuKAb+HhhoHrXmPXzjdMILVGeDx5dw04rYUzJUtMwP7ltKUX6Vjr1KZQwr4khvu\
-    /x5pyHwqPBftoxd2318MVwzS7eepLkbBu+uiZtHNoMiK4sKug8wuDvyM3GXuF1oEuIU2Z62bkMMASSJ+JUN\
-    xJOBzXq/JGvN05Z6daT2XOuniaUx+DfnGDtDx9s="
 
 ci_scripts:
   - template: static
@@ -81,22 +61,26 @@ ci_scripts:
     pip_install:
       - numpy>=1.13.0
       - matplotlib
-  - template: slurm-script
-    slurm_command: "srun -pCI"
-    wrapped_commands:
-      - sphinx-build
-    slurm_script: docs
-    output_name: slurm-docs
-  - template: remote-script
-    remote_script: slurm-docs
-    remote_setup:
-      - conda install -y pandoc ffmpeg
-    output_name: remote-docs
-    host: abrghost
-    travis_var_key: 2895d60e3414
-
-codecov_yml: {}
+# this setup can be used to run CI scripts remotely over slurm:
+#  - template: slurm-script
+#    slurm_command: "srun -pCI"
+#    wrapped_commands:
+#      - sphinx-build
+#    slurm_script: docs
+#    output_name: slurm-docs
+#  - template: remote-script
+#    remote_script: slurm-docs
+#    remote_setup:
+#      - micromamba install -y pandoc ffmpeg
+#    output_name: remote-docs
+#    host: abrghost
 
 pre_commit_config_yaml: {}
 
 pyproject_toml: {}
+
+version_py:
+  major: 0
+  minor: 2
+  patch: 3
+  release: false
