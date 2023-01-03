@@ -1,6 +1,6 @@
 # pylint: disable=too-many-ancestors,logging-format-interpolation
 
-"""Read NengoFPGA config that describes available FPGA devices"""
+"""Read NengoFPGA config that describes available FPGA devices."""
 
 import configparser
 import logging
@@ -27,12 +27,12 @@ class _FPGA_CONFIG(configparser.ConfigParser):
             self.remove_section(s)
 
     def read(self, filenames):
-        """Read config file"""
+        """Read config file."""
         logger.info("Reading FPGA configurations from %s", filenames)
         return configparser.ConfigParser.read(self, filenames)
 
     def item_dict(self, section):
-        """Organize config in a dictionary"""
+        """Organize config in a dictionary."""
         items = self.items(section)
         item_dict = {}
 
@@ -42,7 +42,7 @@ class _FPGA_CONFIG(configparser.ConfigParser):
         return item_dict
 
     def reload_config(self, filenames=None):
-        """Reload configs in case of changes"""
+        """Reload configs in case of changes."""
         if filenames is None:
             filenames = fpga_config_files
 

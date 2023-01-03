@@ -1,4 +1,4 @@
-"""Modified Nengo Simulator to integrate FPGA interfaces"""
+"""Modified Nengo Simulator to integrate FPGA interfaces."""
 
 import atexit
 
@@ -8,7 +8,7 @@ from .networks import FpgaPesEnsembleNetwork
 
 
 class Simulator(nengo.simulator.Simulator):
-    """Modified Nengo Simulator to integrate FPGA interfaces"""
+    """Modified Nengo Simulator to integrate FPGA interfaces."""
 
     def __init__(self, network, **kwargs):
         # Keep a record of the SSH connection details
@@ -66,13 +66,13 @@ class Simulator(nengo.simulator.Simulator):
         super().__init__(network, **kwargs)
 
     def close(self):
-        """Close all connections to the remote networks"""
+        """Close all connections to the remote networks."""
         for net in self.fpga_networks_list:
             net.close()
         super().close()
 
     def reset(self, seed=None):
-        """Call the reset function for each remote network"""
+        """Call the reset function for each remote network."""
         for net in self.fpga_networks_list:
             net.reset()
         super().reset(seed)

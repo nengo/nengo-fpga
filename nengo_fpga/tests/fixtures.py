@@ -1,5 +1,5 @@
 # pylint: disable=redefined-outer-name
-"""Test fixtures used in the test suite"""
+"""Test fixtures used in the test suite."""
 import os
 
 import nengo
@@ -14,11 +14,11 @@ from nengo_fpga.simulator import Simulator
 
 
 @pytest.fixture  # noqa: C901
-def gen_configs(request):
-    """Helper fixture to generate and cleanup some dummy configs"""
+def gen_configs(request):  # noqa: C901
+    """Helper fixture to generate and cleanup some dummy configs."""
 
     class MyConfigs:
-        """To keep track of configs we generate"""
+        """To keep track of configs we generate."""
 
         def __init__(self):
             self.default_contents = {"config": {"a": "1", "b": "2", "c": "3"}}
@@ -27,7 +27,8 @@ def gen_configs(request):
             self.configs = []  # Keep track of configs we create
 
         def create_config(self, fname, contents=None):
-            """Create a dummy config
+            """
+            Create a dummy config.
 
             `fname` - str
                 The full filepath and file name used for the config
@@ -59,7 +60,7 @@ def gen_configs(request):
                     f.write("\n")
 
         def cleanup(self):
-            """Cleanup the configs we made"""
+            """Cleanup the configs we made."""
 
             # Cleanup files
             for f in self.configs:
@@ -75,7 +76,7 @@ def gen_configs(request):
     dummy_configs = MyConfigs()
 
     def teardown(configs=dummy_configs):
-        """Run cleanup code on test exit"""
+        """Run cleanup code on test exit."""
         configs.cleanup()
         nengo_fpga.fpga_config.reload_config()  # Reload previous config
 
@@ -87,7 +88,7 @@ def gen_configs(request):
 
 @pytest.fixture
 def config_contents():
-    """Config contents used to test the ID Extractor class"""
+    """Config contents used to test the ID Extractor class."""
 
     # We omit ssh_key and ssh_pwd as they will be tested separately
     contents = {
@@ -108,7 +109,8 @@ def config_contents():
 
 @pytest.fixture
 def dummy_extractor(config_contents, gen_configs, mocker):  # noqa: W0521
-    """Setup an ID extractor
+    """
+    Setup an ID extractor.
 
     `config_contents` was kept separate so we can update the config file
     """
@@ -129,7 +131,8 @@ def dummy_extractor(config_contents, gen_configs, mocker):  # noqa: W0521
 
 @pytest.fixture
 def dummy_net(config_contents, gen_configs):  # noqa: W0521
-    """Setup an FPGA network
+    """
+    Setup an FPGA network.
 
     `config_contents` was kept separate so we can update the config file
     """
@@ -146,19 +149,19 @@ def dummy_net(config_contents, gen_configs):  # noqa: W0521
 
 @pytest.fixture
 def dummy_sim(mocker):
-    """Setup dummy network and simulator"""
+    """Setup dummy network and simulator."""
 
     class DummyNet:
-        """Dummy network class with token functions"""
+        """Dummy network class with token functions."""
 
         def close(self):
-            """Dummy close function"""
+            """Dummy close function."""
 
         def reset(self):
-            """Dummy reset function"""
+            """Dummy reset function."""
 
         def cleanup(self):
-            """Dummy cleanup function"""
+            """Dummy cleanup function."""
 
     my_net = DummyNet()
 
@@ -177,41 +180,43 @@ def dummy_sim(mocker):
 
 @pytest.fixture
 def dummy_com():
-    """Dummy class to mock out ssh channel and socket
+    """
+    Dummy class to mock out ssh channel and socket.
 
     Some socket functions are readonly and require a mock class
     """
 
     class DummyCom:
-        """Dummy ssh channel"""
+        """Dummy ssh channel."""
 
         def send(self, *args):
-            """Dummy send functions"""
+            """Dummy send functions."""
 
         def put(self, *args):
-            """Dummy send functions"""
+            """Dummy send functions."""
 
         def recv(self, *args):
-            """Dummy recv function"""
+            """Dummy recv function."""
 
         def close(self):
-            """Dummy close function"""
+            """Dummy close function."""
 
         def accept(self):
-            """Dummy accept function"""
+            """Dummy accept function."""
 
         def sendto(self, *args):
-            """Dummy sendto function"""
+            """Dummy sendto function."""
 
         def recv_into(self, *args):
-            """Dummy recv_into function"""
+            """Dummy recv_into function."""
 
     return DummyCom
 
 
 @pytest.fixture(params=[nengo.RectifiedLinear(), nengo.SpikingRectifiedLinear()])
 def params(request):  # pragma: no cover
-    """Create a dummy network and extract params for fullstack tests
+    """
+    Create a dummy network and extract params for fullstack tests.
 
     Fixture itself is parametrized for neuron type
     """
@@ -227,7 +232,7 @@ def params(request):  # pragma: no cover
     seed = 10
 
     def my_func(x):
-        """Define function that maps input dims to output dims"""
+        """Define function that maps input dims to output dims."""
 
         half = int(len(x) / 2)
         # Add dims 1 + 3, 2+ 4

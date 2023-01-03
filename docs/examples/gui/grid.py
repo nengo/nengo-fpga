@@ -333,7 +333,6 @@ class CellularException(Exception):
 
 class ContinuousAgent(Agent):
     def go_in_direction(self, dir, distance=1, return_obstacle=False):
-
         dir1 = int(dir)
         dir2 = (dir1 + 1) % self.world.directions
 
@@ -411,13 +410,12 @@ class ContinuousAgent(Agent):
     def get_distance_to(self, cell):
         dx = cell.x - self.x
         dy = cell.y - self.y
-        return math.sqrt(dx ** 2 + dy ** 2)
+        return math.sqrt(dx**2 + dy**2)
 
 
 # GridNode sets up the pacman world for visualization
 class GridNode(nengo.Node):
     def __init__(self, world, dt=0.001):
-
         # The initializer sets up the html layout for display
         def svg(t):
             last_t = getattr(svg, "_nengo_html_t_", None)
@@ -447,7 +445,6 @@ class GridNode(nengo.Node):
         # Runs through every agent in the world
         agents = []
         for agent in world.agents:
-
             # sets variables like agent direction, color and size
             direction = agent.dir * 360.0 / world.directions
             color = getattr(agent, "color", "blue")
@@ -457,7 +454,6 @@ class GridNode(nengo.Node):
             shape = getattr(agent, "shape", "triangle")
 
             if shape == "triangle":
-
                 agent_poly = (
                     '<polygon points="0.25,0.25 -0.25,0.25 0,-0.5"'
                     ' style="fill:%s" transform="translate(%f,%f) rotate(%f)"'

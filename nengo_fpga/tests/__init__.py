@@ -1,1 +1,1 @@
-"""Include tests in the package"""
+"""Include tests in the package."""

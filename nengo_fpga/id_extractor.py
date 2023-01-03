@@ -1,4 +1,4 @@
-"""Top level script for reading device ID"""
+"""Top level script for reading device ID."""
 
 import argparse
 import os
@@ -13,7 +13,8 @@ from nengo_fpga.fpga_config import fpga_config
 
 
 class IDExtractor:
-    """Class that connects to the FPGA and extracts the Device ID
+    """
+    Class that connects to the FPGA and extracts the Device ID.
 
     Parameters
     ----------
@@ -23,11 +24,9 @@ class IDExtractor:
         The number of times the socket will attempt to connect to the board.
     timeout : float, optional (Default: 5)
         The number of seconds the socket will wait to connect.
-
     """
 
     def __init__(self, fpga_name, max_attempts=5, timeout=5):
-
         self.config_found = fpga_config.has_section(fpga_name)
         self.fpga_name = fpga_name
         self.max_attempts = max_attempts
@@ -65,7 +64,7 @@ class IDExtractor:
             sys.exit()
 
     def cleanup(self):
-        """Shutdown socket and SSH connection"""
+        """Shutdown socket and SSH connection."""
         self.tcp_init.close()
         self.ssh_client.close()
 
@@ -73,7 +72,7 @@ class IDExtractor:
             self.tcp_recv.close()
 
     def connect_ssh_client(self, ssh_user, remote_ip):
-        """Helper function to parse config and setup ssh client"""
+        """Helper function to parse config and setup ssh client."""
 
         # Get the SSH options from the fpga_config file
         ssh_port = fpga_config.get(self.fpga_name, "ssh_port")
@@ -106,7 +105,7 @@ class IDExtractor:
             self.ssh_client.connect(remote_ip, port=ssh_port, username=ssh_user)
 
     def connect_thread_func(self):
-        """Start SSH in a separate thread to monitor status"""
+        """Start SSH in a separate thread to monitor status."""
 
         # # Get the IP of the remote device from the fpga_config file
         remote_ip = fpga_config.get(self.fpga_name, "ip")
@@ -168,7 +167,7 @@ class IDExtractor:
                 )
 
     def connect(self):
-        """Connect to device via SSH"""
+        """Connect to device via SSH."""
         print(
             f"<{fpga_config.get(self.fpga_name, 'ip')}> Open SSH connection",
             flush=True,
@@ -180,7 +179,7 @@ class IDExtractor:
         connect_thread.start()
 
     def process_ssh_output(self, data):
-        """Clean up the data stream coming back over ssh"""
+        """Clean up the data stream coming back over ssh."""
         str_data = data.decode("latin1").replace("\r\n", "\r")
         str_data = str_data.replace("\r\r", "\r")
         str_data = str_data.replace("\r", "\n")
@@ -192,7 +191,7 @@ class IDExtractor:
         self.ssh_info_str += str_data
 
     def check_ssh_str(self, info_str, error_strs, got_error, remote_ip):
-        """Process info from ssh and check for errors"""
+        """Process info from ssh and check for errors."""
 
         if info_str.startswith("Killed"):
             print(f"<{remote_ip}> ENCOUNTERED ERROR!", flush=True)
@@ -217,10 +216,11 @@ class IDExtractor:
 
     @property
     def ssh_string(self):
-        """Command sent to FPGA device to begin execution
+        """
+        Command sent to FPGA device to begin execution.
 
-        Generate the string to be sent over the ssh connection to run the
-        remote side ssh script (with appropriate arguments)
+        Generate the string to be sent over the ssh connection to run the remote
+        side ssh script (with appropriate arguments)
         """
         ssh_str = ""
         if self.config_found:
@@ -234,7 +234,7 @@ class IDExtractor:
         return ssh_str
 
     def recv_id(self):
-        """Read device ID from device"""
+        """Read device ID from device."""
 
         # Try to connect to FPGA socket a few times
         connect_attempts = 0
@@ -266,7 +266,7 @@ class IDExtractor:
 
 
 def main(fpga_name):
-    """Main script to extract device ID"""
+    """Main script to extract device ID."""
     filename = "id_" + fpga_name + ".txt"
 
     # Connect to FPGA, run script to get ID, write ID to file
@@ -284,9 +284,8 @@ def main(fpga_name):
 
 
 def run():
-    """Wrapped in a function so we can call this in tests"""
+    """Wrapped in a function so we can call this in tests."""
     if __name__ == "__main__":
-
         parser = argparse.ArgumentParser(
             description="Generic script for running the ID Extractor on the "
             + "FPGA board."

@@ -1,4 +1,4 @@
-"""Tests for NengoFPGA Simulator"""
+"""Tests for NengoFPGA Simulator."""
 import nengo
 import pytest
 
@@ -7,7 +7,7 @@ from nengo_fpga.simulator import Simulator
 
 
 def test_init(mocker):
-    """Test simulator network with standard nengo network"""
+    """Test simulator network with standard nengo network."""
 
     # Don't actually create a simulator
     super_mock = mocker.patch("nengo.simulator.Simulator.__init__")
@@ -34,7 +34,7 @@ def test_init(mocker):
 
 @pytest.mark.parametrize("probe", ["ensemble", "neurons", "connection"])
 def test_probe_list(mocker, probe):
-    """Test probe checks in init"""
+    """Test probe checks in init."""
 
     # Don't actually create a simulator
     super_mock = mocker.patch("nengo.simulator.Simulator.__init__")
@@ -57,7 +57,7 @@ def test_probe_list(mocker, probe):
 
 
 def test_nengo_sim():
-    """Test using the nengo simulator with an fpga network"""
+    """Test using the nengo simulator with an fpga network."""
 
     # Create a dummy net
     with nengo.Network() as net:
@@ -69,7 +69,7 @@ def test_nengo_sim():
 
 
 def test_close(dummy_sim, mocker):
-    """Test the Simulator's close function"""
+    """Test the Simulator's close function."""
 
     # Grab test objects from fixture
     net = dummy_sim[0]
@@ -86,7 +86,7 @@ def test_close(dummy_sim, mocker):
 
 
 def test_reset(dummy_sim, mocker):
-    """Test the Simulator's reset function"""
+    """Test the Simulator's reset function."""
 
     # Grab test objects from fixture
     net = dummy_sim[0]
@@ -104,7 +104,7 @@ def test_reset(dummy_sim, mocker):
 
 
 def test_terminate(dummy_sim, mocker):
-    """Test the Simulator's terminate function"""
+    """Test the Simulator's terminate function."""
 
     # Grab test objects from fixture
     net = dummy_sim[0]

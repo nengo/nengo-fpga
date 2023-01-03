@@ -51,7 +51,7 @@ class Pendulum:
         mass = self.mass + self.extra_mass
         self.dtheta += (
             -3 * self.g / (2 * self.length) * np.sin(self.theta + np.pi)
-            + 3.0 / (mass * self.length ** 2) * u
+            + 3.0 / (mass * self.length**2) * u
         ) * self.dt
         self.theta += self.dtheta * self.dt
         self.dtheta = np.clip(self.dtheta, -self.max_speed, self.max_speed)

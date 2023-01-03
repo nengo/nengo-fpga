@@ -60,12 +60,12 @@ reduction_factor = 2
 if reduction_factor > 1:
     im_size_new = int(im_size // reduction_factor)
 
-    x_train_resized = np.zeros((x_train.shape[0], im_size_new ** 2))
+    x_train_resized = np.zeros((x_train.shape[0], im_size_new**2))
     for i in range(x_train.shape[0]):
         x_train_resized[i, :] = resize_img(x_train[i], im_size, im_size_new)
     x_train = x_train_resized
 
-    x_test_resized = np.zeros((x_test.shape[0], im_size_new ** 2))
+    x_test_resized = np.zeros((x_test.shape[0], im_size_new**2))
     for i in range(x_test.shape[0]):
         x_test_resized[i, :] = resize_img(x_test[i], im_size, im_size_new)
     x_test = x_test_resized
@@ -79,7 +79,7 @@ test_targets = one_hot(y_test, 10)
 # Set up the vision network parameters
 n_vis = x_train.shape[1]  # Number of training samples
 n_out = train_targets.shape[1]  # Number of output classes
-n_hid = 16000 // (im_size ** 2)  # Number of neurons to use
+n_hid = 16000 // (im_size**2)  # Number of neurons to use
 # Note: the number of neurons to use is limited such that NxD <= 16000,
 #       where D = im_size * im_size, and N is the number of neurons to use
 gabor_size = (int(im_size / 2.5), int(im_size / 2.5))  # Size of the gabor filt
