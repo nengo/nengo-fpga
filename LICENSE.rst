@@ -4,7 +4,7 @@
 NengoFPGA license
 *****************
 
-Copyright (c) 2018-2022 Applied Brain Research
+Copyright (c) 2018-2023 Applied Brain Research
 
 **ABR License**
 
