@@ -52,6 +52,8 @@ docs_conf_py:
     examples/notebooks/06-chaotic_attractor.html: examples/notebooks/06-chaotic-attractor.html
   nengo_logo: nengo-fpga-full-light.svg
   nengo_logo_color: "#541a8b"
+  sphinx_options:
+    linkcheck_ignore: [(https:\/\/www\.tulembedded\.com\/FPGA\/ProductsPYNQ-Z2\.html)]
 
 ci_scripts:
   - template: static

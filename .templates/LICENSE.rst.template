@@ -15,7 +15,7 @@ NengoFPGA imports or vendorizes several open source libraries.
 * `NumPy <https://numpy.org/>`_ - Used under
   `BSD license <https://numpy.org/doc/stable/license.html>`__
 * `Sphinx <https://www.sphinx-doc.org/>`_ - Used under
-  `BSD license <https://github.com/sphinx-doc/sphinx/blob/master/LICENSE>`__
+  `BSD license <https://github.com/sphinx-doc/sphinx/blob/master/LICENSE.rst>`__
 * `numpydoc <https://github.com/numpy/numpydoc>`_ - Used under
   `BSD license <https://github.com/numpy/numpydoc/blob/master/LICENSE.txt>`__
 * `IPython <http://ipython.org/>`_ - Used under

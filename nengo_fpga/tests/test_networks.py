@@ -16,6 +16,7 @@ from nengo_fpga.networks.fpga_pes_ensemble_network import (
 )
 
 
+@pytest.mark.xdist_group(name="fpga_config")
 def test_init(config_contents, gen_configs, mocker):
     """Test the FPGA network's init function."""
 
@@ -117,6 +118,7 @@ def test_init(config_contents, gen_configs, mocker):
     assert hasattr(dummy_net, "connection")
 
 
+@pytest.mark.xdist_group(name="fpga_config")
 def test_init_default(config_contents, gen_configs, mocker):
     """Test the FPGA network's init function."""
 
@@ -164,7 +166,7 @@ def test_init_default(config_contents, gen_configs, mocker):
     assert dummy_net.connection.pre == dummy_net.ensemble
     assert dummy_net.connection.post == dummy_net.output
     assert dummy_net.connection.function is None
-    assert type(dummy_net.connection.transform) == nengo.transforms.NoTransform
+    assert isinstance(dummy_net.connection.transform, nengo.transforms.NoTransform)
     assert np.all(
         dummy_net.connection.eval_points == nengo.Connection.eval_points.default
     )
@@ -208,6 +210,7 @@ def test_data_filepath(dummy_net, mocker):
     assert dummy_net.local_data_filepath == os.path.join(path, fname)
 
 
+@pytest.mark.xdist_group(name="fpga_config")
 def test_terminate_client(dummy_net, dummy_com, config_contents, mocker):
     """Test the FPGA network's terminate_client function."""
 
@@ -224,6 +227,7 @@ def test_terminate_client(dummy_net, dummy_com, config_contents, mocker):
     assert send_mock.call_args_list[0][0][1] == address
 
 
+@pytest.mark.xdist_group(name="fpga_config")
 def test_close(dummy_net, dummy_com, mocker):
     """Test the FPGA network's close function."""
 
@@ -268,6 +272,7 @@ def test_close(dummy_net, dummy_com, mocker):
     assert np.all(dummy_net.recv_buffer == 0)
 
 
+@pytest.mark.xdist_group(name="fpga_config")
 def test_cleanup(dummy_net, mocker):
     """Test the FPGA network's cleanup function."""
 
@@ -293,6 +298,7 @@ def test_cleanup(dummy_net, mocker):
 @pytest.mark.parametrize(
     "ssh_method", [None, ("ssh_pwd", "passwd"), ("ssh_key", "key-path")]
 )
+@pytest.mark.xdist_group(name="fpga_config")
 def test_connect_ssh_client(
     ssh_method, dummy_net, config_contents, gen_configs, mocker
 ):
@@ -337,6 +343,7 @@ def test_connect_ssh_client(
         )
 
 
+@pytest.mark.xdist_group(name="fpga_config")
 def test_connect_thread_func(dummy_net, dummy_com, config_contents, mocker):
     """
     Test the FPGA network's connect_thread_func.
@@ -412,6 +419,7 @@ def test_connect_thread_func(dummy_net, dummy_com, config_contents, mocker):
     net_close_mock.assert_called_once()
 
 
+@pytest.mark.xdist_group(name="fpga_config")
 def test_connect(dummy_net, mocker):
     """Test the FPGA network's connect function."""
 
@@ -574,6 +582,7 @@ def test_check_ssh_str(dummy_net):
         assert error_strs[-1] == s
 
 
+@pytest.mark.xdist_group(name="fpga_config")
 def test_reset(dummy_net, mocker):
     """Test the FPGA network's reset function."""
 
@@ -596,6 +605,7 @@ def test_reset(dummy_net, mocker):
     connect_mock.assert_called_once()
 
 
+@pytest.mark.xdist_group(name="fpga_config")
 def test_ssh_string(dummy_net, config_contents):
     """
     Test we have the correct arguments in the string command.
@@ -704,6 +714,7 @@ def test_validate_net(dummy_net):
         _, _ = validate_net(dummy_net)
 
 
+@pytest.mark.xdist_group(name="fpga_config")
 def test_save_params(config_contents, gen_configs, mocker):
     """Test saving params to file."""
 
@@ -859,6 +870,7 @@ def test_udp_comm_func(dummy_net, dummy_com, mocker):
     assert val == x
 
 
+@pytest.mark.xdist_group(name="fpga_config")
 def test_builder(dummy_net, mocker):
     """Build a few networks to hit all the builder code."""
 

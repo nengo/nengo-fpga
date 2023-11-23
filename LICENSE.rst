@@ -19,13 +19,14 @@ Commercial Use Licenses are available to purchase for a yearly fee.
 Academic and Personal Use Licenses for NengoFPGA are available at
 a reduced cost.
 Both types of licences can be obtained from the
-ABR store at `<https://appliedbrainresearch.myshopify.com/collections/all>`_.
+ABR store at `<https://www.appliedbrainresearch.com/store>`_.
 
 If you have any sales questions,
 please contact `<sales@appliedbrainresearch.com>`_.
 If you have any technical support questions, please post them on the ABR
 community forums at `<https://forum.nengo.ai/>`_ or contact
 `<support@appliedbrainresearch.com>`_.
+
 
 This license pertains only to the NengoFPGA interface software. License information
 for the supported hardware implementations can be found at their respective license
@@ -42,7 +43,7 @@ NengoFPGA imports or vendorizes several open source libraries.
 * `NumPy <https://numpy.org/>`_ - Used under
   `BSD license <https://numpy.org/doc/stable/license.html>`__
 * `Sphinx <https://www.sphinx-doc.org/>`_ - Used under
-  `BSD license <https://github.com/sphinx-doc/sphinx/blob/master/LICENSE>`__
+  `BSD license <https://github.com/sphinx-doc/sphinx/blob/master/LICENSE.rst>`__
 * `numpydoc <https://github.com/numpy/numpydoc>`_ - Used under
   `BSD license <https://github.com/numpy/numpydoc/blob/master/LICENSE.txt>`__
 * `IPython <http://ipython.org/>`_ - Used under
