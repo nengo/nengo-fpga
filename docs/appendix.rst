@@ -8,7 +8,7 @@ Supported Hardware
 ==================
 
 IP packages can be purchased through `Applied Brain Research
-<https://www.appliedbrainresearch.com/store>`_.
+<https://appliedbrainresearch.myshopify.com/collections/all>`_.
 
 
 DE1-SoC

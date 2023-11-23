@@ -19,7 +19,7 @@ Commercial Use Licenses are available to purchase for a yearly fee.
 Academic and Personal Use Licenses for NengoFPGA are available at
 a reduced cost.
 Both types of licences can be obtained from the
-ABR store at `<https://www.appliedbrainresearch.com/store>`_.
+ABR store at `<https://appliedbrainresearch.myshopify.com/collections/all>`_.
 
 If you have any sales questions,
 please contact `<sales@appliedbrainresearch.com>`_.

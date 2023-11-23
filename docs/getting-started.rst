@@ -8,7 +8,7 @@ Things You Need
 - :std:doc:`Nengo <nengo:getting-started>`
 - A :ref:`supported FPGA board <supported-hardware>`
 - A NengoFPGA Licence (available from `Applied Brain Research
-  <https://www.appliedbrainresearch.com/store>`_)
+  <https://appliedbrainresearch.myshopify.com/collections/all>`_)
 - (Optional) `NengoGUI <https://github.com/nengo/nengo-gui>`_
 
 .. _quick-guide:
@@ -268,7 +268,7 @@ started or updating you NengoFPGA system, you will need to get bitstreams for
 your device. The NengoFPGA bitstreams are tailored to your specific device.
 
 A NengoFPGA license (available from the `Applied Brain Research store
-<https://www.appliedbrainresearch.com/store>`_) is required to obtain a NengoFPGA
+<https://appliedbrainresearch.myshopify.com/collections/all>`_) is required to obtain a NengoFPGA
 bitstream. After purchasing the appropriate device-specific license, follow the
 instructions below to obtain your tailored bitstream.
 
