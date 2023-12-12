@@ -1,0 +1,664 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learning a Communication Channel &#8212; NengoFPGA 0.2.3.dev0 docs</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+<link rel="stylesheet" href="https://www.nengo.ai/css/bootstrap.css" type="text/css">
+<style>
+ body .title-bar,
+ body .documentation-source h1:after {
+   background-color: #541a8b;
+ }
+</style>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/scrollreveal"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stickyfill/2.1.0/stickyfill.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+<!-- From basic/layout.html -->
+<script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+
+
+<script src="../../_static/underscore.js"></script>
+
+
+<script src="../../_static/doctools.js"></script>
+
+
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+
+
+<script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GT8XEDLTMJ"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'G-GT8XEDLTMJ');
+        </script>
+        <!-- End Google tag (gtag.js) -->
+        <!-- Matomo -->
+        <script>
+         var _paq = window._paq = window._paq || [];
+         _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+         _paq.push(["setCookieDomain", "*.appliedbrainresearch.com"]);
+         _paq.push(["setDomains", ["*.appliedbrainresearch.com","*.edge.nengo.ai","*.forum.nengo.ai","*.nengo.ai"]]);
+         _paq.push(["enableCrossDomainLinking"]);
+         _paq.push(["setDoNotTrack", true]);
+         _paq.push(['trackPageView']);
+         _paq.push(['enableLinkTracking']);
+         (function() {
+           var u="https://appliedbrainresearch.matomo.cloud/";
+           _paq.push(['setTrackerUrl', u+'matomo.php']);
+           _paq.push(['setSiteId', '3']);
+           var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+           g.async=true; g.src='//cdn.matomo.cloud/appliedbrainresearch.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+         })();
+        </script>
+        <!-- End Matomo Code -->
+    
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Set Neuron Parameters" href="02-set-neuron-params.html" />
+    <link rel="prev" title="Communication Channel" href="00-communication-channel.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  </head><body class="bg-dark"><!-- prettier-ignore -->
+
+
+<header class="fixed-top header-top shadow-sm">
+  <nav class="navbar navbar-expand-md navbar-light bg-white">
+    <a class="navbar-brand" href="https://www.nengo.ai/">
+      <img src="https://www.nengo.ai/design/_images/general-full-light.svg" alt="Nengo" class="logo" />
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse"
+      aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.nengo.ai/">What is Nengo?</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.nengo.ai/examples/">Examples</a>
+        </li>
+        <li class="nav-item dropdown active">
+          <a class="nav-link dropdown-toggle text-nowrap" id="navbar-dropdown-docs" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" href="#">Documentation</a>
+          <div class="dropdown-menu shadow-lg border-0" aria-labelledby="navbar-dropdown-docs">
+            
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo/">Nengo core</a>
+            <a class="dropdown-item" href="https://github.com/nengo/nengo-gui/">NengoGUI</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-dl/">NengoDL</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-spa/">NengoSPA</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-extras/">NengoExtras</a>
+            <a class="dropdown-item" href="https://arvoelke.github.io/nengolib-docs/">Nengolib</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/keras-spiking">KerasSpiking</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/pytorch-spiking">PyTorchSpiking</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-fpga/">NengoFPGA</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-loihi/">NengoLoihi</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-ocl/">NengoOCL</a>
+            <a class="dropdown-item" href="https://github.com/project-rig/nengo_spinnaker">NengoSpiNNaker</a>
+            <a class="dropdown-item" href="https://github.com/nengo/nengo-mpi">NengoMPI</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/documentation/">All documentation</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-nowrap" id="navbar-dropdown-community" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" href="#">Community</a>
+          <div class="dropdown-menu shadow-lg border-0" aria-labelledby="navbar-dropdown-community">
+            <a class="dropdown-item" href="https://forum.nengo.ai">Forum</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/people/">People</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/summer-school/">Summer school</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/contributing/">Contributing</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/publications/">Publications</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/videos/">Videos</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/conduct/">Code of conduct</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/caa/">CAA</a>
+          </div>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link btn btn-success btn-sm text-white" href="https://www.nengo.ai/getting-started/">Getting
+            started</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<div class="main-content gradient-top">
+  <div class="container-fluid">
+    <div class="row"><a class="toggle-sidenav d-block d-md-none" href="#"
+  ><i class="icon-close fa fa-fw fa-arrow-left"></i
+  ><i class="icon-open fa fa-fw fa-arrow-right"></i
+></a>
+<div role="complementary" class="sidenav col-4 col-xl-3 p-0 border-right">
+  <h3 class="pt-5 px-5">
+    <a href="../../index.html">
+      <img
+        class="img-fluid documentation-image"
+        src="https://www.nengo.ai/design/_images/nengo-fpga-full-light.svg"
+        alt="NengoFPGA"
+      />
+    </a>
+  </h3>
+<form class="px-5 py-3 my-0 border-bottom" action="../../search.html" method="get">
+  <div class="form-group form-group-single">
+    <input type="text" name="q" class="form-control" placeholder="Search" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <button type="submit" class="btn btn-link">
+      <img src="https://www.nengo.ai/img/icon-search.svg" alt="Go" />
+    </button>
+  </div>
+</form><div class="p-5 toctree">
+  
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../examples.html">Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../examples.html#notebook-examples">Notebook Examples</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="00-communication-channel.html">Communication Channel</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Learning a Communication Channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02-set-neuron-params.html">Set Neuron Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="03-integrator.html">Integrator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="04-oscillator.html">Simple Harmonic Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="05-controlled-oscillator.html">Controlled Oscillator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="06-chaotic-attractor.html">The Lorenz Chaotic Attractor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#gui-examples">GUI Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendix.html">Appendix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html#contributing-to-nengofpga">Contributing to NengoFPGA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html#nengofpga-license">NengoFPGA license</a></li>
+</ul>
+
+  
+  </div>
+  
+  <form class="p-5 my-0 border-top">
+    <div class="form-group">
+      <label class="text-gray">Version:</label>
+      <select class="custom-select" onchange="switchVersion(this);">
+        
+        
+        <option selected>latest</option>
+        
+        
+          
+        <option value="../../v0.2.2/examples/notebooks/01-learn-communication-channel.html">
+          v0.2.2
+        </option>
+          
+        
+      </select>
+    </div>
+  </form>
+  
+</div>
+      
+
+      <div class="col-12 col-md-8 col-xl-9">
+        <div class="container">
+          <div class="row">
+            <div class="col-10 offset-1 pb-5 documentation-source" role="main">
+              
+              
+              <div class="admonition note">
+                  <p class="admonition-title">Note</p>
+                  <p>
+                  This documentation is for a development version.
+                  <a href="../../v0.2.2/examples/notebooks/01-learn-communication-channel.html">
+                  Click here for the latest stable release (v0.2.2).
+                  </a>
+                  </p>
+              </div>
+              
+              
+  <div class="section" id="Learning-a-Communication-Channel">
+<h1>Learning a Communication Channel<a class="headerlink" href="#Learning-a-Communication-Channel" title="Permalink to this headline">¶</a></h1>
+<p>When using non-adaptive FPGA ensembles (i.e., the <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> is set to 0), the ensemble’s decoded output function can be defined by providing the <code class="docutils literal notranslate"><span class="pre">FpgaPesEnsembleNetwork</span></code> constructor with the <code class="docutils literal notranslate"><span class="pre">function</span></code> keyword (e.g., <code class="docutils literal notranslate"><span class="pre">function=lambda</span> <span class="pre">t:</span> <span class="pre">sin(t)</span></code>). Adaptive (learning) FPGA ensembles augment this feature by allowing the use of error-driving learning to compute these function in an “online” manner.</p>
+<div class="section" id="Step-1:-Set-up-the-Python-Imports">
+<h2>Step 1: Set up the Python Imports<a class="headerlink" href="#Step-1:-Set-up-the-Python-Imports" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">nengo</span>
+<span class="kn">from</span> <span class="nn">nengo.processes</span> <span class="kn">import</span> <span class="n">WhiteSignal</span>
+
+<span class="kn">import</span> <span class="nn">nengo_fpga</span>
+<span class="kn">from</span> <span class="nn">nengo_fpga.networks</span> <span class="kn">import</span> <span class="n">FpgaPesEnsembleNetwork</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Step-2:-Choose-an-FPGA-Device">
+<h2>Step 2: Choose an FPGA Device<a class="headerlink" href="#Step-2:-Choose-an-FPGA-Device" title="Permalink to this headline">¶</a></h2>
+<p>Define the FPGA device on which the remote FpgaPesEnsembleNetwork will run. This name corresponds with the name in your <code class="docutils literal notranslate"><span class="pre">fpga_config</span></code> file. Recall that in the <code class="docutils literal notranslate"><span class="pre">fpga_config</span></code> file, device names are identified by the square brackets (e.g., <strong>[de1]</strong> or <strong>[pynq]</strong>). The names defined in your configuration file might differ from the example below. Here, the device <strong>de1</strong> is being used.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">board</span> <span class="o">=</span> <span class="s2">&quot;de1&quot;</span>  <span class="c1"># Change this to your desired device name</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Step-3:-Create-the-Remote-FPGA-Neural-Ensemble">
+<h2>Step 3: Create the Remote FPGA Neural Ensemble<a class="headerlink" href="#Step-3:-Create-the-Remote-FPGA-Neural-Ensemble" title="Permalink to this headline">¶</a></h2>
+<p>Create a remote FPGA neural ensemble (<code class="docutils literal notranslate"><span class="pre">FpgaPesEnsembleNetwork</span></code>) using the board defined above, 100 neurons, 1 dimension, and a learning rate of <code class="docutils literal notranslate"><span class="pre">5e-5</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a nengo network object to which we can add</span>
+<span class="c1"># ensembles, connections, etc.</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Network</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Learned Communication Channel&quot;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">model</span><span class="p">:</span>
+    <span class="c1"># Remote FPGA neural ensemble</span>
+    <span class="n">fpga_ens</span> <span class="o">=</span> <span class="n">FpgaPesEnsembleNetwork</span><span class="p">(</span>
+        <span class="n">board</span><span class="p">,</span>  <span class="c1"># The board to use (from above)</span>
+        <span class="n">n_neurons</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>  <span class="c1"># The number of neurons to use in the ensemble</span>
+        <span class="c1"># Number of dimensions for the ensemble to represent</span>
+        <span class="n">dimensions</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">learning_rate</span><span class="o">=</span><span class="mf">5e-5</span><span class="p">,</span>  <span class="c1"># Desired learning rate</span>
+        <span class="c1"># Provide a random function as initialization</span>
+        <span class="n">function</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Uncomment the following line to use spiking neuron</span>
+    <span class="c1"># fpga_ens.ensemble.neuron_type = nengo.SpikingRectifiedLinear()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Specified FPGA configuration &#39;de1&#39; not found.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+WARNING: Specified FPGA configuration &#39;de1&#39; not found.
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Step-4:-Provide-Input-to-the-Ensemble">
+<h2>Step 4: Provide Input to the Ensemble<a class="headerlink" href="#Step-4:-Provide-Input-to-the-Ensemble" title="Permalink to this headline">¶</a></h2>
+<p>Create an input node that generates a white-noise signal. This is what will be used to demonstrate the efficacy of the learning.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">model</span><span class="p">:</span>
+    <span class="c1"># White-noise reference signal</span>
+    <span class="n">input_node</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">WhiteSignal</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Step-5:-Connect-the-Input-to-the-FPGA-Ensemble">
+<h2>Step 5: Connect the Input to the FPGA Ensemble<a class="headerlink" href="#Step-5:-Connect-the-Input-to-the-FPGA-Ensemble" title="Permalink to this headline">¶</a></h2>
+<p>The FPGA ensemble contains <code class="docutils literal notranslate"><span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code> attributes to allow connections to be made to and from the ensemble.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">model</span><span class="p">:</span>
+    <span class="c1"># Connect the input to the FPGA ensemble</span>
+    <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">input_node</span><span class="p">,</span> <span class="n">fpga_ens</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Step-6:-Add-Probes-to-Collect-Data">
+<h2>Step 6: Add Probes to Collect Data<a class="headerlink" href="#Step-6:-Add-Probes-to-Collect-Data" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">model</span><span class="p">:</span>
+    <span class="c1"># The original input</span>
+    <span class="n">input_p</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Probe</span><span class="p">(</span><span class="n">input_node</span><span class="p">,</span> <span class="n">synapse</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+
+    <span class="c1"># The output from the FPGA ensemble</span>
+    <span class="c1"># (filtered with a 10ms post-synaptic filter)</span>
+    <span class="n">output_p</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Probe</span><span class="p">(</span><span class="n">fpga_ens</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">synapse</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Step-7:-Test-the-Model-Without-Learning">
+<h2>Step 7: Test the Model Without Learning<a class="headerlink" href="#Step-7:-Test-the-Model-Without-Learning" title="Permalink to this headline">¶</a></h2>
+<p>In Step 5, only the connection between the input signal and the FPGA ensemble was made. Without a learning signal connected to the FPGA ensemble, the ensemble will behave as if the learning was disabled. To demonstrate this, run the model as it is, and plot the output. From the output graph, it should be apparent that the FPGA ensemble does not compute a useful value.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">nengo_fpga</span><span class="o">.</span><span class="n">Simulator</span><span class="p">(</span><span class="n">model</span><span class="p">)</span> <span class="k">as</span> <span class="n">sim</span><span class="p">:</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Building network with dummy (non-FPGA) ensemble.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+WARNING: Building network with dummy (non-FPGA) ensemble.
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot figure</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">trange</span><span class="p">(),</span> <span class="n">sim</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">input_p</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Input&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">trange</span><span class="p">(),</span> <span class="n">sim</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">output_p</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;FPGA Output&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Sim time (s)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Random Initialization Without Learning&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/examples_notebooks_01-learn-communication-channel_15_0.png" src="../../_images/examples_notebooks_01-learn-communication-channel_15_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Step-8:-Add-Learning">
+<h2>Step 8: Add Learning<a class="headerlink" href="#Step-8:-Add-Learning" title="Permalink to this headline">¶</a></h2>
+<p>The adaptive component of the FPGA ensemble works by implementing the <code class="docutils literal notranslate"><span class="pre">nengo.PES</span></code> learning rule. The <code class="docutils literal notranslate"><span class="pre">nengo.PES</span></code> learning rule in turn requires an error signal to function correctly. In this example, the error signal will be computed such that the FPGA ensemble learns to behave like a communication channel.</p>
+<p>Mathematically, the error signal <span class="math notranslate nohighlight">\(e\)</span> can be defined as:</p>
+<div class="math notranslate nohighlight">
+\[e = \hat{x} - x,\]</div>
+<p>where <span class="math notranslate nohighlight">\(x\)</span> is the reference signal (target value), and <span class="math notranslate nohighlight">\(\hat{x}\)</span> is the output of the FPGA ensemble (actual value).</p>
+<p>To represent (and compute) the error signal in the Nengo model, an additional (non-FPGA) neural ensemble is required. Connections are made to this ensemble with the appropriate transformations to perform the subtraction function.</p>
+<p>Finally, the output of the error ensemble is connected to the <code class="docutils literal notranslate"><span class="pre">error</span></code> attribute of the <code class="docutils literal notranslate"><span class="pre">fpga_ens</span></code>, and this provides the FPGA ensemble with the appropriate error signal.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">model</span><span class="p">:</span>
+    <span class="c1"># Create a neural ensemble to calculate the error signal</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Compute the error (error = actual - target) using transforms</span>
+    <span class="c1"># on the connections to the error ensemble</span>
+    <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">fpga_ens</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+    <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">input_node</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">transform</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Project error to the adaptive neural ensemble on the FPGA</span>
+    <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">fpga_ens</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
+
+    <span class="c1"># Add a probe of the error signal</span>
+    <span class="n">error_p</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Probe</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">synapse</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The effect the adaptation has on the behaviour of the FPGA ensemble can now be demonstrated by running the model, and plotting the results.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">nengo_fpga</span><span class="o">.</span><span class="n">Simulator</span><span class="p">(</span><span class="n">model</span><span class="p">)</span> <span class="k">as</span> <span class="n">sim</span><span class="p">:</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Building network with dummy (non-FPGA) ensemble.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+WARNING: Building network with dummy (non-FPGA) ensemble.
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">trange</span><span class="p">(),</span> <span class="n">sim</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">input_p</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Input&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">trange</span><span class="p">(),</span> <span class="n">sim</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">output_p</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;FPGA Output&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Random Initialization With Learning&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">trange</span><span class="p">(),</span> <span class="n">sim</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">error_p</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Sim time&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Value of Error Signal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/examples_notebooks_01-learn-communication-channel_20_0.png" src="../../_images/examples_notebooks_01-learn-communication-channel_20_0.png" />
+</div>
+</div>
+<p>The plot above show that with the learning enabled, the output of the FPGA ensemble (red) slowly adapts to match the reference white noise signal (black). Additionally, it is observed that as the simulation progresses, the value of the error signal (blue) gradually decreases.</p>
+</div>
+<div class="section" id="Does-it-generalize?">
+<h2>Does it generalize?<a class="headerlink" href="#Does-it-generalize?" title="Permalink to this headline">¶</a></h2>
+<p>The adaptive FPGA ensemble will continually adapt it’s decoded output as long as an error signal is provided (i.e., it will always work to minimize the value of the error signal). However, an important consideration is figure out if the FPGA ensemble has learned general communication channel function. That is to say, has the FPGA ensemble learned the communication channel function across a range of inputs, or has it only adapted to the specific sequence of input it has been shown.</p>
+<p>If the FPGA ensemble has computed a generalized function, it should still function as a communication channel when the learning is disabled. To disable the learning, the activity of the <code class="docutils literal notranslate"><span class="pre">error</span></code> ensemble can be inhibited, thus providing no error signal. In the code below, an inhibitory connection is made to the <code class="docutils literal notranslate"><span class="pre">error</span></code> ensemble that inhibits it after the simulation has run for 10 seconds.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inhibit</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mf">5.0</span> <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="mf">10.0</span> <span class="k">else</span> <span class="mf">0.0</span>
+
+
+<span class="k">with</span> <span class="n">model</span><span class="p">:</span>
+    <span class="n">inhib</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">inhibit</span><span class="p">)</span>
+    <span class="n">nengo</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span><span class="n">inhib</span><span class="p">,</span> <span class="n">error</span><span class="o">.</span><span class="n">neurons</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="n">error</span><span class="o">.</span><span class="n">n_neurons</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>With the inhibitory connection made, the model can be run (for 16 seconds this time – the first 10 seconds of which the FPGA ensemble is learning, followed by 6 seconds where the <code class="docutils literal notranslate"><span class="pre">error</span></code> ensemble is inhibited).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">nengo_fpga</span><span class="o">.</span><span class="n">Simulator</span><span class="p">(</span><span class="n">model</span><span class="p">)</span> <span class="k">as</span> <span class="n">sim</span><span class="p">:</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Building network with dummy (non-FPGA) ensemble.
+/home/runner/micromamba/envs/ci/lib/python3.8/site-packages/nengo/builder/optimizer.py:654: UserWarning: Skipping some optimization steps because SciPy is not installed. Installing SciPy may result in faster simulations.
+  warnings.warn(
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+WARNING: Building network with dummy (non-FPGA) ensemble.
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">trange</span><span class="p">(),</span> <span class="n">sim</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">input_p</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Input&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">trange</span><span class="p">(),</span> <span class="n">sim</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">output_p</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;FPGA Output&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="s2">&quot;g--&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Random Initialization With Learning&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">trange</span><span class="p">(),</span> <span class="n">sim</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">error_p</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Sim time&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="s2">&quot;g--&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Value of Error Signal&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/examples_notebooks_01-learn-communication-channel_26_0.png" src="../../_images/examples_notebooks_01-learn-communication-channel_26_0.png" />
+</div>
+</div>
+<p>From the plots above, the following observations can be made:</p>
+<ol class="arabic simple">
+<li><p>The output of the error ensemble (blue) goes to zero when it is inhibited.</p></li>
+<li><p>The FPGA ensemble continues to behave like a communication channel even after the learning is disabled (the green dotted line). This demonstrates that the FPGA ensemble has learned behave like a general communication channel.</p></li>
+</ol>
+</div>
+<div class="section" id="How-Does-This-Work?">
+<h2>How Does This Work?<a class="headerlink" href="#How-Does-This-Work?" title="Permalink to this headline">¶</a></h2>
+<p>Since many of the internal dynamics of the FPGA ensemble are not probable (for sake of performance), it is difficult to explore the details of the implementation here. Take a look at the <a class="reference external" href="https://www.nengo.ai/nengo/examples/learning/learn-communication-channel.html#How-does-this-work?">learn_communication_channel</a> example built with standard Nengo for an explanation of the learning rule and how the connection weights changes as the learning rule is applied.</p>
+</div>
+</div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><footer class="text-light footer-main gradient-bottom-center">
+  <p class="text-center">
+    <a class="no-hover-line" href="https://appliedbrainresearch.com">
+      <img class="abr-logo" src="https://www.nengo.ai/img/abr-logo.svg" height="32" />
+    </a>
+    <a href="https://www.nengo.ai/">What is Nengo?</a>
+    <a href="https://www.nengo.ai/examples/">Examples</a>
+    <a href="https://www.nengo.ai/documentation/">Documentation</a>
+    <a href="https://www.nengo.ai/getting-started/">Getting started</a>
+    <a href="https://www.nengo.ai/privacy/">Privacy</a>
+  </p>
+  <p class="small text-center pb-0 mb-0">&copy; Applied Brain Research</p>
+</footer>
+<script>
+  function switchVersion(select) {
+    var option = select.selectedOptions[0];
+    if (option.hasAttribute("value")) {
+      window.location = option.value;
+    }
+  }
+</script>
+
+<script>
+  var elements = document.querySelectorAll('.sidenav');
+  Stickyfill.add(elements);
+</script>
+<script>
+  ScrollReveal().reveal(".fade-in", {
+      scale: 0.85,
+      duration: 1000,
+      delay: 250,
+      interval: 50
+  });
+</script>
+<script>
+  $('a.toggle-sidenav').on('click', function(e) {
+    e.preventDefault();
+    if ( $(this).hasClass('active') ) {
+      $(this).removeClass('active');
+      $('.sidenav').removeClass('open');
+    } else {
+      $(this).addClass('active');
+      $('.sidenav').addClass('open');
+    }
+  });
+</script>
+<script>
+  var lists = document.querySelectorAll('.toctree ul');
+  lists.forEach((ul) => {
+      ul.classList.add("nav");
+  });
+  var links = document.querySelectorAll('.toctree a');
+  links.forEach((link) => {
+      link.classList.add("nav-link");
+  });
+  $("body").scrollspy({target: ".sidenav"});
+</script>
+  </body>
+</html>

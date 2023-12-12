@@ -1,0 +1,502 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API &#8212; NengoFPGA 0.2.3.dev0 docs</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+<link rel="stylesheet" href="https://www.nengo.ai/css/bootstrap.css" type="text/css">
+<style>
+ body .title-bar,
+ body .documentation-source h1:after {
+   background-color: #541a8b;
+ }
+</style>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/scrollreveal"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stickyfill/2.1.0/stickyfill.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+<!-- From basic/layout.html -->
+<script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+
+
+<script src="_static/underscore.js"></script>
+
+
+<script src="_static/doctools.js"></script>
+
+
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GT8XEDLTMJ"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'G-GT8XEDLTMJ');
+        </script>
+        <!-- End Google tag (gtag.js) -->
+        <!-- Matomo -->
+        <script>
+         var _paq = window._paq = window._paq || [];
+         _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+         _paq.push(["setCookieDomain", "*.appliedbrainresearch.com"]);
+         _paq.push(["setDomains", ["*.appliedbrainresearch.com","*.edge.nengo.ai","*.forum.nengo.ai","*.nengo.ai"]]);
+         _paq.push(["enableCrossDomainLinking"]);
+         _paq.push(["setDoNotTrack", true]);
+         _paq.push(['trackPageView']);
+         _paq.push(['enableLinkTracking']);
+         (function() {
+           var u="https://appliedbrainresearch.matomo.cloud/";
+           _paq.push(['setTrackerUrl', u+'matomo.php']);
+           _paq.push(['setSiteId', '3']);
+           var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+           g.async=true; g.src='//cdn.matomo.cloud/appliedbrainresearch.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+         })();
+        </script>
+        <!-- End Matomo Code -->
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Appendix" href="appendix.html" />
+    <link rel="prev" title="The Lorenz Chaotic Attractor" href="examples/notebooks/06-chaotic-attractor.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  </head><body class="bg-dark"><!-- prettier-ignore -->
+
+
+<header class="fixed-top header-top shadow-sm">
+  <nav class="navbar navbar-expand-md navbar-light bg-white">
+    <a class="navbar-brand" href="https://www.nengo.ai/">
+      <img src="https://www.nengo.ai/design/_images/general-full-light.svg" alt="Nengo" class="logo" />
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse"
+      aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.nengo.ai/">What is Nengo?</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.nengo.ai/examples/">Examples</a>
+        </li>
+        <li class="nav-item dropdown active">
+          <a class="nav-link dropdown-toggle text-nowrap" id="navbar-dropdown-docs" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" href="#">Documentation</a>
+          <div class="dropdown-menu shadow-lg border-0" aria-labelledby="navbar-dropdown-docs">
+            
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo/">Nengo core</a>
+            <a class="dropdown-item" href="https://github.com/nengo/nengo-gui/">NengoGUI</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-dl/">NengoDL</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-spa/">NengoSPA</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-extras/">NengoExtras</a>
+            <a class="dropdown-item" href="https://arvoelke.github.io/nengolib-docs/">Nengolib</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/keras-spiking">KerasSpiking</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/pytorch-spiking">PyTorchSpiking</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-fpga/">NengoFPGA</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-loihi/">NengoLoihi</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-ocl/">NengoOCL</a>
+            <a class="dropdown-item" href="https://github.com/project-rig/nengo_spinnaker">NengoSpiNNaker</a>
+            <a class="dropdown-item" href="https://github.com/nengo/nengo-mpi">NengoMPI</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/documentation/">All documentation</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-nowrap" id="navbar-dropdown-community" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" href="#">Community</a>
+          <div class="dropdown-menu shadow-lg border-0" aria-labelledby="navbar-dropdown-community">
+            <a class="dropdown-item" href="https://forum.nengo.ai">Forum</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/people/">People</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/summer-school/">Summer school</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/contributing/">Contributing</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/publications/">Publications</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/videos/">Videos</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/conduct/">Code of conduct</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/caa/">CAA</a>
+          </div>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link btn btn-success btn-sm text-white" href="https://www.nengo.ai/getting-started/">Getting
+            started</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<div class="main-content gradient-top">
+  <div class="container-fluid">
+    <div class="row"><a class="toggle-sidenav d-block d-md-none" href="#"
+  ><i class="icon-close fa fa-fw fa-arrow-left"></i
+  ><i class="icon-open fa fa-fw fa-arrow-right"></i
+></a>
+<div role="complementary" class="sidenav col-4 col-xl-3 p-0 border-right">
+  <h3 class="pt-5 px-5">
+    <a href="index.html">
+      <img
+        class="img-fluid documentation-image"
+        src="https://www.nengo.ai/design/_images/nengo-fpga-full-light.svg"
+        alt="NengoFPGA"
+      />
+    </a>
+  </h3>
+<form class="px-5 py-3 my-0 border-bottom" action="search.html" method="get">
+  <div class="form-group form-group-single">
+    <input type="text" name="q" class="form-control" placeholder="Search" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <button type="submit" class="btn btn-link">
+      <img src="https://www.nengo.ai/img/icon-search.svg" alt="Go" />
+    </button>
+  </div>
+</form><div class="p-5 toctree">
+  
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setting-parameters">Setting Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#supported-neuron-types">Supported Neuron Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#objects-and-functions">Objects and Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project.html">Project Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project.html#contributing-to-nengofpga">Contributing to NengoFPGA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project.html#nengofpga-license">NengoFPGA license</a></li>
+</ul>
+
+  
+  </div>
+  
+  <form class="p-5 my-0 border-top">
+    <div class="form-group">
+      <label class="text-gray">Version:</label>
+      <select class="custom-select" onchange="switchVersion(this);">
+        
+        
+        <option selected>latest</option>
+        
+        
+          
+        <option value="v0.2.2/api.html">
+          v0.2.2
+        </option>
+          
+        
+      </select>
+    </div>
+  </form>
+  
+</div>
+      
+
+      <div class="col-12 col-md-8 col-xl-9">
+        <div class="container">
+          <div class="row">
+            <div class="col-10 offset-1 pb-5 documentation-source" role="main">
+              
+              
+              <div class="admonition note">
+                  <p class="admonition-title">Note</p>
+                  <p>
+                  This documentation is for a development version.
+                  <a href="v0.2.2/api.html">
+                  Click here for the latest stable release (v0.2.2).
+                  </a>
+                  </p>
+              </div>
+              
+              
+  <div class="section" id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="setting-parameters">
+<h2>Setting Parameters<a class="headerlink" href="#setting-parameters" title="Permalink to this headline">¶</a></h2>
+<p>Many of the Nengo ensemble parameters are omitted from the
+<code class="docutils literal notranslate"><span class="pre">FpgaPesEnsembleNetwork</span></code> constructor, but all of these ensemble parameters can
+easily be changed once an ensemble is created:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># First create the ensemble</span>
+<span class="n">ens</span> <span class="o">=</span> <span class="n">FpgaPesEnsembleNetwork</span><span class="p">(</span>
+         <span class="s1">&#39;de1&#39;</span><span class="p">,</span> <span class="n">n_neurons</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
+
+<span class="c1"># Modify ensemble parameters</span>
+<span class="n">ens</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">neuron_type</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">neurons</span><span class="o">.</span><span class="n">RectifiedLinear</span><span class="p">()</span>
+<span class="n">ens</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">intercepts</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">dists</span><span class="o">.</span><span class="n">Choice</span><span class="p">([</span><span class="o">-</span><span class="mf">0.5</span><span class="p">])</span>
+<span class="n">ens</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">max_rates</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">dists</span><span class="o">.</span><span class="n">Choice</span><span class="p">([</span><span class="mi">100</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Since our <code class="docutils literal notranslate"><span class="pre">FpgaPesEnsembleNetwork</span></code> class also encompasses the connection from
+the FPGA ensemble, we can similarly change the connection parameters:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Modify connection parameters</span>
+<span class="n">ens</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">synapse</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">ens</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">nengo</span><span class="o">.</span><span class="n">solvers</span><span class="o">.</span><span class="n">LstsqL2</span><span class="p">(</span><span class="n">reg</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">02-mnist_vision_network</span></code> example demonstrates this capability.</p>
+<p>If a recurrent connection exists, we can similarly modify that connection:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Modify connection parameters</span>
+<span class="n">ens</span><span class="o">.</span><span class="n">feedback</span><span class="o">.</span><span class="n">synapse</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">ens</span><span class="o">.</span><span class="n">feedback</span><span class="o">.</span><span class="n">function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="mf">0.5</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Check out the Nengo documentation for a full list of <a class="reference external" href="https://www.nengo.ai/nengo/frontend-api.html#nengo.Ensemble" title="(in Nengo v4.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ensemble</span> <span class="pre">parameters</span></code></a> and
+<a class="reference external" href="https://www.nengo.ai/nengo/frontend-api.html#nengo.Connection" title="(in Nengo v4.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">connection</span> <span class="pre">parameters</span></code></a>.</p>
+</div>
+</div>
+<div class="section" id="supported-neuron-types">
+<h2>Supported Neuron Types<a class="headerlink" href="#supported-neuron-types" title="Permalink to this headline">¶</a></h2>
+<p>Currently NengoFPGA supports the following neuron types:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.nengo.ai/nengo/frontend-api.html#nengo.RectifiedLinear" title="(in Nengo v4.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nengo.RecitifiedLinear</span></code></a></p></li>
+<li><p><a class="reference external" href="https://www.nengo.ai/nengo/frontend-api.html#nengo.SpikingRectifiedLinear" title="(in Nengo v4.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nengo.SpikingRectifiedLinear</span></code></a></p></li>
+</ul>
+</div>
+<div class="section" id="objects-and-functions">
+<h2>Objects and Functions<a class="headerlink" href="#objects-and-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="nengo_fpga.networks.FpgaPesEnsembleNetwork">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nengo_fpga.networks.</span></code><code class="sig-name descname"><span class="pre">FpgaPesEnsembleNetwork</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fpga_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neurons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimensions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Default</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">socket_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feedback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_to_container</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/nengo/nengo-fpga/blob/master/nengo_fpga/networks/fpga_pes_ensemble_network.py#L29-L588"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nengo_fpga.networks.FpgaPesEnsembleNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>An ensemble to be run on the FPGA.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>fpga_name</strong><span class="classifier">str</span></dt><dd><p>The name of the fpga defined in the config file.</p>
+</dd>
+<dt><strong>n_neurons</strong><span class="classifier">int</span></dt><dd><p>The number of neurons.</p>
+</dd>
+<dt><strong>dimensions</strong><span class="classifier">int</span></dt><dd><p>The number of representational dimensions.</p>
+</dd>
+<dt><strong>learning_rate</strong><span class="classifier">float</span></dt><dd><p>A scalar indicating the rate at which weights will be adjusted.</p>
+</dd>
+<dt><strong>function</strong><span class="classifier">callable or (n_eval_points, size_mid) array_like,                optional (Default: None)</span></dt><dd><p>Function to compute across the connection. Note that <code class="docutils literal notranslate"><span class="pre">pre</span></code> must be
+an ensemble to apply a function across the connection.
+If an array is passed, the function is implicitly defined by the
+points in the array and the provided <code class="docutils literal notranslate"><span class="pre">eval_points</span></code>, which have a
+one-to-one correspondence.</p>
+</dd>
+<dt><strong>transform</strong><span class="classifier">(size_out, size_mid) array_like, optional                 (Default: <code class="docutils literal notranslate"><span class="pre">np.array(1.0)</span></code>)</span></dt><dd><p>Linear transform mapping the pre output to the post input.
+This transform is in terms of the sliced size; if either pre
+or post is a slice, the transform must be shaped according to
+the sliced dimensionality. Additionally, the function is applied
+before the transform, so if a function is computed across the
+connection, the transform must be of shape <code class="docutils literal notranslate"><span class="pre">(size_out,</span> <span class="pre">size_mid)</span></code>.</p>
+</dd>
+<dt><strong>eval_points</strong><span class="classifier">(n_eval_points, size_in) array_like or int, optional                   (Default: None)</span></dt><dd><p>Points at which to evaluate <code class="docutils literal notranslate"><span class="pre">function</span></code> when computing decoders,
+spanning the interval (-pre.radius, pre.radius) in each dimension.
+If None, will use the eval_points associated with <code class="docutils literal notranslate"><span class="pre">pre</span></code>.</p>
+</dd>
+<dt><strong>socket_args</strong><span class="classifier">dictionary, optional (Default: Empty dictionary)</span></dt><dd><p>Parameters to pass on to the <code class="docutils literal notranslate"><span class="pre">socket</span></code> object that is used to handle UDP
+communication between the host PC and the FPGA board. Acceptable parameters
+are:
+<code class="docutils literal notranslate"><span class="pre">connect_timeout</span></code>: Determines the maximum timeout to wait for a connection
+from the FPGA board. Default: 300s
+<code class="docutils literal notranslate"><span class="pre">recv_timeout</span></code>: Determines the maximum timeout for each packet received
+from the FPGA board. Default: 0.1s</p>
+</dd>
+<dt><strong>feedback</strong><span class="classifier">float or (D_out, D_in) array_like, optional</span></dt><dd><p>Defines the transform for a recurrent connection. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, no
+recurrent connection will be built. The default synapse used for the
+recurrent connection is <code class="docutils literal notranslate"><span class="pre">nengo.Lowpass(0.1)</span></code>, this can be changed
+using the <code class="docutils literal notranslate"><span class="pre">feedback</span></code> attribute of this class.</p>
+</dd>
+<dt><strong>label</strong><span class="classifier">str, optional (Default: None)</span></dt><dd><p>A descriptive label for the connection.</p>
+</dd>
+<dt><strong>seed</strong><span class="classifier">int, optional (Default: None)</span></dt><dd><p>The seed used for random number generation.</p>
+</dd>
+<dt><strong>add_to_container</strong><span class="classifier">bool, optional (Default: None)</span></dt><dd><p>Determines if this network will be added to the current container. If
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, this network will be added to the network at the top of the
+<code class="docutils literal notranslate"><span class="pre">Network.context</span></code> stack unless the stack is empty.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><dl>
+<dt><strong>input</strong><span class="classifier"><a class="reference external" href="https://www.nengo.ai/nengo/frontend-api.html#nengo.Node" title="(in Nengo v4.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nengo.Node</span></code></a></span></dt><dd><p>A node that serves as the input interface between external Nengo
+objects and the FPGA board.</p>
+</dd>
+<dt><strong>output</strong><span class="classifier"><a class="reference external" href="https://www.nengo.ai/nengo/frontend-api.html#nengo.Node" title="(in Nengo v4.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nengo.Node</span></code></a></span></dt><dd><p>A node that serves as the output interface between the FPGA board and
+external Nengo objects.</p>
+</dd>
+<dt><strong>error</strong><span class="classifier"><a class="reference external" href="https://www.nengo.ai/nengo/frontend-api.html#nengo.Node" title="(in Nengo v4.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nengo.Node</span></code></a></span></dt><dd><p>A node that provides the error signal to be used by the learning rule
+on the FPGA board.</p>
+</dd>
+<dt><strong>ensemble</strong><span class="classifier"><a class="reference external" href="https://www.nengo.ai/nengo/frontend-api.html#nengo.Ensemble" title="(in Nengo v4.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nengo.Ensemble</span></code></a></span></dt><dd><p>An ensemble object whose parameters are used to configure the
+ensemble implementation on the FPGA board.</p>
+</dd>
+<dt><strong>connection</strong><span class="classifier"><a class="reference external" href="https://www.nengo.ai/nengo/frontend-api.html#nengo.Connection" title="(in Nengo v4.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nengo.Connection</span></code></a></span></dt><dd><p>The connection object used to configure the learning connection
+implementation on the FPGA board.</p>
+</dd>
+<dt><strong>feedback</strong><span class="classifier"><a class="reference external" href="https://www.nengo.ai/nengo/frontend-api.html#nengo.Connection" title="(in Nengo v4.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nengo.Connection</span></code></a></span></dt><dd><p>The connection object used to configure the recurrent connection
+implementation on the FPGA board.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="nengo_fpga.networks.FpgaPesEnsembleNetwork.get_output_dim">
+<code class="sig-name descname"><span class="pre">get_output_dim</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimensions</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/nengo/nengo-fpga/blob/master/nengo_fpga/networks/fpga_pes_ensemble_network.py#L233-L244"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nengo_fpga.networks.FpgaPesEnsembleNetwork.get_output_dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simplify init function by moving output shape calculation here.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nengo_fpga.networks.FpgaPesEnsembleNetwork.local_data_filepath">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">local_data_filepath</span></code><a class="headerlink" href="#nengo_fpga.networks.FpgaPesEnsembleNetwork.local_data_filepath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Full path to ensemble parameter value data file on the local system.</p>
+<p>Ensemble parameter values are generated by the builder.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nengo_fpga.networks.FpgaPesEnsembleNetwork.terminate_client">
+<code class="sig-name descname"><span class="pre">terminate_client</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/nengo/nengo-fpga/blob/master/nengo_fpga/networks/fpga_pes_ensemble_network.py#L255-L266"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nengo_fpga.networks.FpgaPesEnsembleNetwork.terminate_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send termination packet to FPGA board.</p>
+<p>Termination packet is a packet where t is less than 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nengo_fpga.networks.FpgaPesEnsembleNetwork.close">
+<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/nengo/nengo-fpga/blob/master/nengo_fpga/networks/fpga_pes_ensemble_network.py#L268-L293"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nengo_fpga.networks.FpgaPesEnsembleNetwork.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shutdown connections to FPGA if applicable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nengo_fpga.networks.FpgaPesEnsembleNetwork.cleanup">
+<code class="sig-name descname"><span class="pre">cleanup</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/nengo/nengo-fpga/blob/master/nengo_fpga/networks/fpga_pes_ensemble_network.py#L295-L304"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nengo_fpga.networks.FpgaPesEnsembleNetwork.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove FPGA data file if applicable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nengo_fpga.networks.FpgaPesEnsembleNetwork.connect_ssh_client">
+<code class="sig-name descname"><span class="pre">connect_ssh_client</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ssh_user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remote_ip</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/nengo/nengo-fpga/blob/master/nengo_fpga/networks/fpga_pes_ensemble_network.py#L306-L337"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nengo_fpga.networks.FpgaPesEnsembleNetwork.connect_ssh_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to parse config and setup ssh client.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nengo_fpga.networks.FpgaPesEnsembleNetwork.connect_thread_func">
+<code class="sig-name descname"><span class="pre">connect_thread_func</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/nengo/nengo-fpga/blob/master/nengo_fpga/networks/fpga_pes_ensemble_network.py#L339-L429"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nengo_fpga.networks.FpgaPesEnsembleNetwork.connect_thread_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start SSH in a separate thread if applicable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nengo_fpga.networks.FpgaPesEnsembleNetwork.connect">
+<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/nengo/nengo-fpga/blob/master/nengo_fpga/networks/fpga_pes_ensemble_network.py#L431-L513"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nengo_fpga.networks.FpgaPesEnsembleNetwork.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to FPGA via SSH if applicable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nengo_fpga.networks.FpgaPesEnsembleNetwork.process_ssh_output">
+<code class="sig-name descname"><span class="pre">process_ssh_output</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/nengo/nengo-fpga/blob/master/nengo_fpga/networks/fpga_pes_ensemble_network.py#L515-L526"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nengo_fpga.networks.FpgaPesEnsembleNetwork.process_ssh_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clean up the data stream coming back over ssh if applicable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nengo_fpga.networks.FpgaPesEnsembleNetwork.check_ssh_str">
+<code class="sig-name descname"><span class="pre">check_ssh_str</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">info_str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_strs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">got_error</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remote_ip</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/nengo/nengo-fpga/blob/master/nengo_fpga/networks/fpga_pes_ensemble_network.py#L528-L550"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nengo_fpga.networks.FpgaPesEnsembleNetwork.check_ssh_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process info from ssh and check for errors.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nengo_fpga.networks.FpgaPesEnsembleNetwork.reset">
+<code class="sig-name descname"><span class="pre">reset</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/nengo/nengo-fpga/blob/master/nengo_fpga/networks/fpga_pes_ensemble_network.py#L552-L566"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#nengo_fpga.networks.FpgaPesEnsembleNetwork.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reconnect to FPGA if applicable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nengo_fpga.networks.FpgaPesEnsembleNetwork.ssh_string">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">ssh_string</span></code><a class="headerlink" href="#nengo_fpga.networks.FpgaPesEnsembleNetwork.ssh_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Command sent to FPGA device to begin execution.</p>
+<p>Generate the string to be sent over the ssh connection to run the remote
+side ssh script (with appropriate arguments)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><footer class="text-light footer-main gradient-bottom-center">
+  <p class="text-center">
+    <a class="no-hover-line" href="https://appliedbrainresearch.com">
+      <img class="abr-logo" src="https://www.nengo.ai/img/abr-logo.svg" height="32" />
+    </a>
+    <a href="https://www.nengo.ai/">What is Nengo?</a>
+    <a href="https://www.nengo.ai/examples/">Examples</a>
+    <a href="https://www.nengo.ai/documentation/">Documentation</a>
+    <a href="https://www.nengo.ai/getting-started/">Getting started</a>
+    <a href="https://www.nengo.ai/privacy/">Privacy</a>
+  </p>
+  <p class="small text-center pb-0 mb-0">&copy; Applied Brain Research</p>
+</footer>
+<script>
+  function switchVersion(select) {
+    var option = select.selectedOptions[0];
+    if (option.hasAttribute("value")) {
+      window.location = option.value;
+    }
+  }
+</script>
+
+<script>
+  var elements = document.querySelectorAll('.sidenav');
+  Stickyfill.add(elements);
+</script>
+<script>
+  ScrollReveal().reveal(".fade-in", {
+      scale: 0.85,
+      duration: 1000,
+      delay: 250,
+      interval: 50
+  });
+</script>
+<script>
+  $('a.toggle-sidenav').on('click', function(e) {
+    e.preventDefault();
+    if ( $(this).hasClass('active') ) {
+      $(this).removeClass('active');
+      $('.sidenav').removeClass('open');
+    } else {
+      $(this).addClass('active');
+      $('.sidenav').addClass('open');
+    }
+  });
+</script>
+<script>
+  var lists = document.querySelectorAll('.toctree ul');
+  lists.forEach((ul) => {
+      ul.classList.add("nav");
+  });
+  var links = document.querySelectorAll('.toctree a');
+  links.forEach((link) => {
+      link.classList.add("nav-link");
+  });
+  $("body").scrollspy({target: ".sidenav"});
+</script>
+  </body>
+</html>

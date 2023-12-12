@@ -1,0 +1,542 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Information &#8212; NengoFPGA 0.2.3.dev0 docs</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+<link rel="stylesheet" href="https://www.nengo.ai/css/bootstrap.css" type="text/css">
+<style>
+ body .title-bar,
+ body .documentation-source h1:after {
+   background-color: #541a8b;
+ }
+</style>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/scrollreveal"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stickyfill/2.1.0/stickyfill.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+<!-- From basic/layout.html -->
+<script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+
+
+<script src="_static/underscore.js"></script>
+
+
+<script src="_static/doctools.js"></script>
+
+
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GT8XEDLTMJ"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'G-GT8XEDLTMJ');
+        </script>
+        <!-- End Google tag (gtag.js) -->
+        <!-- Matomo -->
+        <script>
+         var _paq = window._paq = window._paq || [];
+         _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+         _paq.push(["setCookieDomain", "*.appliedbrainresearch.com"]);
+         _paq.push(["setDomains", ["*.appliedbrainresearch.com","*.edge.nengo.ai","*.forum.nengo.ai","*.nengo.ai"]]);
+         _paq.push(["enableCrossDomainLinking"]);
+         _paq.push(["setDoNotTrack", true]);
+         _paq.push(['trackPageView']);
+         _paq.push(['enableLinkTracking']);
+         (function() {
+           var u="https://appliedbrainresearch.matomo.cloud/";
+           _paq.push(['setTrackerUrl', u+'matomo.php']);
+           _paq.push(['setSiteId', '3']);
+           var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+           g.async=true; g.src='//cdn.matomo.cloud/appliedbrainresearch.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+         })();
+        </script>
+        <!-- End Matomo Code -->
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Contact Us" href="contact.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  </head><body class="bg-dark"><!-- prettier-ignore -->
+
+
+<header class="fixed-top header-top shadow-sm">
+  <nav class="navbar navbar-expand-md navbar-light bg-white">
+    <a class="navbar-brand" href="https://www.nengo.ai/">
+      <img src="https://www.nengo.ai/design/_images/general-full-light.svg" alt="Nengo" class="logo" />
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse"
+      aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.nengo.ai/">What is Nengo?</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.nengo.ai/examples/">Examples</a>
+        </li>
+        <li class="nav-item dropdown active">
+          <a class="nav-link dropdown-toggle text-nowrap" id="navbar-dropdown-docs" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" href="#">Documentation</a>
+          <div class="dropdown-menu shadow-lg border-0" aria-labelledby="navbar-dropdown-docs">
+            
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo/">Nengo core</a>
+            <a class="dropdown-item" href="https://github.com/nengo/nengo-gui/">NengoGUI</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-dl/">NengoDL</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-spa/">NengoSPA</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-extras/">NengoExtras</a>
+            <a class="dropdown-item" href="https://arvoelke.github.io/nengolib-docs/">Nengolib</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/keras-spiking">KerasSpiking</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/pytorch-spiking">PyTorchSpiking</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-fpga/">NengoFPGA</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-loihi/">NengoLoihi</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-ocl/">NengoOCL</a>
+            <a class="dropdown-item" href="https://github.com/project-rig/nengo_spinnaker">NengoSpiNNaker</a>
+            <a class="dropdown-item" href="https://github.com/nengo/nengo-mpi">NengoMPI</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/documentation/">All documentation</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-nowrap" id="navbar-dropdown-community" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" href="#">Community</a>
+          <div class="dropdown-menu shadow-lg border-0" aria-labelledby="navbar-dropdown-community">
+            <a class="dropdown-item" href="https://forum.nengo.ai">Forum</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/people/">People</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/summer-school/">Summer school</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/contributing/">Contributing</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/publications/">Publications</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/videos/">Videos</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/conduct/">Code of conduct</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/caa/">CAA</a>
+          </div>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link btn btn-success btn-sm text-white" href="https://www.nengo.ai/getting-started/">Getting
+            started</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<div class="main-content gradient-top">
+  <div class="container-fluid">
+    <div class="row"><a class="toggle-sidenav d-block d-md-none" href="#"
+  ><i class="icon-close fa fa-fw fa-arrow-left"></i
+  ><i class="icon-open fa fa-fw fa-arrow-right"></i
+></a>
+<div role="complementary" class="sidenav col-4 col-xl-3 p-0 border-right">
+  <h3 class="pt-5 px-5">
+    <a href="index.html">
+      <img
+        class="img-fluid documentation-image"
+        src="https://www.nengo.ai/design/_images/nengo-fpga-full-light.svg"
+        alt="NengoFPGA"
+      />
+    </a>
+  </h3>
+<form class="px-5 py-3 my-0 border-bottom" action="search.html" method="get">
+  <div class="form-group form-group-single">
+    <input type="text" name="q" class="form-control" placeholder="Search" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <button type="submit" class="btn btn-link">
+      <img src="https://www.nengo.ai/img/icon-search.svg" alt="Go" />
+    </button>
+  </div>
+</form><div class="p-5 toctree">
+  
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact Us</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Project Information</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#release-history">Release History</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#unreleased">0.2.3 (Unreleased)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#may-7-2020">0.2.2 (May 7, 2020)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#september-17-2019">0.2.1 (September 17, 2019)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#august-27-2019">0.2.0 (August 27, 2019)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#december-19-2018">0.1.0 (December 19, 2018)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#contributing-to-nengofpga">Contributing to NengoFPGA</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#filing-issues">Filing issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#making-pull-requests">Making pull requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contributor-agreement">Contributor agreement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#more-details">More details</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#nengofpga-license">NengoFPGA license</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#licensed-code">Licensed Code</a></li>
+</ul>
+</li>
+</ul>
+
+  
+  </div>
+  
+  <form class="p-5 my-0 border-top">
+    <div class="form-group">
+      <label class="text-gray">Version:</label>
+      <select class="custom-select" onchange="switchVersion(this);">
+        
+        
+        <option selected>latest</option>
+        
+        
+          
+        <option value="v0.2.2/project.html">
+          v0.2.2
+        </option>
+          
+        
+      </select>
+    </div>
+  </form>
+  
+</div>
+      
+
+      <div class="col-12 col-md-8 col-xl-9">
+        <div class="container">
+          <div class="row">
+            <div class="col-10 offset-1 pb-5 documentation-source" role="main">
+              
+              
+              <div class="admonition note">
+                  <p class="admonition-title">Note</p>
+                  <p>
+                  This documentation is for a development version.
+                  <a href="v0.2.2/project.html">
+                  Click here for the latest stable release (v0.2.2).
+                  </a>
+                  </p>
+              </div>
+              
+              
+  <div class="section" id="project-information">
+<h1>Project Information<a class="headerlink" href="#project-information" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="release-history">
+<h2>Release History<a class="headerlink" href="#release-history" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="unreleased">
+<h3>0.2.3 (Unreleased)<a class="headerlink" href="#unreleased" title="Permalink to this headline">¶</a></h3>
+<p><strong>Added</strong></p>
+<ul class="simple">
+<li><p>Added PC-running instruction clarification in getting started guide.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/69">#69</a>)</p></li>
+<li><p>Added information about PYNQ-Z2 support to documentation.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/71">#71</a>)</p></li>
+</ul>
+<p><strong>Changed</strong></p>
+<ul class="simple">
+<li><p>Changed remote-script to pip install nengo-bones from git.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/67">#67</a>)</p></li>
+</ul>
+<p><strong>Fixed</strong></p>
+<ul class="simple">
+<li><p>Update Numpy license URL.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/64">#64</a>)</p></li>
+<li><p>Fixed slack notification link.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/66">#66</a>)</p></li>
+</ul>
+</div>
+<div class="section" id="may-7-2020">
+<h3>0.2.2 (May 7, 2020)<a class="headerlink" href="#may-7-2020" title="Permalink to this headline">¶</a></h3>
+<p><strong>Added</strong></p>
+<ul class="simple">
+<li><p>Setup Nengo Bones and remote CI.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/41">#41</a>)</p></li>
+<li><p>Added notebook examples featuring oscillators.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/46">#46</a>)</p></li>
+<li><p>Added spiking to oscillator notebook examples.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/49">#49</a>)</p></li>
+<li><p>Add test suite.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/55">#55</a>)</p></li>
+<li><p>Added More detail to remote termination signals.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/61">#61</a>)</p></li>
+</ul>
+<p><strong>Changed</strong></p>
+<ul class="simple">
+<li><p>Compatibility changes for Nengo 3.0.0.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/44">#44</a>)</p></li>
+<li><p>Minor changes to oscillator notebooks.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/47">#47</a>)</p></li>
+<li><p>Minor changes to getting-started documentation.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/50">#50</a>)</p></li>
+<li><p>Improved socket communication for better performance.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/52">#52</a>)</p></li>
+<li><p>Throw an error with invalid config in ID script.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/53">#53</a>)</p></li>
+<li><p>Update deprecated SafeConfigParser.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/57">#57</a>)</p></li>
+<li><p>Remove unused seed from network builder.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/58">#58</a>)</p></li>
+<li><p>Make all variable names lowercase.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/59">#59</a>)</p></li>
+<li><p>Switch to remote doc script that tracks nengo-bones.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/60">#60</a>)</p></li>
+<li><p>Switch to abrgl for CI scripts.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/62">#62</a>)</p></li>
+</ul>
+<p><strong>Fixed</strong></p>
+<ul class="simple">
+<li><p>Fixed code to remove all linter errors.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/45">#45</a>)</p></li>
+<li><p>Start using intersphinx, rename docs using ‘-‘.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/48">#48</a>)</p></li>
+<li><p>Add TRAVIS_JOB_NUMBER to exported variables in remote-docs.sh.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/63">#63</a>)</p></li>
+</ul>
+</div>
+<div class="section" id="september-17-2019">
+<h3>0.2.1 (September 17, 2019)<a class="headerlink" href="#september-17-2019" title="Permalink to this headline">¶</a></h3>
+<p><strong>Added</strong></p>
+<ul class="simple">
+<li><p>Add on-chip feedback connection.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/35">#35</a>)</p></li>
+<li><p>Requirement for numpy&lt;1.17.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/39">#39</a>)</p></li>
+</ul>
+</div>
+<div class="section" id="august-27-2019">
+<h3>0.2.0 (August 27, 2019)<a class="headerlink" href="#august-27-2019" title="Permalink to this headline">¶</a></h3>
+<p><strong>Added</strong></p>
+<ul class="simple">
+<li><p>Added script to read device DNA from FPGA board.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/11">#11</a>)</p></li>
+<li><p>Add PR template, contributors, and update license.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/12">#12</a>)</p></li>
+<li><p>Rework documentation.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/18">#18</a>,
+<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/20">#20</a>)</p></li>
+<li><p>Quickstart guide.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/21">#21</a>)</p></li>
+<li><p>Notebook examples and example descriptions.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/23">#23</a>)</p></li>
+<li><p>Add firewall tip to docs.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/24">#24</a>)</p></li>
+<li><p>Add license to docs.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/25">#25</a>)</p></li>
+<li><p>Add purchase link to docs.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/29">#29</a>)</p></li>
+<li><p>Add example setting encoders/decoders.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/30">#30</a>)</p></li>
+<li><p>Add model size bounds to docs.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/31">#31</a>)</p></li>
+</ul>
+<p><strong>Changed</strong></p>
+<ul class="simple">
+<li><p>Rename “DNA” to “ID” everywhere.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/20">#20</a>)</p></li>
+<li><p>Docs audit for consistency.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/22">#22</a>)</p></li>
+<li><p>Receiving a UDP packet with a negative timestep will now cause the Nengo
+simulation to terminate with an exception.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/26">#26</a>)</p></li>
+<li><p>Now throwing an exception on unsupported neuron type.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/26">#26</a>)</p></li>
+<li><p>Rework usage page in docs.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/27">#27</a>)</p></li>
+<li><p>Update the docs theme.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/32">#32</a>)</p></li>
+</ul>
+<p><strong>Fixed</strong></p>
+<ul class="simple">
+<li><p>Fixed behaviour of code when provided FPGA name string is not found in the
+fpga_config file.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/33">#33</a>)</p></li>
+<li><p>Fixed simulation hanging error when two simulations are run one after the
+other.
+(<a class="reference external" href="https://github.com/nengo/nengo-fpga/pull/34">#34</a>)</p></li>
+</ul>
+</div>
+<div class="section" id="december-19-2018">
+<h3>0.1.0 (December 19, 2018)<a class="headerlink" href="#december-19-2018" title="Permalink to this headline">¶</a></h3>
+<p>Initial release of NengoFPGA!</p>
+</div>
+</div>
+</div>
+<div class="section" id="contributing-to-nengofpga">
+<h1>Contributing to NengoFPGA<a class="headerlink" href="#contributing-to-nengofpga" title="Permalink to this headline">¶</a></h1>
+<p>Issues and pull requests are always welcome!
+We appreciate help from the community to make NengoFPGA better.</p>
+<div class="section" id="filing-issues">
+<h2>Filing issues<a class="headerlink" href="#filing-issues" title="Permalink to this headline">¶</a></h2>
+<p>If you find a bug in NengoFPGA,
+or think that a certain feature is missing,
+please consider
+<a class="reference external" href="https://github.com/nengo/nengo-fpga/issues">filing an issue</a>!
+Please search the currently open issues first
+to see if your bug or feature request already exists.
+If so, feel free to add a comment to the issue
+so that we know that multiple people are affected.</p>
+</div>
+<div class="section" id="making-pull-requests">
+<h2>Making pull requests<a class="headerlink" href="#making-pull-requests" title="Permalink to this headline">¶</a></h2>
+<p>If you want to fix a bug or add a feature to NengoFPGA,
+we welcome pull requests.
+Ensure that you fill out all sections of the pull request template,
+deleting the comments as you go.</p>
+</div>
+<div class="section" id="contributor-agreement">
+<h2>Contributor agreement<a class="headerlink" href="#contributor-agreement" title="Permalink to this headline">¶</a></h2>
+<p>We require that all contributions be covered under
+our contributor assignment agreement. Please see
+<a class="reference external" href="https://www.nengo.ai/caa/">the agreement</a>
+for instructions on how to sign.</p>
+</div>
+<div class="section" id="more-details">
+<h2>More details<a class="headerlink" href="#more-details" title="Permalink to this headline">¶</a></h2>
+<p>For more details on how to contribute to Nengo,
+please see the <a class="reference external" href="https://www.nengo.ai/contributing/">developer guide</a>.</p>
+</div>
+</div>
+<div class="section" id="nengofpga-license">
+<h1>NengoFPGA license<a class="headerlink" href="#nengofpga-license" title="Permalink to this headline">¶</a></h1>
+<p>Copyright (c) 2018-2023 Applied Brain Research</p>
+<p><strong>ABR License</strong></p>
+<p>NengoFPGA is made available under a proprietary license, the
+“ABR TECHNOLOGY LICENSE AND USE AGREEMENT” (the “ABR License”).
+The main ABR License file is available for download at
+<a class="reference external" href="https://www.appliedbrainresearch.com/license">https://www.appliedbrainresearch.com/license</a>.
+The entire contents of this <code class="docutils literal notranslate"><span class="pre">LICENSE.rst</span></code> file, including any
+terms and conditions herein, form part of the ABR License.</p>
+<p>Commercial Use Licenses are available to purchase for a yearly fee.
+Academic and Personal Use Licenses for NengoFPGA are available at
+a reduced cost.
+Both types of licences can be obtained from the
+ABR store at <a class="reference external" href="https://www.appliedbrainresearch.com/store">https://www.appliedbrainresearch.com/store</a>.</p>
+<p>If you have any sales questions,
+please contact <a class="reference external" href="mailto:sales&#37;&#52;&#48;appliedbrainresearch&#46;com">mailto:sales<span>&#64;</span>appliedbrainresearch<span>&#46;</span>com</a>.
+If you have any technical support questions, please post them on the ABR
+community forums at <a class="reference external" href="https://forum.nengo.ai/">https://forum.nengo.ai/</a> or contact
+<a class="reference external" href="mailto:support&#37;&#52;&#48;appliedbrainresearch&#46;com">mailto:support<span>&#64;</span>appliedbrainresearch<span>&#46;</span>com</a>.</p>
+<p>This license pertains only to the NengoFPGA interface software. License information
+for the supported hardware implementations can be found at their respective license
+pages:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.nengo.ai/nengo-de1/license.html">NengoDE1</a></p></li>
+<li><p><a class="reference external" href="https://www.nengo.ai/nengo-pynq/license.html">NengoPYNQ</a></p></li>
+</ul>
+<div class="section" id="licensed-code">
+<h2>Licensed Code<a class="headerlink" href="#licensed-code" title="Permalink to this headline">¶</a></h2>
+<p>NengoFPGA imports or vendorizes several open source libraries.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://numpy.org/">NumPy</a> - Used under
+<a class="reference external" href="https://numpy.org/doc/stable/license.html">BSD license</a></p></li>
+<li><p><a class="reference external" href="https://www.sphinx-doc.org/">Sphinx</a> - Used under
+<a class="reference external" href="https://github.com/sphinx-doc/sphinx/blob/master/LICENSE.rst">BSD license</a></p></li>
+<li><p><a class="reference external" href="https://github.com/numpy/numpydoc">numpydoc</a> - Used under
+<a class="reference external" href="https://github.com/numpy/numpydoc/blob/master/LICENSE.txt">BSD license</a></p></li>
+<li><p><a class="reference external" href="http://ipython.org/">IPython</a> - Used under
+<a class="reference external" href="https://github.com/ipython/ipython/blob/master/COPYING.rst">BSD license</a></p></li>
+<li><p><a class="reference external" href="https://www.paramiko.org/">Paramiko</a> - Used under
+<a class="reference external" href="https://github.com/paramiko/paramiko/blob/master/LICENSE">LGPL license</a></p></li>
+<li><p><a class="reference external" href="https://matplotlib.org/">matplotlib</a> - Used under
+<a class="reference external" href="https://matplotlib.org/users/license.html">modified PSF license</a></p></li>
+<li><p><a class="reference external" href="https://github.com/python-pillow/Pillow">Pillow</a> Used under
+<a class="reference external" href="https://github.com/python-pillow/Pillow/blob/master/LICENSE">Open Source PIL Software License</a></p></li>
+</ul>
+</div>
+</div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><footer class="text-light footer-main gradient-bottom-center">
+  <p class="text-center">
+    <a class="no-hover-line" href="https://appliedbrainresearch.com">
+      <img class="abr-logo" src="https://www.nengo.ai/img/abr-logo.svg" height="32" />
+    </a>
+    <a href="https://www.nengo.ai/">What is Nengo?</a>
+    <a href="https://www.nengo.ai/examples/">Examples</a>
+    <a href="https://www.nengo.ai/documentation/">Documentation</a>
+    <a href="https://www.nengo.ai/getting-started/">Getting started</a>
+    <a href="https://www.nengo.ai/privacy/">Privacy</a>
+  </p>
+  <p class="small text-center pb-0 mb-0">&copy; Applied Brain Research</p>
+</footer>
+<script>
+  function switchVersion(select) {
+    var option = select.selectedOptions[0];
+    if (option.hasAttribute("value")) {
+      window.location = option.value;
+    }
+  }
+</script>
+
+<script>
+  var elements = document.querySelectorAll('.sidenav');
+  Stickyfill.add(elements);
+</script>
+<script>
+  ScrollReveal().reveal(".fade-in", {
+      scale: 0.85,
+      duration: 1000,
+      delay: 250,
+      interval: 50
+  });
+</script>
+<script>
+  $('a.toggle-sidenav').on('click', function(e) {
+    e.preventDefault();
+    if ( $(this).hasClass('active') ) {
+      $(this).removeClass('active');
+      $('.sidenav').removeClass('open');
+    } else {
+      $(this).addClass('active');
+      $('.sidenav').addClass('open');
+    }
+  });
+</script>
+<script>
+  var lists = document.querySelectorAll('.toctree ul');
+  lists.forEach((ul) => {
+      ul.classList.add("nav");
+  });
+  var links = document.querySelectorAll('.toctree a');
+  links.forEach((link) => {
+      link.classList.add("nav-link");
+  });
+  $("body").scrollspy({target: ".sidenav"});
+</script>
+  </body>
+</html>

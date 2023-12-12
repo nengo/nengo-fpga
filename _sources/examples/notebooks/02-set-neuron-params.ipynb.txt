@@ -1,0 +1,336 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Set Neuron Parameters\n",
+    "\n",
+    "This is an example of how to set neuron parameters, such as encoder and decoder\n",
+    "matrices, on the FPGA. This is useful if you've pre-solved weights (encoders and\n",
+    "decoders) elsewhere or if you want to start in a known state.\n",
+    "\n",
+    "The `FpgaPesEnsembleNetwork` encapsulates a Nengo `Ensemble` and `Connection`\n",
+    "object, each of which you can modify. Modifying the attributes of the `Ensemble`\n",
+    "object alters the neuron parameters simulated on the FPGA, while modifying the\n",
+    "attributes of the `Connection` object alters the parameters of the FPGA ensemble\n",
+    "output connection that is simulated on the FPGA.\n",
+    "\n",
+    "In order to change the attributes of the Ensemble or Connection objects, first\n",
+    "create the FpgaPesEnsembleNetwork object:\n",
+    "\n",
+    "    fpga_ens = FpgaPesEnsembleNetwork(...)\n",
+    "\n",
+    "From which you can access the encapsulated `Ensemble` and `Connection` objects\n",
+    "(using the `.ensemble` and `.connection` attributes of the `FpgaPesEnsembleNetwork`\n",
+    "object respectively):\n",
+    "\n",
+    "    fpga_ens.ensemble\n",
+    "    fpga_ens.connection\n",
+    "\n",
+    "Use these two objects to set specific attributes as desired.\n",
+    "Please look at the Nengo documentation for\n",
+    "[Ensembles](https://www.nengo.ai/nengo/frontend-api.html#nengo.Ensemble) and\n",
+    "[Connections](https://www.nengo.ai/nengo/frontend-api.html#nengo.Connection)\n",
+    "for a full list of options.\n",
+    "\n",
+    "## Step 1: Set up Python Imports"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%matplotlib inline\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "\n",
+    "import nengo\n",
+    "from nengo.solvers import NoSolver\n",
+    "\n",
+    "import nengo_fpga\n",
+    "from nengo_fpga.networks import FpgaPesEnsembleNetwork"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 2: Choose an FPGA Device\n",
+    "\n",
+    "Define the FPGA device on which the remote FpgaPesEnsembleNetwork will run.\n",
+    "This name corresponds with the name in your `fpga_config` file. Recall that\n",
+    "in the `fpga_config` file, device names are identified by the square brackets\n",
+    "(e.g., **[de1]** or **[pynq]**). The names defined in your configuration file\n",
+    "might differ from the example below. Here, the device **de1** is being used."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "board = \"de1\"  # Change this to your desired device name"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 3: Create Some Weights\n",
+    "\n",
+    "Generally, the `encoder` and `decoder` matrices can be generated\n",
+    "using your desired methods (e.g., through randomization, or by using\n",
+    "a machine learning algorithm). Typically, the `gain` and `bias` values\n",
+    "of the neurons need to also be configured to work with the pre-generated\n",
+    "weight matrices in order to have a computationally functional model.\n",
+    "In this notebook, Nengo will be used to generate the various neural\n",
+    "ensemble parameters that functionally define a communication channel.\n",
+    "\n",
+    "The example code below uses a 2-dimensional neural ensemble consisting of 4 ReLU\n",
+    "rate-based neurons. The encoders for each neuron will be configured such\n",
+    "that each neuron represents one quadrant of a sine and cosine period.\n",
+    "To use Nengo to generate the various neuron parameters, two steps are\n",
+    "required. First, a temporary (parameterization) network with the desired\n",
+    "ensemble properties (e.g., number of neurons, firing rates, etc.) is\n",
+    "created. Then a `nengo.Simulator` object is initialized using this\n",
+    "network and in doing so, Nengo computes the neuron parameters specific\n",
+    "to the parameterization network. These parameters can then be retrieved\n",
+    "using the `nengo.Simulator` object."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Dummy network to generate neuron params\n",
+    "with nengo.Network(seed=1) as param_net:\n",
+    "    # Ensemble with our desired parameters:\n",
+    "    a = nengo.Ensemble(\n",
+    "        n_neurons=4,  # Number of neurons\n",
+    "        dimensions=2,  # Dimensions\n",
+    "        neuron_type=nengo.RectifiedLinear(),  # Neuron model\n",
+    "        encoders=[\n",
+    "            [0.707, 0.707],\n",
+    "            [-0.707, 0.707],  # Encoders\n",
+    "            [-0.707, -0.707],\n",
+    "            [0.707, -0.707],\n",
+    "        ],\n",
+    "        intercepts=nengo.dists.Choice([0]),  # Intercepts\n",
+    "        max_rates=nengo.dists.Choice([100]),  # Max rates\n",
+    "    )\n",
+    "\n",
+    "    # An output connection is needed in order for Nengo to solve\n",
+    "    # for the decoders. Note that because no function is defined\n",
+    "    # for the output connection, Nengo will compute decoders that\n",
+    "    # approximate the identity function\n",
+    "    # (i.e., making a communication channel).\n",
+    "    b = nengo.Node(size_in=2)\n",
+    "    conn = nengo.Connection(a, b)\n",
+    "\n",
+    "# Neuron parameters are generated when the simulator object is created.\n",
+    "with nengo.Simulator(param_net) as param_sim:\n",
+    "    bias = param_sim.data[a].bias\n",
+    "    encoders = param_sim.data[a].encoders\n",
+    "    gain = param_sim.data[a].gain\n",
+    "    decoders = param_sim.data[conn].weights"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 4: Create the FPGA Ensemble\n",
+    "\n",
+    "The network created in the previous step was used generate\n",
+    "the neuron parameters and is not intended to be run on the\n",
+    "FPGA. Here, the Nengo model that is to be run on the\n",
+    "FPGA is created. Note that for this example, the decoders\n",
+    "have been initialized to zero in order to demonstrate the\n",
+    "effect of using a network with a decoder weight matrix of\n",
+    "zero versus a network using the pre-solved decoder weights\n",
+    "from the previous step."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "with nengo.Network() as model:\n",
+    "    # Use the lambda function to generate [sin, cos]\n",
+    "    input_node = nengo.Node(output=lambda t: [np.sin(t * np.pi), np.cos(t * np.pi)])\n",
+    "\n",
+    "    # Create the FPGA ensemble\n",
+    "    fpga_ens = FpgaPesEnsembleNetwork(\n",
+    "        board,\n",
+    "        n_neurons=4,\n",
+    "        dimensions=2,\n",
+    "        learning_rate=0,\n",
+    "        function=lambda x: [0, 0],  # Initialize decoders to 0\n",
+    "    )\n",
+    "    nengo.Connection(input_node, fpga_ens.input)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 5: Add Probes to Collect Data\n",
+    "\n",
+    "Just so we can monitor the input and output to confirm\n",
+    "we set the weights correctly."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "with model:\n",
+    "    # The original input\n",
+    "    input_p = nengo.Probe(input_node, synapse=0.01)\n",
+    "\n",
+    "    # The output from the FPGA ensemble\n",
+    "    # (filtered with a 10ms post-synaptic filter)\n",
+    "    output_p = nengo.Probe(fpga_ens.output, synapse=0.01)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 6: Test Before Setting Weights\n",
+    "\n",
+    "In order to ensure we are in fact setting the weights, we will\n",
+    "run the network with the zero-initialized decoders to see what\n",
+    "happens first."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "with nengo_fpga.Simulator(model) as sim:\n",
+    "    sim.run(2)  # Run for 2 seconds"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.figure(figsize=(16, 5))\n",
+    "plt.subplot(1, 2, 1)\n",
+    "plt.title(\"Probed Results (Dimension 1: sin)\")\n",
+    "plt.plot(sim.trange(), sim.data[input_p][:, 0])\n",
+    "plt.plot(sim.trange(), sim.data[output_p][:, 0])\n",
+    "plt.legend((\"Input\", \"Output\"), loc=\"lower left\")\n",
+    "plt.xlabel(\"Sim time (s)\")\n",
+    "\n",
+    "plt.subplot(1, 2, 2)\n",
+    "plt.title(\"Probed Results (Dimension 2: cos)\")\n",
+    "plt.plot(sim.trange(), sim.data[input_p][:, 1])\n",
+    "plt.plot(sim.trange(), sim.data[output_p][:, 1])\n",
+    "plt.legend((\"Input\", \"Output\"), loc=\"lower left\")\n",
+    "plt.xlabel(\"Sim time (s)\")\n",
+    "\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Notice that the output for both dimensions is zero, as expected."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 7: Set Weights and Test\n",
+    "\n",
+    "Now, we will configure our FPGA ensemble to use the neuron\n",
+    "parameters generated in [Step 3](#Step-3:-Create-Some-Weights).\n",
+    "In order to demonstrate the correct behaviour of the network,\n",
+    "a new Nengo simulation is created and run."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "with model:\n",
+    "    # Explicitly set ensemble attributes\n",
+    "    fpga_ens.ensemble.bias = bias\n",
+    "    fpga_ens.ensemble.encoders = encoders\n",
+    "    fpga_ens.ensemble.gain = gain\n",
+    "\n",
+    "    # To set the decoders, we need to use nengo.NoSolver\n",
+    "    # to tell the builder we will provide out own decoders\n",
+    "    # (you can also set \"weights\" here instead,\n",
+    "    # see nengo.solvers.NoSolver for more info)\n",
+    "    fpga_ens.connection.solver = NoSolver(decoders.T)  # Transposed\n",
+    "\n",
+    "with nengo_fpga.Simulator(model) as sim:\n",
+    "    sim.run(2)  # Run for 2 seconds"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.figure(figsize=(16, 5))\n",
+    "plt.subplot(1, 2, 1)\n",
+    "plt.title(\"Probed Results (Dimension 1: sin)\")\n",
+    "plt.plot(sim.trange(), sim.data[input_p][:, 0])\n",
+    "plt.plot(sim.trange(), sim.data[output_p][:, 0])\n",
+    "plt.legend((\"Input\", \"Output\"), loc=\"lower left\")\n",
+    "plt.xlabel(\"Sim time (s)\")\n",
+    "\n",
+    "plt.subplot(1, 2, 2)\n",
+    "plt.title(\"Probed Results (Dimension 2: cos)\")\n",
+    "plt.plot(sim.trange(), sim.data[input_p][:, 1])\n",
+    "plt.plot(sim.trange(), sim.data[output_p][:, 1])\n",
+    "plt.legend((\"Input\", \"Output\"), loc=\"lower left\")\n",
+    "plt.xlabel(\"Sim time (s)\")\n",
+    "\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "As the graphs above illustrate, now that the we've set neuron\n",
+    "parameters to those we generated, the FPGA ensemble behaves\n",
+    "like a communication channel and successfully reproduces\n",
+    "the sine and cosine signals."
+   ]
+  }
+ ],
+ "metadata": {
+  "anaconda-cloud": {},
+  "language_info": {
+   "name": "python",
+   "pygments_lexer": "ipython3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
