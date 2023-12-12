@@ -1,0 +1,274 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Communication Channel\n",
+    "\n",
+    "This example demonstrates how to create a connection from one neuronal ensemble to\n",
+    "another that behaves like a communication channel (that is, it transmits information\n",
+    "without changing it).\n",
+    "\n",
+    "Network diagram:\n",
+    "\n",
+    "      [Input] ---> (FPGA Ensemble) ---> [Output probe]\n",
+    "\n",
+    "An abstract input signal is fed into the neural ensemble built remotely on the FPGA. The\n",
+    "ensemble on the FPGA encodes the input value as a pattern of neural activity. The neural\n",
+    "activity is then decoded back into an abstract value before being passed to the output\n",
+    "probe. In this example, the connection weight matrix that performs this decoding is\n",
+    "computed to replicate the value of the abstract input signal (i.e., the decoded output\n",
+    "should have the same value as the input signal)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 1: Set up the Python Imports"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%matplotlib inline\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "\n",
+    "import nengo\n",
+    "\n",
+    "import nengo_fpga\n",
+    "from nengo_fpga.networks import FpgaPesEnsembleNetwork"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 2: Choose an FPGA Device\n",
+    "\n",
+    "Define the FPGA device on which the remote FpgaPesEnsembleNetwork will run. This name\n",
+    "corresponds with the name in your `fpga_config` file. Recall that in the `fpga_config`\n",
+    "file, device names are identified by the square brackets (e.g., **[de1]** or\n",
+    "**[pynq]**). The names defined in your configuration file might differ from the example\n",
+    "below. Here, the device **de1** is being used."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "board = \"de1\"  # Change this to your desired device name"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 3: Create the Remote FPGA Neural Ensemble\n",
+    "\n",
+    "Create a remote FPGA neural ensemble (`FpgaPesEnsembleNetwork`) using the board defined\n",
+    "above, 50 neurons, 2 dimensions, and with no learning rate."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Create a nengo network object to which we can add\n",
+    "# ensembles, connections, etc.\n",
+    "model = nengo.Network(label=\"Communication Channel\")\n",
+    "\n",
+    "with model:\n",
+    "    # Remote FPGA neural ensemble\n",
+    "    fpga_ens = FpgaPesEnsembleNetwork(\n",
+    "        board,  # The board to use (from above)\n",
+    "        n_neurons=50,  # The number of neurons to use in the ensemble\n",
+    "        dimensions=2,  # 2 dimensions, to represent a 2D vector\n",
+    "        learning_rate=0,  # No learning for this example\n",
+    "    )\n",
+    "\n",
+    "    # Uncomment the following line to use spiking neuron\n",
+    "    # fpga_ens.ensemble.neuron_type = nengo.SpikingRectifiedLinear()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 4: Provide Input to the Ensemble\n",
+    "\n",
+    "Create an input node that generates a 2-dimensional signal -- where the first dimension\n",
+    "is a sine wave, and the second dimension a cosine wave."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def input_func(t):\n",
+    "    return [np.sin(t * 2 * np.pi), np.cos(t * 2 * np.pi)]\n",
+    "\n",
+    "\n",
+    "with model:\n",
+    "    input_node = nengo.Node(input_func)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 5: Connect the Input to the FPGA Ensemble\n",
+    "\n",
+    "The FPGA ensemble contains `input` and `output` attributes to allow connections to be\n",
+    "made to and from the ensemble."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "with model:\n",
+    "    # Connect the input to the FPGA ensemble\n",
+    "    nengo.Connection(input_node, fpga_ens.input)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 6: Add Probes to Collect Data\n",
+    "\n",
+    "Even this simple model involves many quantities that change over time, such as membrane\n",
+    "potentials of individual neurons. Typically there are so many variables in a simulation\n",
+    "that it is not practical to store them all. If we want to plot or analyze data from the\n",
+    "simulation we have to \"probe\" the signals of interest.\n",
+    "\n",
+    "Many of the internal dynamics of the FPGA ensemble are not probeable since collecting\n",
+    "and transmitting all of these values would slow down the simulation considerably.\n",
+    "However, the input and output of the FPGA ensemble are available, and are enough to\n",
+    "illustrate the network functionality."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "with model:\n",
+    "    # The original input\n",
+    "    input_p = nengo.Probe(input_node, synapse=0.01)\n",
+    "\n",
+    "    # The output from the FPGA ensemble\n",
+    "    # (filtered with a 10ms post-synaptic filter)\n",
+    "    output_p = nengo.Probe(fpga_ens.output, synapse=0.01)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 7: Run the Model!\n",
+    "\n",
+    "To run a NengoFPGA model, simply use the `nengo_fpga.Simulator` simulator instead of the\n",
+    "standard `nengo.Simulator` simulator."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "with nengo_fpga.Simulator(model) as sim:\n",
+    "    sim.run(2)  # Run for 2 seconds"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Step 8: Plot the Results"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.figure(figsize=(16, 5))\n",
+    "plt.subplot(1, 2, 1)\n",
+    "plt.title(\"Probed Results (Dimension 1)\")\n",
+    "plt.plot(sim.trange(), sim.data[input_p][:, 0])\n",
+    "plt.plot(sim.trange(), sim.data[output_p][:, 0])\n",
+    "plt.ylim(-1.1, 1.1)\n",
+    "plt.legend((\"Input\", \"Output\"), loc=\"upper right\")\n",
+    "plt.xlabel(\"Sim time (s)\")\n",
+    "\n",
+    "plt.subplot(1, 2, 2)\n",
+    "plt.title(\"Probed Results (Dimension 2)\")\n",
+    "plt.plot(sim.trange(), sim.data[input_p][:, 1])\n",
+    "plt.plot(sim.trange(), sim.data[output_p][:, 1])\n",
+    "plt.ylim(-1.1, 1.1)\n",
+    "plt.legend((\"Input\", \"Output\"), loc=\"upper right\")\n",
+    "plt.xlabel(\"Sim time (s)\")\n",
+    "\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The plot above compares each dimension of the input (reference) signal (in blue) with\n",
+    "the probed output of the FPGA ensemble (in orange). As the plot illustrates, the decoded\n",
+    "neural activity of the FPGA ensemble is able to replicate the input signal with only a\n",
+    "slight temporal delay.\n",
+    "\n",
+    "## Step 9: Experiment with this Model\n",
+    "\n",
+    "Using this Jupyter notebook, it is possible to experiment with the various parameters of\n",
+    "the FPGA ensemble to observe how they affect the behaviour of the ensemble. Note that\n",
+    "the experiments below require you to run this notebook within the Jupyter ecosystem. If\n",
+    "you are viewing this via the NengoFPGA documentations page, please clone the NengoFPGA\n",
+    "repository to perform these experiments.\n",
+    "\n",
+    "### Input Function\n",
+    "\n",
+    "Try changing the input function (`input_func`) above. As long as the function outputs a\n",
+    "2-dimensional value the model should work but you may see the reconstructed signal\n",
+    "deteriorate as the range and frequency of your input function increase.\n",
+    "\n",
+    "### Neuron Type\n",
+    "\n",
+    "By default, NengoFPGA uses Rectified Linear Units (ReLU) neurons to simulate the neurons\n",
+    "in the FPGA neural ensemble. NengoFPGA also supports Spiking Rectified Linear units,\n",
+    "also known as Integrate and Fire (IF) neurons. To use these neurons, uncomment the line\n",
+    "noted in the Step 3 above (`fpga_ens.ensemble.neuron_type`)."
+   ]
+  }
+ ],
+ "metadata": {
+  "anaconda-cloud": {},
+  "language_info": {
+   "name": "python",
+   "pygments_lexer": "ipython3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

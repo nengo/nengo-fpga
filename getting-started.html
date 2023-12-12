@@ -1,0 +1,581 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Getting Started &#8212; NengoFPGA 0.2.3.dev0 docs</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+<link rel="stylesheet" href="https://www.nengo.ai/css/bootstrap.css" type="text/css">
+<style>
+ body .title-bar,
+ body .documentation-source h1:after {
+   background-color: #541a8b;
+ }
+</style>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/scrollreveal"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stickyfill/2.1.0/stickyfill.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+<!-- From basic/layout.html -->
+<script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+
+
+<script src="_static/underscore.js"></script>
+
+
+<script src="_static/doctools.js"></script>
+
+
+<script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GT8XEDLTMJ"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'G-GT8XEDLTMJ');
+        </script>
+        <!-- End Google tag (gtag.js) -->
+        <!-- Matomo -->
+        <script>
+         var _paq = window._paq = window._paq || [];
+         _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+         _paq.push(["setCookieDomain", "*.appliedbrainresearch.com"]);
+         _paq.push(["setDomains", ["*.appliedbrainresearch.com","*.edge.nengo.ai","*.forum.nengo.ai","*.nengo.ai"]]);
+         _paq.push(["enableCrossDomainLinking"]);
+         _paq.push(["setDoNotTrack", true]);
+         _paq.push(['trackPageView']);
+         _paq.push(['enableLinkTracking']);
+         (function() {
+           var u="https://appliedbrainresearch.matomo.cloud/";
+           _paq.push(['setTrackerUrl', u+'matomo.php']);
+           _paq.push(['setSiteId', '3']);
+           var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+           g.async=true; g.src='//cdn.matomo.cloud/appliedbrainresearch.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+         })();
+        </script>
+        <!-- End Matomo Code -->
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="prev" title="NengoFPGA" href="index.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  </head><body class="bg-dark"><!-- prettier-ignore -->
+
+
+<header class="fixed-top header-top shadow-sm">
+  <nav class="navbar navbar-expand-md navbar-light bg-white">
+    <a class="navbar-brand" href="https://www.nengo.ai/">
+      <img src="https://www.nengo.ai/design/_images/general-full-light.svg" alt="Nengo" class="logo" />
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse"
+      aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.nengo.ai/">What is Nengo?</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.nengo.ai/examples/">Examples</a>
+        </li>
+        <li class="nav-item dropdown active">
+          <a class="nav-link dropdown-toggle text-nowrap" id="navbar-dropdown-docs" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" href="#">Documentation</a>
+          <div class="dropdown-menu shadow-lg border-0" aria-labelledby="navbar-dropdown-docs">
+            
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo/">Nengo core</a>
+            <a class="dropdown-item" href="https://github.com/nengo/nengo-gui/">NengoGUI</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-dl/">NengoDL</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-spa/">NengoSPA</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-extras/">NengoExtras</a>
+            <a class="dropdown-item" href="https://arvoelke.github.io/nengolib-docs/">Nengolib</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/keras-spiking">KerasSpiking</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/pytorch-spiking">PyTorchSpiking</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-fpga/">NengoFPGA</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-loihi/">NengoLoihi</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/nengo-ocl/">NengoOCL</a>
+            <a class="dropdown-item" href="https://github.com/project-rig/nengo_spinnaker">NengoSpiNNaker</a>
+            <a class="dropdown-item" href="https://github.com/nengo/nengo-mpi">NengoMPI</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/documentation/">All documentation</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-nowrap" id="navbar-dropdown-community" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" href="#">Community</a>
+          <div class="dropdown-menu shadow-lg border-0" aria-labelledby="navbar-dropdown-community">
+            <a class="dropdown-item" href="https://forum.nengo.ai">Forum</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.nengo.ai/people/">People</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/summer-school/">Summer school</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/contributing/">Contributing</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/publications/">Publications</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/videos/">Videos</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/conduct/">Code of conduct</a>
+            <a class="dropdown-item" href="https://www.nengo.ai/caa/">CAA</a>
+          </div>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link btn btn-success btn-sm text-white" href="https://www.nengo.ai/getting-started/">Getting
+            started</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<div class="main-content gradient-top">
+  <div class="container-fluid">
+    <div class="row"><a class="toggle-sidenav d-block d-md-none" href="#"
+  ><i class="icon-close fa fa-fw fa-arrow-left"></i
+  ><i class="icon-open fa fa-fw fa-arrow-right"></i
+></a>
+<div role="complementary" class="sidenav col-4 col-xl-3 p-0 border-right">
+  <h3 class="pt-5 px-5">
+    <a href="index.html">
+      <img
+        class="img-fluid documentation-image"
+        src="https://www.nengo.ai/design/_images/nengo-fpga-full-light.svg"
+        alt="NengoFPGA"
+      />
+    </a>
+  </h3>
+<form class="px-5 py-3 my-0 border-bottom" action="search.html" method="get">
+  <div class="form-group form-group-single">
+    <input type="text" name="q" class="form-control" placeholder="Search" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+    <button type="submit" class="btn btn-link">
+      <img src="https://www.nengo.ai/img/icon-search.svg" alt="Go" />
+    </button>
+  </div>
+</form><div class="p-5 toctree">
+  
+    <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#things-you-need">Things You Need</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-quick-reference-guide">Installation Quick Reference Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nengofpga-software-installation">NengoFPGA Software Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fpga-board-setup">FPGA Board Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nengofpga-software-configuration">NengoFPGA Software Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#host">Host</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fpga-board">FPGA Board</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#copy-protection">Copy Protection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reading-device-id">Reading Device ID</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#bitstreams">Bitstreams</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#acquiring-nengofpga-bitstreams">Acquiring NengoFPGA Bitstreams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#updating-nengofpga-bitstreams">Updating NengoFPGA Bitstreams</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project.html">Project Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project.html#contributing-to-nengofpga">Contributing to NengoFPGA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project.html#nengofpga-license">NengoFPGA license</a></li>
+</ul>
+
+  
+  </div>
+  
+  <form class="p-5 my-0 border-top">
+    <div class="form-group">
+      <label class="text-gray">Version:</label>
+      <select class="custom-select" onchange="switchVersion(this);">
+        
+        
+        <option selected>latest</option>
+        
+        
+          
+        <option value="v0.2.2/getting-started.html">
+          v0.2.2
+        </option>
+          
+        
+      </select>
+    </div>
+  </form>
+  
+</div>
+      
+
+      <div class="col-12 col-md-8 col-xl-9">
+        <div class="container">
+          <div class="row">
+            <div class="col-10 offset-1 pb-5 documentation-source" role="main">
+              
+              
+              <div class="admonition note">
+                  <p class="admonition-title">Note</p>
+                  <p>
+                  This documentation is for a development version.
+                  <a href="v0.2.2/getting-started.html">
+                  Click here for the latest stable release (v0.2.2).
+                  </a>
+                  </p>
+              </div>
+              
+              
+  <div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="things-you-need">
+<h2>Things You Need<a class="headerlink" href="#things-you-need" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.nengo.ai/nengo/getting-started.html" title="(in Nengo v4.0)"><span class="xref std std-doc">Nengo</span></a></p></li>
+<li><p>A <a class="reference internal" href="appendix.html#supported-hardware"><span class="std std-ref">supported FPGA board</span></a></p></li>
+<li><p>A NengoFPGA Licence (available from <a class="reference external" href="https://appliedbrainresearch.myshopify.com/collections/all">Applied Brain Research</a>)</p></li>
+<li><p>(Optional) <a class="reference external" href="https://github.com/nengo/nengo-gui">NengoGUI</a></p></li>
+</ul>
+</div>
+<div class="section" id="installation-quick-reference-guide">
+<span id="quick-guide"></span><h2>Installation Quick Reference Guide<a class="headerlink" href="#installation-quick-reference-guide" title="Permalink to this headline">¶</a></h2>
+<p class="compact">First, get the your board NengoFPGA ready using the
+<a class="reference internal" href="#board-setup"><span class="std std-ref">device-specific board setup documentation</span></a>.
+Once your board is set up, do the following steps on the PC connected to the board:</p>
+<ol class="arabic">
+<li><p><a class="reference internal" href="#software-install"><span class="std std-ref">Install NengoFPGA</span></a>.</p></li>
+<li><p><a class="reference internal" href="#nengofpga-config"><span class="std std-ref">Edit the NengoFPGA config file</span></a> to match your setup.</p></li>
+<li><p>Test NengoFPGA by running the ID extractor script:</p>
+<ol class="lowerroman">
+<li><p>In a terminal on your computer navigate to the root <code class="docutils literal notranslate"><span class="pre">nengo-fpga</span></code>
+directory.</p></li>
+<li><p>Run the ID extractor script with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>nengo_fpga/id_extractor.py<span class="w"> </span>&lt;board&gt;
+</pre></div>
+</div>
+<p>where <strong>&lt;board&gt;</strong> is the board name as it appears in <code class="docutils literal notranslate"><span class="pre">fpga_config</span></code>.
+See the <a class="reference internal" href="#copy-protection">Copy Protection</a> section for more information.</p>
+</li>
+</ol>
+</li>
+<li><p>Now with the Device ID available, you are ready to
+<a class="reference internal" href="#get-bitstreams"><span class="std std-ref">acquire your bitstreams</span></a>.</p></li>
+<li><p>Once the bitstreams and supporting files have been delivered, copy these
+files to the appropriate location as outlined in the
+<a class="reference internal" href="#update-bitstreams"><span class="std std-ref">device-specific bitstream documentation</span></a>.</p></li>
+<li><p>Test NengoFPGA by running an example script:</p>
+<ol class="lowerroman">
+<li><p>Navigate to <code class="docutils literal notranslate"><span class="pre">nengo-fpga/docs/examples</span></code>.</p></li>
+<li><p>Run the basic example script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>basic_example.py<span class="w"> </span>&lt;board&gt;
+</pre></div>
+</div>
+<p>where <strong>&lt;board&gt;</strong> is the board name as it appears in <code class="docutils literal notranslate"><span class="pre">fpga_config</span></code>.</p>
+</li>
+<li><p>If the script has a successful run you will see a lot of <strong>[INFO]</strong>
+printed to the console indicating the status of the NengoFPGA system.
+Near the bottom you will see the RMSE of the network printed:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Computed RMSE: 0.00105
+</pre></div>
+</div>
+<p>You may get a slightly different value but if your NengoFPGA system
+is functioning correctly, this should be near 0.001.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you run the <code class="docutils literal notranslate"><span class="pre">basic_example.py</span></code> script and it hangs waiting for the
+simulation to begin but does not display any errors, then it is likely
+a firewall issue. Ensure your firewall allows connections to and from
+the board IP address.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="nengofpga-software-installation">
+<span id="software-install"></span><h2>NengoFPGA Software Installation<a class="headerlink" href="#nengofpga-software-installation" title="Permalink to this headline">¶</a></h2>
+<p>Download the NengoFPGA source code from github using git:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/nengo/nengo-fpga.git
+</pre></div>
+</div>
+<p>or navigate to the <a class="reference external" href="https://github.com/nengo/nengo-fpga">repository</a> and
+download the files manually. Once downloaded, navigate to the <code class="docutils literal notranslate"><span class="pre">nengo-fpga</span></code>
+folder in a terminal window and install with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+</div>
+<div class="section" id="fpga-board-setup">
+<span id="board-setup"></span><h2>FPGA Board Setup<a class="headerlink" href="#fpga-board-setup" title="Permalink to this headline">¶</a></h2>
+<p>Follow documentation for your particular FPGA device:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.nengo.ai/nengo-de1/getting-started.html" title="(in NengoDE1 v0.2)"><span class="xref std std-doc">Board setup for Terasic DE1-SoC</span></a>
+(Intel Cyclone V)</p></li>
+<li><p><a class="reference external" href="https://www.nengo.ai/nengo-pynq/getting-started.html" title="(in NengoPYNQ v0.3)"><span class="xref std std-doc">Board setup for Digilent or TUL PYNQ</span></a>
+(Xilinx Zynq)</p></li>
+</ul>
+<p>The full list of hardware that NengoFPGA supports, and the links to their
+respective documentation can be found <a class="reference internal" href="appendix.html#supported-hardware"><span class="std std-ref">here</span></a>.</p>
+</div>
+<div class="section" id="nengofpga-software-configuration">
+<span id="nengofpga-config"></span><h2>NengoFPGA Software Configuration<a class="headerlink" href="#nengofpga-software-configuration" title="Permalink to this headline">¶</a></h2>
+<p>NengoFPGA is the frontend that connects to one of many backend FPGA devices. You
+will need to have a <a class="reference internal" href="appendix.html#supported-hardware"><span class="std std-ref">supported FPGA board</span></a> with access
+to Applied Brain Research’s designs. Each FPGA board will have it’s own setup
+and configuration procedure outlined in it’s own documentation, however, the
+NengoFPGA frontend has its own configuration as outlined below.</p>
+<p>The NengoFPGA default config file, <code class="docutils literal notranslate"><span class="pre">fpga_config</span></code>, is located in the root
+directory of <code class="docutils literal notranslate"><span class="pre">nengo-fpga</span></code> and contains example settings for your host machine
+as well as the FPGA board you are using. You can also create a copy in the
+directory in which your project files are located. Anything in square brackets
+(eg. <strong>[host]</strong>) defines a new entry name and everything below that name up
+until the name defines parameters of that entry.</p>
+<div class="section" id="host">
+<h3>Host<a class="headerlink" href="#host" title="Permalink to this headline">¶</a></h3>
+<p>First we will look at the host configuration; this is information about your
+computer and must be called <strong>[host]</strong>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[host]
+ip = 10.162.177.10
+</pre></div>
+</div>
+<p>Make sure these lines are uncommented (remove the leading # <em>and</em> space so it
+appears as above). This is just an example value for <strong>ip</strong>, you will need to
+replace this with your computer’s actual IP address, see <a class="reference internal" href="appendix.html#ip-addr"><span class="std std-ref">Finding your IP Address</span></a> for
+instructions on finding your IP address.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Your computer IP address will need to be in the same subnet as the board IP
+address, follow your board specific instructions to get the board IP and
+setup your computer IP before proceeding.</p>
+</div>
+</div>
+<div class="section" id="fpga-board">
+<h3>FPGA Board<a class="headerlink" href="#fpga-board" title="Permalink to this headline">¶</a></h3>
+<p>The entries that define the FPGA board parameters have more values than the
+host entry, the name (eg. <strong>[pynq]</strong>) can be anything, though we recommend
+using a descriptive name such as <strong>[pynq]</strong> or <strong>[de1]</strong>.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Every board connected to the same network <em>must</em> have its own entry
+in the config file.</p>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># Example DE1 FPGA board configuration
+[de1]
+ip = 10.162.177.236
+ssh_port = 22
+ssh_user = root
+ssh_pwd =
+# Refer to the online documentation for SSH key configuration options
+remote_script = /opt/nengo-de1/nengo_de1/single_pes_net.py
+id_script = /opt/nengo-de1/nengo_de1/id_script.py
+remote_tmp = /opt/nengo-de1/params
+udp_port = 0
+
+# Example PYNQ FPGA board configuration
+[pynq]
+ip = 10.162.177.99
+ssh_port = 22
+ssh_user = xilinx
+ssh_pwd = xilinx
+# Refer to the online documentation for SSH key configuration options
+remote_script = /opt/nengo-pynq/nengo_pynq/single_pes_net.py
+id_script = /opt/nengo-pynq/nengo_pynq/id_script.py
+remote_tmp = /opt/nengo-pynq/params
+udp_port = 0
+</pre></div>
+</div>
+<p>For whichever board you are using, make sure the lines in the appropriate
+sections are uncommented (remove the leading # <em>and</em> space so it
+appears as above). These default values should be correct unless you’ve
+modified the settings or installation of your FPGA board. These parameters are
+described here but modifications of these values will be described in the
+board-specific documentation.</p>
+<ul class="simple">
+<li><p><strong>ip</strong>: IP address of the FPGA board.</p></li>
+<li><p><strong>ssh_port</strong>: The port used to open SSH communications between the host
+and FPGA board.</p></li>
+<li><p><strong>ssh_user</strong>: SSH username to use to login to the board.</p></li>
+<li><p><strong>ssh_pwd</strong>: Password for <strong>ssh_user</strong> to use to login to the board. Note
+that the <code class="docutils literal notranslate"><span class="pre">fpga_config</span></code> file supports the use of SSH keys
+(see <a class="reference internal" href="appendix.html#ssh-key"><span class="std std-ref">Generating and Using SSH keys</span></a>) as an alternate form of authentication.</p></li>
+<li><p><strong>remote_script</strong>: The location of the main communication script on the FPGA
+board.</p></li>
+<li><p><strong>id_script</strong>: The location of the script that extracts the unique device
+identifier.</p></li>
+<li><p><strong>remote_tmp</strong>: Temporary location used to store data as it is transferred
+between the host and FPGA board.</p></li>
+<li><p><strong>udp_port</strong>: The port used for UDP communications between the host and FPGA
+board.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It should be noted that the FPGA board should be configured such that
+non-root users do not require a password to perform <code class="docutils literal notranslate"><span class="pre">sudo</span></code> commands. If you
+are using the NengoBrainBoard SD image on your board, this should already be
+done. If not, refer to the respective FGPA board documentation for instructions
+on how to do this.</p>
+</div>
+</div>
+</div>
+<div class="section" id="copy-protection">
+<h2>Copy Protection<a class="headerlink" href="#copy-protection" title="Permalink to this headline">¶</a></h2>
+<p>Our hardware design (known as the bitstream) is locked to a specific device.
+Each bitstream is compiled with your unique board identifier (called Device ID)
+and therefore you will need to provide this unique ID to us before we
+can compile and deliver your tailored bitstream.</p>
+<div class="section" id="reading-device-id">
+<span id="device-id"></span><h3>Reading Device ID<a class="headerlink" href="#reading-device-id" title="Permalink to this headline">¶</a></h3>
+<p>To easily read your Device ID, first ensure you have setup your board to be
+NengoFPGA ready. Instructions on how to do this can be found in each board’s
+respective documentation (see <a class="reference internal" href="#board-setup"><span class="std std-ref">Board Setup</span></a>).
+Additionally, ensure you have reviewed the
+<a class="reference internal" href="#nengofpga-config"><span class="std std-ref">NengoFPGA configuration</span></a> section,
+and appropriately modified the <code class="docutils literal notranslate"><span class="pre">fpga_config</span></code> file.</p>
+<p>Once done, simply run the <code class="docutils literal notranslate"><span class="pre">id_extractor.py</span></code> script located in the
+<code class="docutils literal notranslate"><span class="pre">nengo_fpga</span></code> directory from within the <code class="docutils literal notranslate"><span class="pre">nengo-fpga</span></code> root folder. This will
+print the Device ID as well as save it to a file for future reference. The
+script requires that you provide the name of your board as it appears in the
+<code class="docutils literal notranslate"><span class="pre">fpga_config</span></code> file (eg. pynq, de1). From the root directory (<code class="docutils literal notranslate"><span class="pre">nengo-fpga</span></code>)
+run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>nengo_fpga/id_extractor.py<span class="w"> </span>&lt;board&gt;
+</pre></div>
+</div>
+<p>After running this script you will see some information printed to the console
+indicating the status of the NengoFPGA system. Upon successful execution
+of the script the final lines should read:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Found board ID: 0X0123456789ABCDEF
+Written to file id_&lt;board&gt;.txt
+</pre></div>
+</div>
+<p>Now that you have your Device ID, you are ready to
+<a class="reference internal" href="#get-bitstreams"><span class="std std-ref">acquire your bitstreams</span></a>.</p>
+</div>
+</div>
+<div class="section" id="bitstreams">
+<h2>Bitstreams<a class="headerlink" href="#bitstreams" title="Permalink to this headline">¶</a></h2>
+<p>Compiled FPGA designs are binary files that configure the hardware, literally
+strings of bits, so compiled designs are often called <em>bitstreams</em>. When getting
+started or updating you NengoFPGA system, you will need to get bitstreams for
+your device. The NengoFPGA bitstreams are tailored to your specific device.</p>
+<p>A NengoFPGA license (available from the <a class="reference external" href="https://appliedbrainresearch.myshopify.com/collections/all">Applied Brain Research store</a>) is required to obtain a NengoFPGA
+bitstream. After purchasing the appropriate device-specific license, follow the
+instructions below to obtain your tailored bitstream.</p>
+<div class="section" id="acquiring-nengofpga-bitstreams">
+<span id="get-bitstreams"></span><h3>Acquiring NengoFPGA Bitstreams<a class="headerlink" href="#acquiring-nengofpga-bitstreams" title="Permalink to this headline">¶</a></h3>
+<p>If you haven’t already, you will need to <a class="reference internal" href="#device-id"><span class="std std-ref">get your Device ID</span></a>.</p>
+<p>To receive your tailored bitstreams, please send us an email at
+<a class="reference external" href="mailto:support&#37;&#52;&#48;appliedbrainresearch&#46;com?subject=NengoFPGA -">support<span>&#64;</span>appliedbrainresearch<span>&#46;</span>com</a> with the following information:</p>
+<ul class="simple">
+<li><p>The email address tied to your NengoFPGA license. Typically this is the email address
+provided at the store checkout.</p></li>
+<li><p>Your Device ID. Either the hex string itself or attach the <code class="docutils literal notranslate"><span class="pre">id_&lt;board&gt;.txt</span></code>
+file to the email.</p></li>
+<li><p>Which <a class="reference internal" href="appendix.html#supported-hardware"><span class="std std-ref">supported hardware device</span></a> is associated with
+that Device ID.</p></li>
+<li><p>To help our support team provide a prompt response, please start your
+subject header with the term “NengoFPGA”.</p></li>
+</ul>
+</div>
+<div class="section" id="updating-nengofpga-bitstreams">
+<span id="update-bitstreams"></span><h3>Updating NengoFPGA Bitstreams<a class="headerlink" href="#updating-nengofpga-bitstreams" title="Permalink to this headline">¶</a></h3>
+<p>Once you have received your bitstreams, follow documentation for your particular
+FPGA device for how to copy them to the board and get them running:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.nengo.ai/nengo-de1/usage.html#updating-bitstreams" title="(in NengoDE1 v0.2)"><span class="xref std std-ref">Updating bitstreams for Terasic DE1-SoC</span></a>
+(Intel Cyclone V)</p></li>
+<li><p><a class="reference external" href="https://www.nengo.ai/nengo-pynq/usage.html#updating-bitstreams" title="(in NengoPYNQ v0.3)"><span class="xref std std-ref">Updating bitstreams for Digilent or TUL PYNQ</span></a> (Xilinx Zynq)</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><footer class="text-light footer-main gradient-bottom-center">
+  <p class="text-center">
+    <a class="no-hover-line" href="https://appliedbrainresearch.com">
+      <img class="abr-logo" src="https://www.nengo.ai/img/abr-logo.svg" height="32" />
+    </a>
+    <a href="https://www.nengo.ai/">What is Nengo?</a>
+    <a href="https://www.nengo.ai/examples/">Examples</a>
+    <a href="https://www.nengo.ai/documentation/">Documentation</a>
+    <a href="https://www.nengo.ai/getting-started/">Getting started</a>
+    <a href="https://www.nengo.ai/privacy/">Privacy</a>
+  </p>
+  <p class="small text-center pb-0 mb-0">&copy; Applied Brain Research</p>
+</footer>
+<script>
+  function switchVersion(select) {
+    var option = select.selectedOptions[0];
+    if (option.hasAttribute("value")) {
+      window.location = option.value;
+    }
+  }
+</script>
+
+<script>
+  var elements = document.querySelectorAll('.sidenav');
+  Stickyfill.add(elements);
+</script>
+<script>
+  ScrollReveal().reveal(".fade-in", {
+      scale: 0.85,
+      duration: 1000,
+      delay: 250,
+      interval: 50
+  });
+</script>
+<script>
+  $('a.toggle-sidenav').on('click', function(e) {
+    e.preventDefault();
+    if ( $(this).hasClass('active') ) {
+      $(this).removeClass('active');
+      $('.sidenav').removeClass('open');
+    } else {
+      $(this).addClass('active');
+      $('.sidenav').addClass('open');
+    }
+  });
+</script>
+<script>
+  var lists = document.querySelectorAll('.toctree ul');
+  lists.forEach((ul) => {
+      ul.classList.add("nav");
+  });
+  var links = document.querySelectorAll('.toctree a');
+  links.forEach((link) => {
+      link.classList.add("nav-link");
+  });
+  $("body").scrollspy({target: ".sidenav"});
+</script>
+  </body>
+</html>
