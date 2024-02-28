@@ -16,7 +16,6 @@ extensions = [
     "sphinx.ext.todo",
     "nbsphinx",
     "nengo_sphinx_theme",
-    "nengo_sphinx_theme.ext.backoff",
     "nengo_sphinx_theme.ext.redirects",
     "nengo_sphinx_theme.ext.sourcelinks",
     "notfound.extension",
@@ -80,7 +79,7 @@ linkcheck_ignore = [
 
 project = "NengoFPGA"
 authors = "Applied Brain Research"
-copyright = "2018-2023 Applied Brain Research"
+copyright = "2018-2024 Applied Brain Research"
 version = ".".join(nengo_fpga.__version__.split(".")[:2])  # Short X.Y version
 release = nengo_fpga.__version__  # Full version, with tags
 
