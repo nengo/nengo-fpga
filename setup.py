@@ -30,7 +30,6 @@ version = runpy.run_path(str(root / "nengo_fpga" / "version.py"))["version"]
 install_req = [
     "nengo>=3.0.0",
     "numpy>=1.13.0",
-    "paramiko>=2.4.1",
 ]
 docs_req = [
     "sphinx>=1.8",
@@ -67,7 +66,7 @@ setup(
         "optional": optional_req,
         "tests": tests_req,
     },
-    python_requires=">=3.8",
+    python_requires=">=3.6",
     package_data={
         "nengo_fpga": [
             "fpga_config",

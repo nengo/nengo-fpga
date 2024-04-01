@@ -1,7 +1,12 @@
 """Provides helper functions dealing with file I/O."""
 
+try:
+    from numpy.compat import pickle
+except ImportError:
+    import pickle
+
 import numpy
-from numpy.compat import isfileobj, pickle
+from numpy.compat import isfileobj
 from numpy.lib.format import (
     _check_version,
     _write_array_header,
